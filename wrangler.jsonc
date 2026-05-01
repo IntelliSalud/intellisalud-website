@@ -1,0 +1,9 @@
+{
+  "name": "intellisalud-website",
+  "compatibility_date": "2026-04-30",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "./public"
+  }
