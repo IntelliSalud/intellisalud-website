@@ -144,13 +144,17 @@ document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
     
     saveBooking(booking);
     sendBookingEmail(booking);
-    addToGoogleCalendar(booking);
     
-    alert(`¡Reserva confirmada! Se ha enviado un correo de confirmación a ${booking.email}`);
+    // Generate Google Calendar link for user to add manually
+    const calendarLink = generateGoogleCalendarLink(booking);
+    
+    // Show confirmation with calendar link
+    alert(`¡Reserva confirmada! Se ha enviado un correo de confirmación a ${booking.email}\n\nTambién puedes agregar el evento a tu Google Calendar haciendo clic en el enlace que aparecerá en tu correo.`);
     
     this.reset();
     setDefaultDate(); // Reset date to May 9th
     loadBookings();
+    generateCalendar(); // Refresh calendar to show booked slots
     
     document.getElementById('bookings').classList.add('active');
     document.querySelectorAll('.tab-btn')[2].classList.add('active');
@@ -208,6 +212,9 @@ function loadBookings() {
         const startTime = formatTime(String(hours), String(minutes).padStart(2, '0'));
         const endTime = formatTime(String(endHours), String(finalMinutes).padStart(2, '0'));
         
+        // Generate the calendar link
+        const calendarLink = generateGoogleCalendarLink(booking);
+        
         item.innerHTML = `
             <div class="booking-item-header">${booking.name}</div>
             <div class="booking-item-detail"><strong>Fecha y Hora:</strong> ${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)} • ${startTime} - ${endTime}</div>
@@ -215,10 +222,30 @@ function loadBookings() {
             <div class="booking-item-detail"><strong>Correo Electrónico:</strong> ${booking.email}</div>
             <div class="booking-item-detail"><strong>Edad:</strong> ${booking.age}</div>
             <div class="booking-item-detail"><strong>Preocupaciones de Salud:</strong> ${booking.health}</div>
+            <div class="booking-item-detail" style="margin-top: 1rem;">
+                <a href="${calendarLink}" target="_blank" style="background-color: #007bff; color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none; display: inline-block; font-weight: 500;">📅 Agregar a Google Calendar</a>
+            </div>
         `;
         
         bookingsList.appendChild(item);
     });
+}
+
+// Generate Google Calendar Link (NOT auto-open)
+function generateGoogleCalendarLink(booking) {
+    const [year, month, day] = booking.date.split('-');
+    const [hours, minutes] = booking.time.split(':');
+    
+    // Calculate end time
+    const startDate = new Date(year, month - 1, day, parseInt(hours), parseInt(minutes));
+    const endDate = new Date(startDate.getTime() + 20 * 60000); // Add 20 minutes
+    
+    const startDateTime = `${year}${month}${day}T${hours}${minutes}00`;
+    const endDateTime = `${endDate.getFullYear()}${String(endDate.getMonth() + 1).padStart(2, '0')}${String(endDate.getDate()).padStart(2, '0')}T${String(endDate.getHours()).padStart(2, '0')}${String(endDate.getMinutes()).padStart(2, '0')}00`;
+    
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Demostraci%C3%B3n%20VR:%20${encodeURIComponent(booking.name)}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent('Demostración de Realidad Virtual - IntelliSalud\nCondiciones de salud: ' + booking.health)}&location=IntelliSalud%20Estudio%20VR%2C%20Quito%2C%20Ecuador`;
+    
+    return googleCalendarUrl;
 }
 
 // Send Email via Formspree (Free Service) - SPANISH VERSION
@@ -243,6 +270,9 @@ function sendBookingEmail(booking) {
     
     const startTime = formatTime(String(hours), String(minutes).padStart(2, '0'));
     const endTime = formatTime(String(endHours), String(finalMinutes).padStart(2, '0'));
+    
+    // Generate calendar link
+    const calendarLink = generateGoogleCalendarLink(booking);
     
     // Spanish email content
     const emailContent = `
@@ -277,6 +307,10 @@ UBICACIÓN:
 IntelliSalud - Estación de Demostración VR
 Quito, Ecuador
 
+AGREGAR A TU CALENDARIO:
+Si deseas agregar este evento a tu Google Calendar, haz clic en el siguiente enlace:
+${calendarLink}
+
 Si necesitas cambiar o cancelar tu reserva, por favor responde a este correo lo antes posible.
 
 ¡Esperamos tu participación!
@@ -303,18 +337,4 @@ Equipo IntelliSalud
             console.log('Correo enviado exitosamente');
         }
     }).catch(error => console.error('Error al enviar correo:', error));
-}
-
-// Add to Google Calendar
-function addToGoogleCalendar(booking) {
-    const [year, month, day] = booking.date.split('-');
-    const [hours, minutes] = booking.time.split(':');
-    const endTime = new Date(year, month - 1, day, parseInt(hours) + 0, parseInt(minutes) + 20);
-    
-    const startDateTime = `${year}${month}${day}T${hours}${minutes}00`;
-    const endDateTime = `${endTime.getFullYear()}${String(endTime.getMonth() + 1).padStart(2, '0')}${String(endTime.getDate()).padStart(2, '0')}T${String(endTime.getHours()).padStart(2, '0')}${String(endTime.getMinutes()).padStart(2, '0')}00`;
-    
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Demostraci%C3%B3n%20VR:%20${encodeURIComponent(booking.name)}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent('Condiciones de salud: ' + booking.health)}&location=IntelliSalud%20Estudio%20VR`;
-    
-    window.open(googleCalendarUrl, '_blank');
 }
