@@ -229,7 +229,7 @@ function loadBookings() {
 function sendBookingEmail(booking) {
     // IMPORTANTE: Reemplaza con tu ID de formulario de Formspree
     // Obtenlo en: https://formspree.io/
-    const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORM_ID';
+    const formspreeEndpoint = 'https://formspree.io/f/xbdwadrz';
     
     // Format date in Spanish
     const dateObj = new Date(booking.date + 'T00:00:00');
