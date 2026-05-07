@@ -1,6 +1,6 @@
 # Sistema de Reserva de Demostración VR - README
 
-Esta carpeta contiene el sistema temporal de reserva de demostración de VR para IntelliSalud.
+Esta carpeta contiene el sistema temporal de reserva de demostración de VR 
 
 ## Ubicación
 - URL: `https://intellisalud.com/vrdemo.html`
