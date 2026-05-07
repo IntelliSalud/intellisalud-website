@@ -14,38 +14,28 @@ function switchTab(tabName) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    generateQRCode();
     generateCalendar();
     loadBookings();
+    setDefaultDate();
 });
 
-// Generate QR Code
-function generateQRCode() {
-    const qrContainer = document.getElementById('qrcode');
-    if (qrContainer) {
-        new QRCode(qrContainer, {
-            text: window.location.href,
-            width: 200,
-            height: 200,
-            colorDark: '#000000',
-            colorLight: '#ffffff',
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    }
+// Set default date to May 9th
+function setDefaultDate() {
+    const dateInput = document.getElementById('date');
+    dateInput.value = '2025-05-09';
+    dateInput.min = '2025-05-09';
+    dateInput.max = '2025-05-09';
 }
 
-// Generate Calendar
+// Generate Calendar - ONLY MAY 9TH
 function generateCalendar() {
     const calendarGrid = document.getElementById('calendarGrid');
-    const today = new Date();
+    calendarGrid.innerHTML = ''; // Clear any existing content
     
-    for (let i = 0; i < 7; i++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() + i);
-        
-        const dayCard = createDayCard(date);
-        calendarGrid.appendChild(dayCard);
-    }
+    // Create a card for May 9th, 2025 only
+    const mayNinth = new Date(2025, 4, 9); // May is month 4 (0-indexed)
+    const dayCard = createDayCard(mayNinth);
+    calendarGrid.appendChild(dayCard);
 }
 
 // Create Day Card
@@ -63,8 +53,11 @@ function createDayCard(date) {
     
     dayCard.appendChild(header);
     
+    // Time slots: 10AM-4PM with 20-minute intervals (NO GAP)
     const timeSlots = [
-        '09:00', '09:20', '09:40', '10:00', '10:20', '14:00', '14:20', '15:00', '15:20'
+        '10:00', '10:20', '10:40', '11:00', '11:20', '11:40',
+        '12:00', '12:20', '12:40', '13:00', '13:20', '13:40',
+        '14:00', '14:20', '14:40', '15:00', '15:20', '15:40'
     ];
     
     const bookedSlots = getBookedSlots(date);
@@ -112,6 +105,8 @@ function selectTimeSlot(date, time) {
     document.getElementById('date').value = dateStr.split('/').reverse().join('-');
     document.getElementById('time').value = time;
     
+    // Switch to booking tab and scroll to form
+    switchTab('booking');
     document.querySelector('.booking-section').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -154,11 +149,12 @@ document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
     alert(`¡Reserva confirmada! Se ha enviado un correo de confirmación a ${booking.email}`);
     
     this.reset();
+    setDefaultDate(); // Reset date to May 9th
     loadBookings();
     
     document.getElementById('bookings').classList.add('active');
     document.querySelectorAll('.tab-btn')[2].classList.add('active');
-    document.getElementById('qr').classList.remove('active');
+    document.getElementById('booking').classList.remove('active');
     document.querySelectorAll('.tab-btn')[0].classList.remove('active');
 });
 
@@ -229,7 +225,7 @@ function loadBookings() {
 function sendBookingEmail(booking) {
     // IMPORTANTE: Reemplaza con tu ID de formulario de Formspree
     // Obtenlo en: https://formspree.io/
-    const formspreeEndpoint = 'https://formspree.io/f/xbdwadrz';
+    const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORM_ID';
     
     // Format date in Spanish
     const dateObj = new Date(booking.date + 'T00:00:00');
@@ -271,15 +267,15 @@ ${booking.health}
 ═══════════════════════════════════════════════════════════════════════
 
 INSTRUCCIONES IMPORTANTES:
-- Por favor llega 5 minutos antes de tu hora de reserva
-- Se requiere consentimiento de padres/tutores para menores de 18 años
-- Retira objetos de bolsillos y quítate el reloj antes de la sesión
-- Sigue todas las instrucciones de seguridad del operador
-- Aclara cualquier pregunta sobre tus condiciones de salud
+• Por favor llega 5 minutos antes de tu hora de reserva
+• Se requiere consentimiento de padres/tutores para menores de 18 años
+• Retira objetos de bolsillos y quítate el reloj antes de la sesión
+• Sigue todas las instrucciones de seguridad del operador
+• Aclara cualquier pregunta sobre tus condiciones de salud
 
 UBICACIÓN:
 IntelliSalud - Estación de Demostración VR
-[Dirección a completar]
+Quito, Ecuador
 
 Si necesitas cambiar o cancelar tu reserva, por favor responde a este correo lo antes posible.
 
