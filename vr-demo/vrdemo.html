@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Demostración VR - IntelliSalud</title>
+    <link rel="stylesheet" href="vrdemo-styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">IntelliSalud</a>
+            <span class="nav-demo">Reserva de Demostración VR</span>
+        </div>
+    </nav>
 
+    <main class="main-container">
+        <header class="header-section">
+            <h1>Experimenta la Realidad Virtual</h1>
+            <p>Reserva tu sesión de demostración inmersiva de VR de 20 minutos</p>
+        </header>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('qr')">Código QR y Reserva</button>
+            <button class="tab-btn" onclick="switchTab('calendar')">Calendario</button>
+            <button class="tab-btn" onclick="switchTab('bookings')">Mis Reservas</button>
+        </div>
+
+        <!-- QR Code & Booking Form Tab -->
+        <div id="qr" class="tab-content active">
+            <div class="two-column-layout">
+                <div class="qr-section">
+                    <h2>Código QR para Usuarios</h2>
+                    <p>Imprime este código y colócalo en tu estación de demostración. Los usuarios lo escanean para reservar su sesión.</p>
+                    <div class="qr-container">
+                        <div id="qrcode"></div>
+                    </div>
+                    <button class="print-btn" onclick="window.print()">🖨️ Imprimir Código QR</button>
+                    
+                    <div class="info-box">
+                        <strong>Edad Recomendada:</strong>
+                        <p>13 años o más. Se requiere consentimiento de los padres para menores de 18 años.</p>
+                        <p>Las experiencias de VR pueden afectar la percepción espacial en desarrollo y pueden causar molestias en niños más pequeños.</p>
+                    </div>
+                </div>
+
+                <div class="booking-section">
+                    <h2>Reserva tu Sesión</h2>
+                    <form id="bookingForm" class="booking-form">
+                        <div class="form-group">
+                            <label for="name">Nombre Completo *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Número de Teléfono *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 000-0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Fecha *</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="time">Franja Horaria *</label>
+                            <select id="time" name="time" required>
+                                <option value="">Selecciona una hora</option>
+                                <option value="09:00">9:00 AM - 9:20 AM</option>
+                                <option value="09:20">9:20 AM - 9:40 AM</option>
+                                <option value="09:40">9:40 AM - 10:00 AM</option>
+                                <option value="10:00">10:00 AM - 10:20 AM</option>
+                                <option value="10:20">10:20 AM - 10:40 AM</option>
+                                <option value="14:00">2:00 PM - 2:20 PM</option>
+                                <option value="14:20">2:20 PM - 2:40 PM</option>
+                                <option value="15:00">3:00 PM - 3:20 PM</option>
+                                <option value="15:20">3:20 PM - 3:40 PM</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="health">Condiciones de Salud o Preocupaciones *</label>
+                            <textarea id="health" name="health" placeholder="¿Tienes alguna condición que pueda causar náuseas, convulsiones o molestias? (p.ej., epilepsia, vértigo, embarazo, cirugía reciente, mareos por movimiento)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age">Edad *</label>
+                            <input type="number" id="age" name="age" min="13" max="120" required placeholder="Ingresa tu edad">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parentConsent" class="checkbox-label">
+                                <input type="checkbox" id="parentConsent" name="parentConsent">
+                                Consentimiento de Padres/Tutores (requerido si eres menor de 18 años)
+                            </label>
+                        </div>
+
+                        <div class="waiver-box">
+                            <h4>⚠️ Exención de Responsabilidad y Descargo de Responsabilidad</h4>
+                            <p>
+                                Reconozco que las experiencias de Realidad Virtual pueden causar molestias, náuseas, mareos, mareos por movimiento, 
+                                fatiga visual y otras sensaciones físicas. Soy consciente de que la VR puede provocar convulsiones en personas con 
+                                epilepsia fotosensible. Asumo todos los riesgos asociados con la participación en esta demostración de VR.
+                            </p>
+                            <p>
+                                <strong>El operador de demostración/IntelliSalud NO es responsable de ninguna lesión, molestia o daño sufrido 
+                                durante o después de la experiencia. Cualquier daño resultante de mi propia negligencia o incumplimiento de las 
+                                instrucciones de seguridad es mi responsabilidad exclusiva.</strong>
+                            </p>
+                            <p>
+                                Al completar esta reserva, confirmo:
+                            </p>
+                            <ul>
+                                <li>Tengo al menos 13 años de edad</li>
+                                <li>Si soy menor de 18 años, tengo consentimiento de mis padres/tutores</li>
+                                <li>Soy física y mentalmente capaz de participar</li>
+                                <li>Acepto seguir todas las instrucciones de seguridad</li>
+                                <li>Asumo todos los riesgos y libero a IntelliSalud de responsabilidad</li>
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="agreeWaiver" class="checkbox-label">
+                                <input type="checkbox" id="agreeWaiver" name="agreeWaiver" required>
+                                Acepto la exención de responsabilidad y descargo de responsabilidad *
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Confirmar Reserva</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div id="calendar" class="tab-content">
+            <h2>Franjas Horarias Disponibles</h2>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div id="bookings" class="tab-content">
+            <h2>Mis Reservas</h2>
+            <div id="bookingsList" class="bookings-list">
+                <p class="empty-message">Sin reservas aún. ¡Reserva tu sesión usando el formulario anterior!</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 IntelliSalud. Sistema de Reserva de Demostración VR. <a href="/">Volver al Inicio</a></p>
+    </footer>
+
+    <script src="vrdemo-script.js"></script>
+</body>
+</html>
