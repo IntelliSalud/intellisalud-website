@@ -73,6 +73,7 @@ function createDayCard(date) {
         
         if (bookedSlots.includes(time)) {
             slot.classList.add('booked');
+            // Don't add onclick for booked slots
         } else {
             slot.classList.add('available');
             slot.onclick = () => selectTimeSlot(date, time);
@@ -144,12 +145,9 @@ document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
     
     saveBooking(booking);
     sendBookingEmail(booking);
+    sendOwnerEmail(booking); // Send to owner (jon.aviles@gmail.com) with calendar link
     
-    // Generate Google Calendar link for user to add manually
-    const calendarLink = generateGoogleCalendarLink(booking);
-    
-    // Show confirmation with calendar link
-    alert(`¡Reserva confirmada! Se ha enviado un correo de confirmación a ${booking.email}\n\nTambién puedes agregar el evento a tu Google Calendar haciendo clic en el enlace que aparecerá en tu correo.`);
+    alert(`¡Reserva confirmada! Se ha enviado un correo de confirmación a ${booking.email}`);
     
     this.reset();
     setDefaultDate(); // Reset date to May 9th
@@ -162,22 +160,36 @@ document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
     document.querySelectorAll('.tab-btn')[0].classList.remove('active');
 });
 
-// Save Booking to localStorage
+// Save Booking to localStorage - with proper date format
 function saveBooking(booking) {
     let bookings = JSON.parse(localStorage.getItem('vrBookings') || '[]');
     bookings.push(booking);
     localStorage.setItem('vrBookings', JSON.stringify(bookings));
     
-    const dateStr = booking.date;
+    // Use YYYY-MM-DD format for consistency
+    const dateStr = booking.date; // This should be 2025-05-09 format
     let bookedSlots = JSON.parse(localStorage.getItem(`bookedSlots_${dateStr}`) || '[]');
-    bookedSlots.push(booking.time);
+    
+    // Add time to booked slots
+    if (!bookedSlots.includes(booking.time)) {
+        bookedSlots.push(booking.time);
+    }
+    
     localStorage.setItem(`bookedSlots_${dateStr}`, JSON.stringify(bookedSlots));
+    console.log(`Booked slot saved: ${dateStr} at ${booking.time}`, bookedSlots);
 }
 
-// Get Booked Slots for a Date
+// Get Booked Slots for a Date - FIXED to use correct format
 function getBookedSlots(date) {
-    const dateStr = date.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-    return JSON.parse(localStorage.getItem(`bookedSlots_${dateStr}`) || '[]');
+    // Convert date object to YYYY-MM-DD format
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    
+    const slots = JSON.parse(localStorage.getItem(`bookedSlots_${dateStr}`) || '[]');
+    console.log(`Getting booked slots for ${dateStr}:`, slots);
+    return slots;
 }
 
 // Load and Display Bookings
@@ -212,9 +224,6 @@ function loadBookings() {
         const startTime = formatTime(String(hours), String(minutes).padStart(2, '0'));
         const endTime = formatTime(String(endHours), String(finalMinutes).padStart(2, '0'));
         
-        // Generate the calendar link
-        const calendarLink = generateGoogleCalendarLink(booking);
-        
         item.innerHTML = `
             <div class="booking-item-header">${booking.name}</div>
             <div class="booking-item-detail"><strong>Fecha y Hora:</strong> ${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)} • ${startTime} - ${endTime}</div>
@@ -222,33 +231,13 @@ function loadBookings() {
             <div class="booking-item-detail"><strong>Correo Electrónico:</strong> ${booking.email}</div>
             <div class="booking-item-detail"><strong>Edad:</strong> ${booking.age}</div>
             <div class="booking-item-detail"><strong>Preocupaciones de Salud:</strong> ${booking.health}</div>
-            <div class="booking-item-detail" style="margin-top: 1rem;">
-                <a href="${calendarLink}" target="_blank" style="background-color: #007bff; color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none; display: inline-block; font-weight: 500;">📅 Agregar a Google Calendar</a>
-            </div>
         `;
         
         bookingsList.appendChild(item);
     });
 }
 
-// Generate Google Calendar Link (NOT auto-open)
-function generateGoogleCalendarLink(booking) {
-    const [year, month, day] = booking.date.split('-');
-    const [hours, minutes] = booking.time.split(':');
-    
-    // Calculate end time
-    const startDate = new Date(year, month - 1, day, parseInt(hours), parseInt(minutes));
-    const endDate = new Date(startDate.getTime() + 20 * 60000); // Add 20 minutes
-    
-    const startDateTime = `${year}${month}${day}T${hours}${minutes}00`;
-    const endDateTime = `${endDate.getFullYear()}${String(endDate.getMonth() + 1).padStart(2, '0')}${String(endDate.getDate()).padStart(2, '0')}T${String(endDate.getHours()).padStart(2, '0')}${String(endDate.getMinutes()).padStart(2, '0')}00`;
-    
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Demostraci%C3%B3n%20VR:%20${encodeURIComponent(booking.name)}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent('Demostración de Realidad Virtual - IntelliSalud\nCondiciones de salud: ' + booking.health)}&location=IntelliSalud%20Estudio%20VR%2C%20Quito%2C%20Ecuador`;
-    
-    return googleCalendarUrl;
-}
-
-// Send Email via Formspree (Free Service) - SPANISH VERSION
+// Send Email to User via Formspree - SPANISH VERSION
 function sendBookingEmail(booking) {
     // IMPORTANTE: Reemplaza con tu ID de formulario de Formspree
     // Obtenlo en: https://formspree.io/
@@ -271,10 +260,7 @@ function sendBookingEmail(booking) {
     const startTime = formatTime(String(hours), String(minutes).padStart(2, '0'));
     const endTime = formatTime(String(endHours), String(finalMinutes).padStart(2, '0'));
     
-    // Generate calendar link
-    const calendarLink = generateGoogleCalendarLink(booking);
-    
-    // Spanish email content
+    // Spanish email content for USER
     const emailContent = `
 CONFIRMACIÓN DE RESERVA - DEMOSTRACIÓN VR
 
@@ -307,10 +293,6 @@ UBICACIÓN:
 IntelliSalud - Estación de Demostración VR
 Quito, Ecuador
 
-AGREGAR A TU CALENDARIO:
-Si deseas agregar este evento a tu Google Calendar, haz clic en el siguiente enlace:
-${calendarLink}
-
 Si necesitas cambiar o cancelar tu reserva, por favor responde a este correo lo antes posible.
 
 ¡Esperamos tu participación!
@@ -334,7 +316,104 @@ Equipo IntelliSalud
         body: JSON.stringify(emailData)
     }).then(response => {
         if (response.ok) {
-            console.log('Correo enviado exitosamente');
+            console.log('Correo de usuario enviado exitosamente');
         }
-    }).catch(error => console.error('Error al enviar correo:', error));
+    }).catch(error => console.error('Error al enviar correo de usuario:', error));
+}
+
+// Send Email to OWNER with Calendar Link - jon.aviles@gmail.com
+function sendOwnerEmail(booking) {
+    // IMPORTANTE: Reemplaza con tu ID de formulario de Formspree
+    // Este correo va al propietario (jon.aviles@gmail.com) con el enlace para agregar a calendario
+    const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORM_ID';
+    
+    // Format date in Spanish
+    const dateObj = new Date(booking.date + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('es-ES', { 
+        weekday: 'long', 
+        month: 'long', 
+        day: 'numeric',
+        year: 'numeric'
+    });
+    
+    const [hours, minutes] = booking.time.split(':').map(Number);
+    const endMinutes = minutes + 20;
+    const endHours = hours + Math.floor(endMinutes / 60);
+    const finalMinutes = endMinutes % 60;
+    
+    const startTime = formatTime(String(hours), String(minutes).padStart(2, '0'));
+    const endTime = formatTime(String(endHours), String(finalMinutes).padStart(2, '0'));
+    
+    // Generate calendar link for OWNER
+    const calendarLink = generateGoogleCalendarLink(booking);
+    
+    // Spanish email content for OWNER
+    const emailContent = `
+NUEVA RESERVA - DEMOSTRACIÓN VR
+
+Se ha registrado una nueva reserva para tu demostración de Realidad Virtual.
+
+DETALLES DEL CLIENTE:
+═══════════════════════════════════════════════════════════════════════
+Nombre: ${booking.name}
+Teléfono: ${booking.phone}
+Correo: ${booking.email}
+Edad: ${booking.age} años
+
+DETALLES DE LA SESIÓN:
+Fecha: ${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)}
+Hora: ${startTime} - ${endTime}
+Duración: 20 minutos
+
+CONDICIONES DE SALUD:
+${booking.health}
+
+═══════════════════════════════════════════════════════════════════════
+
+AGREGAR A TU GOOGLE CALENDAR:
+Haz clic en el siguiente enlace para agregar este evento a tu Google Calendar:
+${calendarLink}
+
+Nota: Este enlace agregará el evento directamente a tu calendario de Google.
+
+Saludos,
+Sistema de Reservas VR - IntelliSalud
+    `.trim();
+    
+    const emailData = {
+        name: 'VR Demo Booking System',
+        email: 'jon.aviles@gmail.com', // Owner's email
+        subject: `Nueva Reserva VR - ${booking.name} - ${formattedDate}`,
+        message: emailContent
+    };
+    
+    fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailData)
+    }).then(response => {
+        if (response.ok) {
+            console.log('Correo del propietario enviado exitosamente');
+        }
+    }).catch(error => console.error('Error al enviar correo del propietario:', error));
+}
+
+// Generate Google Calendar Link for OWNER
+function generateGoogleCalendarLink(booking) {
+    const [year, month, day] = booking.date.split('-');
+    const [hours, minutes] = booking.time.split(':');
+    
+    // Calculate end time
+    const startDate = new Date(year, month - 1, day, parseInt(hours), parseInt(minutes));
+    const endDate = new Date(startDate.getTime() + 20 * 60000); // Add 20 minutes
+    
+    const startDateTime = `${year}${month}${day}T${hours}${minutes}00`;
+    const endDateTime = `${endDate.getFullYear()}${String(endDate.getMonth() + 1).padStart(2, '0')}${String(endDate.getDate()).padStart(2, '0')}T${String(endDate.getHours()).padStart(2, '0')}${String(endDate.getMinutes()).padStart(2, '0')}00`;
+    
+    // Calendar link for OWNER - includes attendee (customer email)
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Demostraci%C3%B3n%20VR:%20${encodeURIComponent(booking.name)}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent('Cliente: ' + booking.name + '\nTeléfono: ' + booking.phone + '\nCorreo: ' + booking.email + '\nCondiciones de salud: ' + booking.health)}&location=IntelliSalud%20Estudio%20VR%2C%20Quito%2C%20Ecuador`;
+    
+    return googleCalendarUrl;
 }
