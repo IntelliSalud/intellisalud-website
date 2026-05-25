@@ -286,6 +286,62 @@
     .feat-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
     .feat-desc  { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
+    /* ── Feedback ── */
+    .feedback-section {
+      width: 100%;
+      max-width: 680px;
+      padding: 0 24px;
+      margin-bottom: 24px;
+    }
+    .feedback-inner {
+      background: linear-gradient(135deg, rgba(0,194,199,0.08) 0%, rgba(13,71,161,0.12) 100%);
+      border: 1px solid rgba(0,194,199,0.3);
+      border-radius: 20px;
+      padding: 32px 28px;
+      text-align: center;
+    }
+    .feedback-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .feedback-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .feedback-body {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 520px;
+      margin: 0 auto 24px;
+    }
+    .feedback-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal);
+      color: #0f172a;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(0,194,199,0.25);
+    }
+    .feedback-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,194,199,0.35);
+    }
+    .feedback-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 12px;
+      opacity: 0.8;
+    }
+
     /* ── Disclaimer ── */
     .disclaimer {
       width: 100%;
@@ -349,11 +405,11 @@
     <div class="download-card">
       <div class="platform-row">
         <span class="tag">📱 Android</span>
-        <span class="version">v1.0.0 · Build Preview</span>
+        <span class="version">v1.0.1 · Build Preview</span>
       </div>
 
       <a class="download-btn"
-         href="https://expo.dev/artifacts/eas/cWtPa6sWe1FyKrgzCiiKGc.apk"
+         href="https://expo.dev/artifacts/eas/bjrvbSzZuPsmAkU2LLwjb8.apk"
          download="IntelliSalud-beta.apk"
          id="apk-link">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -413,6 +469,24 @@
       <div class="feat-icon">🔒</div>
       <div class="feat-title">Sin datos del paciente</div>
       <div class="feat-desc">Sin PII. El resumen se elimina en 24 horas automáticamente.</div>
+    </div>
+  </div>
+
+  <!-- Feedback -->
+  <div class="feedback-section">
+    <div class="feedback-inner">
+      <div class="feedback-icon">💬</div>
+      <h2 class="feedback-title">Ayúdanos a mejorar</h2>
+      <p class="feedback-body">
+        Por favor, para comentarios de retroalimentación, haz clic en el botón de abajo
+        y compártenos tus experiencias y qué podemos hacer para mejorarlas.
+        Puedes adjuntar capturas de pantalla si encontraste algún error, y también
+        capturas de tu sistema clínico actual para que podamos adaptar mejor el resumen de IA.
+      </p>
+      <a class="feedback-btn" href="FORMS_URL_AQUI" target="_blank" rel="noopener">
+        Compartir mi experiencia →
+      </a>
+      <p class="feedback-note">Toma menos de 3 minutos &nbsp;·&nbsp; Tus respuestas son confidenciales</p>
     </div>
   </div>
 
