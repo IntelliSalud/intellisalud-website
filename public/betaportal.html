@@ -178,6 +178,13 @@
       justify-content: center;
     }
     .eye-btn:hover { color: var(--teal); }
+    /* Hide browser-native password reveal buttons (Edge, Chrome, Safari) */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear,
+    input[type="password"]::-webkit-contacts-auto-fill-button,
+    input[type="password"]::-webkit-credentials-auto-fill-button { display: none !important; }
+    input[type="text"]::-ms-reveal,
+    input[type="text"]::-ms-clear { display: none !important; }
     .btn-primary {
       width: 100%;
       background: var(--teal);
