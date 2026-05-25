@@ -170,11 +170,14 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 18px;
       line-height: 1;
       color: var(--muted);
       padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    .eye-btn:hover { color: var(--teal); }
     .btn-primary {
       width: 100%;
       background: var(--teal);
@@ -551,7 +554,12 @@
         <div class="password-wrap">
           <input id="inp-password" class="form-input" type="password"
                  placeholder="••••••••" autocomplete="current-password" />
-          <button class="eye-btn" id="eye-toggle" type="button" aria-label="Mostrar contraseña">👁</button>
+          <button class="eye-btn" id="eye-toggle" type="button" aria-label="Mostrar contraseña">
+            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -792,11 +800,14 @@
       loginError.style.display = 'none';
     }
 
+    const EYE_OPEN = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    const EYE_SHUT = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
     document.getElementById('eye-toggle').addEventListener('click', function () {
       const inp = document.getElementById('inp-password');
       const isPassword = inp.type === 'password';
       inp.type = isPassword ? 'text' : 'password';
-      this.textContent = isPassword ? '🙈' : '👁';
+      this.innerHTML = isPassword ? EYE_SHUT : EYE_OPEN;
     });
 
     btnLogin.addEventListener('click', async () => {
@@ -946,21 +957,13 @@
       `;
       container.appendChild(header);
 
-      // ── Copy all button
+      // ── Export for EHR button — opens Notepad-style window
       const summaryText = buildSummaryText(session);
-      const copyAllBtn  = document.createElement('button');
-      copyAllBtn.className = 'copy-all-btn';
-      copyAllBtn.innerHTML = '📋 Copiar resumen completo';
-      copyAllBtn.addEventListener('click', () => {
-        copyText(summaryText, copyAllBtn);
-        copyAllBtn.innerHTML = '✓ ¡Copiado! Pega en tu EHR/CRM';
-        copyAllBtn.classList.add('copied');
-        setTimeout(() => {
-          copyAllBtn.innerHTML = '📋 Copiar resumen completo';
-          copyAllBtn.classList.remove('copied');
-        }, 3000);
-      });
-      container.appendChild(copyAllBtn);
+      const exportBtn   = document.createElement('button');
+      exportBtn.className = 'copy-all-btn';
+      exportBtn.innerHTML = '📄 Exportar para EHR';
+      exportBtn.addEventListener('click', () => openNotepad(summaryText, session.session_code || 'Resumen'));
+      container.appendChild(exportBtn);
 
       // ── Sections
       if (s.motivo_consulta) {
@@ -1059,6 +1062,124 @@
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+    }
+
+    /* ── Notepad-style export window ────────────────────────── */
+    function openNotepad(text, title) {
+      const win = window.open('', '_blank', 'width=780,height=680');
+      if (!win) {
+        // Popup blocked fallback — copy to clipboard instead
+        copyText(text);
+        showToast('⚠ Popup bloqueado — texto copiado al portapapeles');
+        return;
+      }
+      // Escape for HTML context
+      const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      win.document.write(`<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <title>IntelliSalud · ${title}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    .toolbar {
+      background: #0D47A1;
+      color: #fff;
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; }
+    .toolbar-title { font-size: 14px; font-weight: 700; }
+    .toolbar-sub { font-size: 12px; opacity: 0.7; }
+    .toolbar-btns { display: flex; gap: 8px; }
+    .tbtn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .tbtn:hover { background: rgba(255,255,255,0.25); }
+    .tbtn.teal { background: #00C2C7; border-color: #00C2C7; }
+    .tbtn.teal:hover { background: #009ba0; }
+    .hint {
+      background: #e0f2fe;
+      border-bottom: 1px solid #bae6fd;
+      padding: 8px 18px;
+      font-size: 12px;
+      color: #0369a1;
+      flex-shrink: 0;
+    }
+    textarea {
+      flex: 1;
+      width: 100%;
+      border: none;
+      padding: 20px 24px;
+      font-family: 'Courier New', 'Consolas', monospace;
+      font-size: 14px;
+      line-height: 1.75;
+      resize: none;
+      background: #fff;
+      color: #0f172a;
+      outline: none;
+    }
+    .statusbar {
+      background: #e2e8f0;
+      border-top: 1px solid #cbd5e1;
+      padding: 5px 18px;
+      font-size: 11px;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div>
+        <div class="toolbar-title">IntelliSalud · ${title}</div>
+        <div class="toolbar-sub">Resumen clínico — listo para pegar en EHR/CRM</div>
+      </div>
+    </div>
+    <div class="toolbar-btns">
+      <button class="tbtn teal" onclick="selectAll()">Seleccionar todo</button>
+      <button class="tbtn" onclick="copyAll()">Copiar todo</button>
+      <button class="tbtn" onclick="window.close()">Cerrar</button>
+    </div>
+  </div>
+  <div class="hint">💡 Selecciona el texto que necesitas y pégalo en tu EHR o CRM. Puedes editar antes de copiar.</div>
+  <textarea id="ta" spellcheck="false">${safe}</textarea>
+  <div class="statusbar" id="sb">IntelliSalud · Sin datos de identificación del paciente · Registro válido 24 horas</div>
+  <script>
+    const ta = document.getElementById('ta');
+    function selectAll() { ta.select(); }
+    function copyAll() {
+      ta.select();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(ta.value).then(() => {
+          document.getElementById('sb').textContent = '✓ Texto copiado al portapapeles — pega en tu EHR/CRM';
+          setTimeout(() => { document.getElementById('sb').textContent = 'IntelliSalud · Sin datos de identificación del paciente · Registro válido 24 horas'; }, 3000);
+        });
+      } else {
+        document.execCommand('copy');
+      }
+    }
+    // Auto-select on open so it's ready to copy immediately
+    window.onload = () => { ta.focus(); ta.setSelectionRange(0, 0); };
+  <\/script>
+</body>
+</html>`);
+      win.document.close();
     }
 
     /* ── Boot ────────────────────────────────────────────────── */
