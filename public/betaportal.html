@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IntelliSalud · Portal Médico</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    /* ── Reset & Variables ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal:      #00C2C7;
+      --teal-dark: #009ba0;
+      --navy:      #0D47A1;
+      --bg:        #f8fafc;
+      --surface:   #ffffff;
+      --border:    #e2e8f0;
+      --text:      #0f172a;
+      --muted:     #64748b;
+      --danger:    #ef4444;
+      --success:   #16a34a;
+      --warning:   #f97316;
+      --radius:    12px;
+      --shadow:    0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Utility ─────────────────────────────────────────────── */
+    .hidden { display: none !important; }
+    .text-muted  { color: var(--muted); }
+    .text-teal   { color: var(--teal); }
+    .text-danger { color: var(--danger); }
+    .text-success{ color: var(--success); }
+
+    /* ── Top Nav ─────────────────────────────────────────────── */
+    #nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .nav-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .nav-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+    #btn-logout {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* ── Page wrapper ────────────────────────────────────────── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    /* ══ LOGIN VIEW ══════════════════════════════════════════════ */
+    #view-login {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .login-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 12px;
+    }
+    .login-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+    .login-brand {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .login-tagline {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: -4px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color 0.15s;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--teal); }
+    .password-wrap {
+      position: relative;
+    }
+    .password-wrap .form-input {
+      padding-right: 44px;
+    }
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      color: var(--muted);
+      padding: 4px;
+    }
+    .btn-primary {
+      width: 100%;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover  { background: var(--teal-dark); }
+    .btn-primary:disabled { opacity: 0.6; cursor: default; }
+    .login-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      display: none;
+    }
+    .login-footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ══ SESSION LIST VIEW ═══════════════════════════════════════ */
+    .page-header {
+      margin-bottom: 24px;
+    }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .page-header p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .doctor-greeting {
+      font-size: 14px;
+      color: var(--teal);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .sessions-empty {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--muted);
+    }
+    .sessions-empty .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .sessions-empty h3 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
+
+    .session-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .session-card:hover {
+      box-shadow: 0 2px 12px rgba(0,194,199,0.15);
+      border-color: var(--teal);
+    }
+    .session-card-left { flex: 1; }
+    .session-code {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 3px;
+    }
+    .session-time {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .session-card-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 55%;
+    }
+    .session-diag {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .session-arrow {
+      font-size: 18px;
+      color: var(--border);
+      flex-shrink: 0;
+    }
+    .session-expiry {
+      font-size: 11px;
+      color: var(--warning);
+      margin-top: 3px;
+    }
+
+    .refresh-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .refresh-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+    .list-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .list-count {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ══ SESSION DETAIL VIEW ═════════════════════════════════════ */
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .back-btn:hover { color: var(--teal-dark); }
+
+    .detail-header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .detail-code {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .detail-date {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: capitalize;
+      margin-bottom: 2px;
+    }
+    .detail-expiry {
+      font-size: 12px;
+      color: var(--warning);
+      margin-top: 6px;
+    }
+
+    /* Copy-all button */
+    .copy-all-btn {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+    .copy-all-btn:hover { background: var(--teal-dark); }
+    .copy-all-btn.copied {
+      background: var(--success);
+    }
+
+    /* Field boxes */
+    .field-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .field-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .field-value {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .field-value.highlight {
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .field-value ul {
+      list-style: none;
+      padding: 0;
+    }
+    .field-value ul li {
+      padding: 3px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+    .field-value ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+    }
+    .field-value ol {
+      padding-left: 20px;
+    }
+    .field-value ol li { padding: 3px 0; }
+
+    .copy-section-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .copy-section-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .copy-section-btn.copied { border-color: var(--success); color: var(--success); }
+
+    .transcript-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .transcript-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    /* ── Spinner ─────────────────────────────────────────────── */
+    .spinner-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      gap: 14px;
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Toast ───────────────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 999;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 500px) {
+      .login-card { padding: 28px 20px; }
+      .session-card-right { max-width: 45%; }
+      .detail-header { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav (hidden on login) ─────────────────────────────── -->
+  <nav id="nav" class="hidden">
+    <div class="nav-brand">
+      <img id="nav-logo" src="" alt="IntelliSalud" class="nav-logo" />
+      <span class="nav-title">IntelliSalud</span>
+      <span class="nav-subtitle">Portal Médico</span>
+    </div>
+    <button id="btn-logout">Salir</button>
+  </nav>
+
+  <!-- ══ LOGIN VIEW ════════════════════════════════════════════ -->
+  <div id="view-login">
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <img id="login-logo" src="" alt="IntelliSalud" class="login-logo" />
+        <span class="login-brand">IntelliSalud</span>
+        <span class="login-tagline">Portal de consultas para médicos</span>
+      </div>
+
+      <div id="login-error" class="login-error"></div>
+
+      <div class="form-group">
+        <label class="form-label" for="inp-email">Correo electrónico</label>
+        <input id="inp-email" class="form-input" type="email"
+               placeholder="medico@clinica.com" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="inp-password">Contraseña</label>
+        <div class="password-wrap">
+          <input id="inp-password" class="form-input" type="password"
+                 placeholder="••••••••" autocomplete="current-password" />
+          <button class="eye-btn" id="eye-toggle" type="button" aria-label="Mostrar contraseña">👁</button>
+        </div>
+      </div>
+
+      <button id="btn-login" class="btn-primary">
+        <span id="login-btn-text">Ingresar</span>
+      </button>
+
+      <div class="login-footer">
+        Usa las mismas credenciales que en la app IntelliSalud.<br />
+        ¿Problemas? Escribe a <a href="mailto:jonathan@intellisalud.com" style="color:var(--teal)">jonathan@intellisalud.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SESSION LIST VIEW ═════════════════════════════════════ -->
+  <div id="view-sessions" class="hidden">
+    <div class="page">
+      <div class="page-header">
+        <div id="greeting" class="doctor-greeting"></div>
+        <h1>Consultas de hoy</h1>
+        <p id="today-date"></p>
+      </div>
+
+      <div class="list-toolbar">
+        <span id="sessions-count" class="list-count"></span>
+        <button class="refresh-btn" id="btn-refresh">↻ Actualizar</button>
+      </div>
+
+      <div id="sessions-spinner" class="spinner-wrap">
+        <div class="spinner"></div>
+        <span class="text-muted" style="font-size:14px">Cargando consultas...</span>
+      </div>
+
+      <div id="sessions-list"></div>
+
+      <div id="sessions-empty" class="sessions-empty hidden">
+        <div class="empty-icon">📋</div>
+        <h3>No hay consultas hoy</h3>
+        <p>Las consultas aparecerán aquí después de procesarlas en la app.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SESSION DETAIL VIEW ═══════════════════════════════════ -->
+  <div id="view-detail" class="hidden">
+    <div class="page">
+      <button class="back-btn" id="btn-back">← Volver a consultas</button>
+
+      <div id="detail-spinner" class="spinner-wrap">
+        <div class="spinner"></div>
+        <span class="text-muted" style="font-size:14px">Cargando consulta...</span>
+      </div>
+
+      <div id="detail-content" class="hidden"></div>
+    </div>
+  </div>
+
+  <!-- ── Toast ─────────────────────────────────────────────── -->
+  <div id="toast">✓ Copiado al portapapeles</div>
+
+  <script>
+    /* ── Config ─────────────────────────────────────────────── */
+    const SUPABASE_URL  = 'https://giioiqyralkcbygxxuzq.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpaW9pcXlyYWxrY2J5Z3h4dXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTkzNzEsImV4cCI6MjA5MzgzNTM3MX0.jeudSrUzDXjdH0uOI3uBbBFgIctDl_slmZJCM7cG1kE';
+    const API_URL       = 'https://intellisalud-backend-production.up.railway.app';
+
+    /* ── Supabase client ─────────────────────────────────────── */
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    /* ── Logo (same icon.png used in the app) ────────────────── */
+    // Using a data-URI friendly path via same repo; fallback to teal circle
+    const LOGO_SRC = 'https://intellisalud.pages.dev/assets/icon.png';
+
+    function setLogos() {
+      ['login-logo', 'nav-logo'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.src = LOGO_SRC;
+          el.onerror = () => {
+            el.style.display = 'none';
+          };
+        }
+      });
+    }
+    setLogos();
+
+    /* ── State ───────────────────────────────────────────────── */
+    let currentUser  = null;
+    let currentSession = null;
+
+    /* ── Views ───────────────────────────────────────────────── */
+    const views = ['view-login', 'view-sessions', 'view-detail'];
+    function showView(id) {
+      views.forEach(v => document.getElementById(v).classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('hidden', id === 'view-login');
+      window.scrollTo(0, 0);
+    }
+
+    /* ── Toast ───────────────────────────────────────────────── */
+    let toastTimer;
+    function showToast(msg = '✓ Copiado al portapapeles') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    /* ── Copy helper ─────────────────────────────────────────── */
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast();
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = '✓ Copiado';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.classList.remove('copied');
+          }, 2000);
+        }
+      }).catch(() => {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast();
+      });
+    }
+
+    /* ── Format helpers ──────────────────────────────────────── */
+    function formatDate(iso) {
+      return new Date(iso).toLocaleString('es-EC', {
+        weekday: 'long', day: 'numeric', month: 'long',
+        hour: '2-digit', minute: '2-digit',
+      });
+    }
+    function formatTime(iso) {
+      return new Date(iso).toLocaleTimeString('es-EC', {
+        hour: '2-digit', minute: '2-digit',
+      });
+    }
+    function formatExpiry(iso) {
+      const exp  = new Date(iso);
+      const now  = new Date();
+      const diff = exp - now;
+      if (diff <= 0) return 'Expirado';
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      if (h > 0) return `Expira en ${h}h ${m}m`;
+      return `Expira en ${m} min`;
+    }
+
+    /* ── Build full-summary text for copy-all ────────────────── */
+    function buildSummaryText(session) {
+      const s   = session.summary || {};
+      const dt  = session.created_at ? formatDate(session.created_at) : session.session_date || '';
+      const lines = [];
+
+      lines.push('RESUMEN DE CONSULTA');
+      lines.push(`Código: ${session.session_code || '—'}`);
+      lines.push(`Fecha:  ${dt}`);
+      if (session.doctor_name) lines.push(`Médico: ${session.doctor_name}`);
+      lines.push('');
+
+      if (s.motivo_consulta) {
+        lines.push('MOTIVO DE CONSULTA');
+        lines.push(s.motivo_consulta);
+        lines.push('');
+      }
+      if (s.sintomas && s.sintomas.length) {
+        lines.push('SÍNTOMAS');
+        s.sintomas.forEach(x => lines.push(`• ${x}`));
+        lines.push('');
+      }
+      if (s.antecedentes_relevantes) {
+        lines.push('ANTECEDENTES RELEVANTES');
+        lines.push(s.antecedentes_relevantes);
+        lines.push('');
+      }
+      if (s.diagnostico_presuntivo) {
+        lines.push('DIAGNÓSTICO PRESUNTIVO');
+        lines.push(s.diagnostico_presuntivo);
+        lines.push('');
+      }
+      if (s.plan && s.plan.length) {
+        lines.push('PLAN DE TRATAMIENTO');
+        s.plan.forEach((x, i) => lines.push(`${i + 1}. ${x}`));
+        lines.push('');
+      }
+      if (s.medicamentos && s.medicamentos.length) {
+        lines.push('MEDICAMENTOS');
+        s.medicamentos.forEach(x => lines.push(`• ${x}`));
+        lines.push('');
+      }
+      if (s.observaciones) {
+        lines.push('OBSERVACIONES');
+        lines.push(s.observaciones);
+        lines.push('');
+      }
+
+      lines.push('─────────────────────────────────────');
+      lines.push('IntelliSalud · Sin datos de identificación del paciente');
+      lines.push(`Registro válido por 24 horas desde la consulta`);
+
+      return lines.join('\n');
+    }
+
+    /* ── Auth ────────────────────────────────────────────────── */
+    async function bootstrap() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        currentUser = session.user;
+        showSessionList();
+      } else {
+        showView('view-login');
+      }
+    }
+
+    /* ── Login flow ──────────────────────────────────────────── */
+    const btnLogin    = document.getElementById('btn-login');
+    const loginError  = document.getElementById('login-error');
+    const loginBtnTxt = document.getElementById('login-btn-text');
+
+    function showLoginError(msg) {
+      loginError.textContent = msg;
+      loginError.style.display = 'block';
+    }
+    function hideLoginError() {
+      loginError.style.display = 'none';
+    }
+
+    document.getElementById('eye-toggle').addEventListener('click', function () {
+      const inp = document.getElementById('inp-password');
+      const isPassword = inp.type === 'password';
+      inp.type = isPassword ? 'text' : 'password';
+      this.textContent = isPassword ? '🙈' : '👁';
+    });
+
+    btnLogin.addEventListener('click', async () => {
+      const email    = document.getElementById('inp-email').value.trim();
+      const password = document.getElementById('inp-password').value;
+      hideLoginError();
+
+      if (!email || !password) {
+        showLoginError('Por favor ingresa tu correo y contraseña.');
+        return;
+      }
+
+      btnLogin.disabled = true;
+      loginBtnTxt.textContent = 'Ingresando...';
+
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+      btnLogin.disabled = false;
+      loginBtnTxt.textContent = 'Ingresar';
+
+      if (error) {
+        showLoginError('Credenciales incorrectas. Verifica tu correo y contraseña.');
+        return;
+      }
+
+      currentUser = data.user;
+      showSessionList();
+    });
+
+    // Allow Enter key on password field
+    document.getElementById('inp-password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') btnLogin.click();
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      currentUser = null;
+      showView('view-login');
+    });
+
+    /* ── Session list ────────────────────────────────────────── */
+    async function showSessionList() {
+      showView('view-sessions');
+
+      // Greeting
+      const meta = currentUser?.user_metadata;
+      const name = meta?.full_name || ('Dr. ' + (currentUser?.email?.split('@')[0] || ''));
+      document.getElementById('greeting').textContent = `Bienvenido, ${name}`;
+
+      // Date
+      document.getElementById('today-date').textContent =
+        new Date().toLocaleDateString('es-EC', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+      await fetchSessions();
+    }
+
+    async function fetchSessions() {
+      const list    = document.getElementById('sessions-list');
+      const spinner = document.getElementById('sessions-spinner');
+      const empty   = document.getElementById('sessions-empty');
+      const count   = document.getElementById('sessions-count');
+
+      list.innerHTML   = '';
+      empty.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      try {
+        const uid = currentUser.id;
+        const res = await fetch(`${API_URL}/session?clinic_id=${uid}&doctor_id=${uid}`);
+        const json = await res.json();
+        const sessions = json.sessions || [];
+
+        spinner.classList.add('hidden');
+        count.textContent = `${sessions.length} sesión${sessions.length !== 1 ? 'es' : ''}`;
+
+        if (sessions.length === 0) {
+          empty.classList.remove('hidden');
+          return;
+        }
+
+        sessions.forEach(s => {
+          const card = document.createElement('div');
+          card.className = 'session-card';
+          card.innerHTML = `
+            <div class="session-card-left">
+              <div class="session-code">${s.session_code || '—'}</div>
+              <div class="session-time">${s.created_at ? formatTime(s.created_at) : ''}</div>
+              ${s.expires_at ? `<div class="session-expiry">${formatExpiry(s.expires_at)}</div>` : ''}
+            </div>
+            <div class="session-card-right">
+              <div class="session-diag">${s.summary?.diagnostico_presuntivo || 'Sin diagnóstico'}</div>
+              <div class="session-arrow">›</div>
+            </div>
+          `;
+          card.addEventListener('click', () => openSession(s));
+          list.appendChild(card);
+        });
+      } catch (err) {
+        spinner.classList.add('hidden');
+        list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger)">Error al cargar consultas. Intenta de nuevo.</div>`;
+      }
+    }
+
+    document.getElementById('btn-refresh').addEventListener('click', fetchSessions);
+
+    /* ── Session detail ──────────────────────────────────────── */
+    async function openSession(preloaded) {
+      currentSession = preloaded;
+      showView('view-detail');
+
+      const spinner = document.getElementById('detail-spinner');
+      const content = document.getElementById('detail-content');
+
+      spinner.classList.remove('hidden');
+      content.classList.add('hidden');
+      content.innerHTML = '';
+
+      // Fetch full session (includes transcript)
+      let session = preloaded;
+      try {
+        const res  = await fetch(`${API_URL}/session/${preloaded.id}?clinic_id=${currentUser.id}`);
+        const json = await res.json();
+        if (json.session) session = json.session;
+      } catch (_) { /* use preloaded */ }
+
+      spinner.classList.add('hidden');
+      content.classList.remove('hidden');
+
+      renderDetail(session, content);
+    }
+
+    document.getElementById('btn-back').addEventListener('click', () => {
+      showView('view-sessions');
+    });
+
+    function renderDetail(session, container) {
+      const s = session.summary || {};
+
+      // ── Header
+      const header = document.createElement('div');
+      header.className = 'detail-header';
+      header.innerHTML = `
+        <div class="detail-code">${session.session_code || 'Sesión'}</div>
+        <div class="detail-date">${session.created_at ? formatDate(session.created_at) : (session.session_date || '')}</div>
+        ${session.doctor_name ? `<div style="font-size:14px;font-weight:600;color:var(--text);margin-top:2px">${session.doctor_name}</div>` : ''}
+        ${session.expires_at ? `<div class="detail-expiry">⏱ ${formatExpiry(session.expires_at)}</div>` : ''}
+      `;
+      container.appendChild(header);
+
+      // ── Copy all button
+      const summaryText = buildSummaryText(session);
+      const copyAllBtn  = document.createElement('button');
+      copyAllBtn.className = 'copy-all-btn';
+      copyAllBtn.innerHTML = '📋 Copiar resumen completo';
+      copyAllBtn.addEventListener('click', () => {
+        copyText(summaryText, copyAllBtn);
+        copyAllBtn.innerHTML = '✓ ¡Copiado! Pega en tu EHR/CRM';
+        copyAllBtn.classList.add('copied');
+        setTimeout(() => {
+          copyAllBtn.innerHTML = '📋 Copiar resumen completo';
+          copyAllBtn.classList.remove('copied');
+        }, 3000);
+      });
+      container.appendChild(copyAllBtn);
+
+      // ── Sections
+      if (s.motivo_consulta) {
+        addField(container, 'Motivo de consulta', s.motivo_consulta, false, false);
+      }
+      if (s.sintomas && s.sintomas.length) {
+        addListField(container, 'Síntomas', s.sintomas, false);
+      }
+      if (s.antecedentes_relevantes) {
+        addField(container, 'Antecedentes relevantes', s.antecedentes_relevantes, false, false);
+      }
+      if (s.diagnostico_presuntivo) {
+        addField(container, 'Diagnóstico presuntivo', s.diagnostico_presuntivo, true, false);
+      }
+      if (s.plan && s.plan.length) {
+        addListField(container, 'Plan de tratamiento', s.plan, true);
+      }
+      if (s.medicamentos && s.medicamentos.length) {
+        addListField(container, 'Medicamentos', s.medicamentos, false);
+      }
+      if (s.observaciones) {
+        addField(container, 'Observaciones', s.observaciones, false, false);
+      }
+
+      // ── Transcript
+      if (session.transcript) {
+        const tbox = document.createElement('div');
+        tbox.className = 'transcript-box';
+        tbox.innerHTML = `
+          <div class="field-label">
+            <span>Transcripción completa</span>
+            <button class="copy-section-btn" id="copy-transcript-btn">Copiar</button>
+          </div>
+          <div class="transcript-text">${escHtml(session.transcript)}</div>
+        `;
+        tbox.querySelector('#copy-transcript-btn').addEventListener('click', function () {
+          copyText(session.transcript, this);
+        });
+        container.appendChild(tbox);
+      }
+
+      // ── Footer
+      const footer = document.createElement('p');
+      footer.className = 'footer-note';
+      footer.textContent = 'Este registro se elimina automáticamente a las 24 horas.\nNo contiene información de identificación del paciente.';
+      container.appendChild(footer);
+    }
+
+    function addField(container, label, value, highlight, _unused) {
+      const box = document.createElement('div');
+      box.className = 'field-box';
+
+      const copyId = 'copy-' + Math.random().toString(36).slice(2);
+      box.innerHTML = `
+        <div class="field-label">
+          <span>${label}</span>
+          <button class="copy-section-btn" id="${copyId}">Copiar</button>
+        </div>
+        <div class="field-value ${highlight ? 'highlight' : ''}">${escHtml(value)}</div>
+      `;
+      box.querySelector('#' + copyId).addEventListener('click', function () {
+        copyText(`${label.toUpperCase()}\n${value}`, this);
+      });
+      container.appendChild(box);
+    }
+
+    function addListField(container, label, items, numbered) {
+      const box = document.createElement('div');
+      box.className = 'field-box';
+
+      const listHtml = numbered
+        ? `<ol>${items.map(i => `<li>${escHtml(i)}</li>`).join('')}</ol>`
+        : `<ul>${items.map(i => `<li>${escHtml(i)}</li>`).join('')}</ul>`;
+
+      const copyId  = 'copy-' + Math.random().toString(36).slice(2);
+      const textVal = numbered
+        ? items.map((x, i) => `${i + 1}. ${x}`).join('\n')
+        : items.map(x => `• ${x}`).join('\n');
+
+      box.innerHTML = `
+        <div class="field-label">
+          <span>${label}</span>
+          <button class="copy-section-btn" id="${copyId}">Copiar</button>
+        </div>
+        <div class="field-value">${listHtml}</div>
+      `;
+      box.querySelector('#' + copyId).addEventListener('click', function () {
+        copyText(`${label.toUpperCase()}\n${textVal}`, this);
+      });
+      container.appendChild(box);
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* ── Boot ────────────────────────────────────────────────── */
+    bootstrap();
+  </script>
+</body>
+</html>
