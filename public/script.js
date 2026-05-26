@@ -57,24 +57,24 @@ function runStatsAnimation() {
   /* Phase 2 — stat blocks count up, staggered */
   setTimeout(() => {
     document.getElementById('stat1').classList.add('visible');
-    countUp('num1', 49, '%', 1100);
+    countUp('num1', 62, '%', 1100);
   }, 900);
 
   setTimeout(() => {
     document.getElementById('stat2').classList.add('visible');
-    /* Custom counter for hours */
+    /* Custom counter for minutes */
     const el = document.getElementById('num2');
     let v = 0;
     const t = setInterval(() => {
-      v = Math.min(v + 0.06, 2.3);
-      el.textContent = v.toFixed(1) + ' hrs';
-      if (v >= 2.3) clearInterval(t);
+      v = Math.min(v + 0.5, 9);
+      el.textContent = Math.round(v) + ' min';
+      if (v >= 9) clearInterval(t);
     }, 40);
   }, 1400);
 
   setTimeout(() => {
     document.getElementById('stat3').classList.add('visible');
-    countUp('num3', 72, '%', 1100);
+    countUp('num3', 15, '%', 1100);
   }, 1900);
 
   /* Phase 3 — transition bar fills */
