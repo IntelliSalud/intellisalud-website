@@ -1085,7 +1085,9 @@
       try {
         const uid   = currentUser.id;
         const token = await getAuthToken();
-        const res   = await fetch(`${API_URL}/session?clinic_id=${uid}&doctor_id=${uid}`, {
+        // Phase 2: clinic_id is resolved by the backend from the staff table.
+        // No need to pass it — the middleware scopes all results to the user's clinic.
+        const res   = await fetch(`${API_URL}/session`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const json = await res.json();
@@ -1140,7 +1142,8 @@
       let session = preloaded;
       try {
         const token = await getAuthToken();
-        const res   = await fetch(`${API_URL}/session/${preloaded.id}?clinic_id=${currentUser.id}`, {
+        // Phase 2: clinic_id no longer required — middleware resolves it.
+        const res   = await fetch(`${API_URL}/session/${preloaded.id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const json = await res.json();
