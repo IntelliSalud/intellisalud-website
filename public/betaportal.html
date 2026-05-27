@@ -949,6 +949,37 @@
 
     /* ── Auth ────────────────────────────────────────────────── */
     async function bootstrap() {
+      const hash   = window.location.hash;
+      const params = new URLSearchParams(hash.slice(1)); // parse fragment as query string
+
+      // Case 1: Supabase returned an error (e.g. otp_expired from an old link)
+      if (params.get('error')) {
+        const code = params.get('error_code') || '';
+        const desc = params.get('error_description') || '';
+        // Clear the ugly hash from the address bar
+        history.replaceState(null, '', window.location.pathname);
+
+        const errEl = document.getElementById('forgot-error');
+        if (code === 'otp_expired') {
+          errEl.textContent = 'El enlace expiró o ya fue usado. Por favor solicita un nuevo enlace.';
+        } else {
+          errEl.textContent = desc.replace(/\+/g, ' ') || 'Enlace inválido. Solicita un nuevo correo de recuperación.';
+        }
+        errEl.style.display = 'block';
+        showView('view-forgot');
+        return;
+      }
+
+      // Case 2: Valid password-recovery redirect from email link
+      // Fragment will contain type=recovery — let onAuthStateChange fire PASSWORD_RECOVERY.
+      // DO NOT show sessions; just clear the hash and wait.
+      if (params.get('type') === 'recovery') {
+        history.replaceState(null, '', window.location.pathname);
+        // onAuthStateChange will handle this and show view-reset
+        return;
+      }
+
+      // Case 3: Normal page load
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
         currentUser = session.user;
