@@ -971,11 +971,17 @@
       }
 
       // Case 2: Valid password-recovery redirect from email link
-      // Fragment will contain type=recovery — let onAuthStateChange fire PASSWORD_RECOVERY.
-      // DO NOT show sessions; just clear the hash and wait.
+      // Supabase has already parsed the hash tokens via detectSessionInUrl.
+      // Get that session, then show the reset form directly.
       if (params.get('type') === 'recovery') {
+        const { data: { session: recSession } } = await sb.auth.getSession();
+        currentUser = recSession?.user || null;
         history.replaceState(null, '', window.location.pathname);
-        // onAuthStateChange will handle this and show view-reset
+        document.getElementById('reset-error').style.display   = 'none';
+        document.getElementById('reset-success').style.display = 'none';
+        document.getElementById('new-password').value          = '';
+        document.getElementById('confirm-password').value      = '';
+        showView('view-reset');
         return;
       }
 
