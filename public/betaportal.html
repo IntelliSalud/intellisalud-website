@@ -598,6 +598,8 @@
     <div style="display:flex;align-items:center;gap:0">
       <button id="btn-nav-sessions">📋 Consultas</button>
       <button id="btn-nav-patients">👥 Pacientes</button>
+      <button id="btn-nav-appointments">📅 Citas</button>
+      <button id="btn-nav-config">⚙️ Configuración</button>
       <button id="btn-change-pw">🔑 Contraseña</button>
       <button id="btn-logout">Salir</button>
     </div>
@@ -808,6 +810,105 @@
     </div>
   </div>
 
+  <!-- ══ APPOINTMENTS LIST VIEW ══════════════════════════════ -->
+  <div id="view-appointments" class="hidden">
+    <div class="page">
+      <div class="page-header">
+        <h2 class="page-title">📅 Citas</h2>
+      </div>
+      <!-- Date navigation -->
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:14px">
+        <button id="btn-appt-prev" style="background:none;border:none;font-size:22px;color:var(--teal);cursor:pointer;padding:4px 10px">‹</button>
+        <div style="text-align:center">
+          <span id="appt-date-label" style="font-size:15px;font-weight:700;color:var(--text)"></span>
+          <div><button id="btn-appt-today" style="background:none;border:none;font-size:12px;color:var(--teal);cursor:pointer;font-weight:600;padding:2px 6px" class="hidden">Hoy</button></div>
+        </div>
+        <button id="btn-appt-next" style="background:none;border:none;font-size:22px;color:var(--teal);cursor:pointer;padding:4px 10px">›</button>
+      </div>
+      <div class="list-toolbar">
+        <span id="appt-count" style="font-size:13px;color:var(--muted)"></span>
+        <button id="btn-add-appt" style="background:var(--teal);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;font-size:14px">+ Nueva cita</button>
+        <button class="refresh-btn" id="btn-refresh-appts">↻</button>
+      </div>
+      <div id="appts-spinner" class="hidden" style="text-align:center;padding:40px"><div class="spinner"></div></div>
+      <div id="appts-list"></div>
+      <div id="appts-empty" class="hidden" style="text-align:center;padding:60px 20px;color:var(--muted)">
+        <div style="font-size:40px;margin-bottom:12px">📅</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:6px">No hay citas para este día</div>
+        <div style="font-size:13px">Presiona + Nueva cita para agendar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ADD APPOINTMENT VIEW ══════════════════════════════════ -->
+  <div id="view-add-appt" class="hidden">
+    <div class="page">
+      <button class="back-btn" id="btn-back-from-add-appt">← Volver a citas</button>
+      <h2 style="font-size:20px;font-weight:800;margin:0 0 20px">Nueva Cita</h2>
+
+      <div id="add-appt-error" class="hidden" style="background:#fee2e2;color:#dc2626;border-radius:8px;padding:12px;margin-bottom:16px;font-size:14px"></div>
+      <div id="add-appt-success" class="hidden" style="background:#d1fae5;color:#065f46;border-radius:8px;padding:12px;margin-bottom:16px;font-size:14px"></div>
+
+      <label style="font-size:13px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Buscar Paciente *</label>
+      <div style="position:relative;margin-bottom:4px">
+        <input id="appt-patient-search" type="text" placeholder="Escribe nombre o teléfono..." style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text)" />
+        <div id="appt-patient-dropdown" style="position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;max-height:220px;overflow-y:auto;z-index:50;display:none;box-shadow:0 4px 12px rgba(0,0,0,.1)"></div>
+      </div>
+      <div id="appt-patient-selected" style="display:none;background:#e0f7f8;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:14px;font-weight:600;color:var(--teal)"></div>
+      <input id="appt-patient-id" type="hidden" />
+
+      <label style="font-size:13px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;margin-top:14px;text-transform:uppercase;letter-spacing:.5px">Fecha *</label>
+      <input id="appt-fecha" type="date" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px" />
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Hora inicio *</label>
+          <input id="appt-hora-inicio" type="time" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text)" />
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Hora fin</label>
+          <input id="appt-hora-fin" type="time" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text)" />
+        </div>
+      </div>
+
+      <label style="font-size:13px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Motivo de consulta</label>
+      <textarea id="appt-motivo" placeholder="Dolor abdominal, seguimiento, revisión anual..." rows="3" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px;resize:vertical"></textarea>
+
+      <label style="font-size:13px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Origen de la cita *</label>
+      <select id="appt-source" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:24px">
+        <option value="">Seleccionar origen...</option>
+        <option value="instagram">Instagram</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="referral">Referido</option>
+        <option value="walkin">Caminante (walk-in)</option>
+        <option value="website">Sitio Web</option>
+      </select>
+
+      <button id="btn-save-appt" style="width:100%;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:14px;font-size:16px;font-weight:800;cursor:pointer">
+        Guardar Cita
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ CONFIGURACIÓN VIEW ══════════════════════════════════ -->
+  <div id="view-config" class="hidden">
+    <div class="page">
+      <div class="page-header">
+        <h2 class="page-title">⚙️ Configuración</h2>
+      </div>
+
+      <!-- Templates section -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px">📋 Plantillas de Especialidad</h3>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+        Las plantillas guían a la IA para estructurar el resumen clínico según la especialidad. Selecciona una plantilla al iniciar una consulta en la app móvil.
+      </p>
+      <div id="templates-spinner" class="hidden" style="text-align:center;padding:40px"><div class="spinner"></div></div>
+      <div id="templates-list"></div>
+      <div id="templates-empty" class="hidden" style="text-align:center;padding:40px;color:var(--muted)">No hay plantillas disponibles.</div>
+      <button class="refresh-btn" id="btn-refresh-templates" style="margin-top:4px">↻ Actualizar</button>
+    </div>
+  </div>
+
   <!-- ══ CHANGE PASSWORD VIEW (logged-in) ═════════════════════ -->
   <div id="view-change-pw" class="hidden">
     <div class="page">
@@ -876,7 +977,7 @@
     let currentSession = null;
 
     /* ── Views ───────────────────────────────────────────────── */
-    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw', 'view-patients', 'view-add-patient'];
+    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw', 'view-patients', 'view-add-patient', 'view-appointments', 'view-add-appt', 'view-config'];
     function showView(id) {
       views.forEach(v => document.getElementById(v).classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
@@ -1189,6 +1290,8 @@
     // Nav buttons
     document.getElementById('btn-nav-sessions').addEventListener('click', () => showSessionList());
     document.getElementById('btn-nav-patients').addEventListener('click', () => showPatientList());
+    document.getElementById('btn-nav-appointments').addEventListener('click', () => showAppointmentList());
+    document.getElementById('btn-nav-config').addEventListener('click', () => showConfig());
 
     /* ── Patient CRM ─────────────────────────────────────────── */
     let allPatients = [];
@@ -1805,6 +1908,326 @@
         showView('view-reset');
       }
     });
+
+    /* ══════════════════════════════════════════════════════════
+       APPOINTMENTS — Citas
+    ══════════════════════════════════════════════════════════ */
+    const ESTADO_COLORS = { pending:'#F59E0B', confirmed:'#3B82F6', completed:'#10B981', cancelled:'#6B7280', noshow:'#EF4444' };
+    const ESTADO_LABELS = { pending:'Pendiente', confirmed:'Confirmada', completed:'Completada', cancelled:'Cancelada', noshow:'No asistió' };
+    const SOURCE_LABELS = { instagram:'Instagram', whatsapp:'WhatsApp', referral:'Referido', walkin:'Caminante', website:'Sitio Web' };
+
+    let apptCurrentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+    function apptFormatDate(iso) {
+      const d = new Date(iso + 'T12:00:00');
+      return d.toLocaleDateString('es-EC', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+
+    function apptUpdateDateLabel() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('appt-date-label').textContent = apptFormatDate(apptCurrentDate);
+      document.getElementById('btn-appt-today').classList.toggle('hidden', apptCurrentDate === today);
+    }
+
+    async function showAppointmentList(date = apptCurrentDate) {
+      apptCurrentDate = date;
+      apptUpdateDateLabel();
+      showView('view-appointments');
+      await fetchAppointments();
+    }
+
+    async function fetchAppointments() {
+      const list    = document.getElementById('appts-list');
+      const spinner = document.getElementById('appts-spinner');
+      const empty   = document.getElementById('appts-empty');
+      const count   = document.getElementById('appt-count');
+
+      list.innerHTML = '';
+      empty.classList.add('hidden');
+      spinner.classList.remove('hidden');
+      count.textContent = '';
+
+      try {
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/appointments?fecha=${apptCurrentDate}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json  = await res.json();
+        const appts = json.appointments || [];
+
+        spinner.classList.add('hidden');
+        count.textContent = `${appts.length} cita${appts.length !== 1 ? 's' : ''}`;
+
+        if (appts.length === 0) { empty.classList.remove('hidden'); return; }
+
+        appts.forEach(a => {
+          const card = document.createElement('div');
+          card.className = 'session-card';
+          card.style.cssText = 'cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px';
+          const color = ESTADO_COLORS[a.estado] || '#6B7280';
+          const label = ESTADO_LABELS[a.estado] || a.estado;
+          card.innerHTML = `
+            <div style="min-width:52px;text-align:center">
+              <div style="font-size:15px;font-weight:800;color:var(--teal)">${a.hora_inicio || '—'}</div>
+              ${a.hora_fin ? `<div style="font-size:11px;color:var(--muted)">${a.hora_fin}</div>` : ''}
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.patients?.nombre || '—'}</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.motivo || 'Sin motivo'}</div>
+              ${a.patients?.telefono ? `<div style="font-size:12px;color:var(--muted);margin-top:1px">${a.patients.telefono}</div>` : ''}
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span style="background:${color};color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap">${label}</span>
+              <span style="font-size:12px;color:var(--muted)">${SOURCE_LABELS[a.source] || a.source || ''}</span>
+            </div>
+          `;
+          card.addEventListener('click', () => openAppointment(a));
+          list.appendChild(card);
+        });
+      } catch (err) {
+        spinner.classList.add('hidden');
+        list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger)">Error: ${err.message}</div>`;
+      }
+    }
+
+    async function openAppointment(appt) {
+      // Show inline status update UI in an alert-style overlay for now
+      const label = ESTADO_LABELS[appt.estado] || appt.estado;
+      const isDone = ['completed','cancelled','noshow'].includes(appt.estado);
+      const patientName = appt.patients?.nombre || '—';
+
+      let actionsHtml = '';
+      if (!isDone) {
+        actionsHtml = `
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px">
+            ${appt.estado === 'pending' ? `<button onclick="updateApptStatus('${appt.id}','confirmed')" style="background:#3B82F6;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:13px">Confirmar</button>` : ''}
+            <button onclick="updateApptStatus('${appt.id}','completed')" style="background:#10B981;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:13px">Completar</button>
+            <button onclick="updateApptStatus('${appt.id}','noshow')" style="background:#EF4444;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:13px">No asistió</button>
+            <button onclick="updateApptStatus('${appt.id}','cancelled')" style="background:#6B7280;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:13px">Cancelar</button>
+          </div>`;
+      }
+
+      const overlay = document.createElement('div');
+      overlay.id = 'appt-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px';
+      overlay.innerHTML = `
+        <div style="background:var(--surface);border-radius:16px;padding:28px;max-width:440px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.18)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <span style="font-size:18px;font-weight:800;color:var(--text)">${patientName}</span>
+            <span style="background:${ESTADO_COLORS[appt.estado]};color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">${label}</span>
+          </div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.7">
+            <div>📅 <strong>${apptFormatDate(appt.fecha)}</strong></div>
+            <div>⏰ ${appt.hora_inicio}${appt.hora_fin ? ' — ' + appt.hora_fin : ''}</div>
+            <div>📝 ${appt.motivo || 'Sin motivo'}</div>
+            <div>📣 ${SOURCE_LABELS[appt.source] || appt.source || '—'}</div>
+            ${appt.patients?.telefono ? `<div>📱 ${appt.patients.telefono}</div>` : ''}
+          </div>
+          ${actionsHtml}
+          <button onclick="document.getElementById('appt-overlay').remove()" style="margin-top:18px;width:100%;background:none;border:1.5px solid var(--border);border-radius:8px;padding:10px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer">Cerrar</button>
+        </div>`;
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    }
+
+    async function updateApptStatus(id, estado) {
+      const label = ESTADO_LABELS[estado] || estado;
+      if (!confirm(`¿Marcar como "${label}"?`)) return;
+      try {
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/appointments/${id}/status`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ estado }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Error al actualizar');
+        const overlay = document.getElementById('appt-overlay');
+        if (overlay) overlay.remove();
+        showToast(`✓ Marcada como ${label}`);
+        await fetchAppointments();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    // Date navigation
+    document.getElementById('btn-appt-prev').addEventListener('click', () => {
+      const d = new Date(apptCurrentDate); d.setDate(d.getDate() - 1);
+      showAppointmentList(d.toISOString().split('T')[0]);
+    });
+    document.getElementById('btn-appt-next').addEventListener('click', () => {
+      const d = new Date(apptCurrentDate); d.setDate(d.getDate() + 1);
+      showAppointmentList(d.toISOString().split('T')[0]);
+    });
+    document.getElementById('btn-appt-today').addEventListener('click', () => {
+      showAppointmentList(new Date().toISOString().split('T')[0]);
+    });
+    document.getElementById('btn-refresh-appts').addEventListener('click', fetchAppointments);
+    document.getElementById('btn-add-appt').addEventListener('click', () => {
+      // Pre-fill date
+      document.getElementById('appt-fecha').value = apptCurrentDate;
+      document.getElementById('appt-hora-inicio').value = '09:00';
+      document.getElementById('appt-hora-fin').value = '';
+      document.getElementById('appt-motivo').value = '';
+      document.getElementById('appt-source').value = '';
+      document.getElementById('appt-patient-id').value = '';
+      document.getElementById('appt-patient-search').value = '';
+      document.getElementById('appt-patient-selected').style.display = 'none';
+      document.getElementById('add-appt-error').classList.add('hidden');
+      document.getElementById('add-appt-success').classList.add('hidden');
+      showView('view-add-appt');
+    });
+    document.getElementById('btn-back-from-add-appt').addEventListener('click', () => showAppointmentList());
+
+    // Patient search inside Add Appointment
+    let apptPatientSearchTimer;
+    document.getElementById('appt-patient-search').addEventListener('input', (e) => {
+      clearTimeout(apptPatientSearchTimer);
+      const term = e.target.value.trim();
+      if (!term) { document.getElementById('appt-patient-dropdown').style.display = 'none'; return; }
+      apptPatientSearchTimer = setTimeout(async () => {
+        try {
+          const token = await getAuthToken();
+          const res   = await fetch(`${API_URL}/patients?search=${encodeURIComponent(term)}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const json  = await res.json();
+          const dd    = document.getElementById('appt-patient-dropdown');
+          dd.innerHTML = '';
+          (json.patients || []).forEach(p => {
+            const item = document.createElement('div');
+            item.style.cssText = 'padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);font-size:14px';
+            item.innerHTML = `<strong>${p.nombre}</strong><span style="color:var(--muted);margin-left:8px">${p.telefono || ''}</span>`;
+            item.addEventListener('mouseenter', () => item.style.background = '#f0fafb');
+            item.addEventListener('mouseleave', () => item.style.background = '');
+            item.addEventListener('click', () => {
+              document.getElementById('appt-patient-id').value = p.id;
+              document.getElementById('appt-patient-search').value = '';
+              const sel = document.getElementById('appt-patient-selected');
+              sel.textContent = `✓ ${p.nombre}${p.telefono ? ' — ' + p.telefono : ''}`;
+              sel.style.display = 'block';
+              dd.style.display = 'none';
+            });
+            dd.appendChild(item);
+          });
+          dd.style.display = (json.patients || []).length ? 'block' : 'none';
+        } catch (_) {}
+      }, 300);
+    });
+
+    document.getElementById('btn-save-appt').addEventListener('click', async () => {
+      const patientId  = document.getElementById('appt-patient-id').value;
+      const fecha      = document.getElementById('appt-fecha').value;
+      const horaInicio = document.getElementById('appt-hora-inicio').value;
+      const horaFin    = document.getElementById('appt-hora-fin').value;
+      const motivo     = document.getElementById('appt-motivo').value.trim();
+      const source     = document.getElementById('appt-source').value;
+      const errDiv     = document.getElementById('add-appt-error');
+      const okDiv      = document.getElementById('add-appt-success');
+
+      errDiv.classList.add('hidden');
+      okDiv.classList.add('hidden');
+
+      if (!patientId) { errDiv.textContent = 'Selecciona un paciente.'; errDiv.classList.remove('hidden'); return; }
+      if (!fecha)     { errDiv.textContent = 'Ingresa la fecha.'; errDiv.classList.remove('hidden'); return; }
+      if (!horaInicio){ errDiv.textContent = 'Ingresa la hora de inicio.'; errDiv.classList.remove('hidden'); return; }
+      if (!source)    { errDiv.textContent = 'Selecciona el origen de la cita.'; errDiv.classList.remove('hidden'); return; }
+
+      // For betaportal, the logged-in user IS the doctor
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) { errDiv.textContent = 'Sesión expirada. Recarga la página.'; errDiv.classList.remove('hidden'); return; }
+
+      const btn = document.getElementById('btn-save-appt');
+      btn.disabled = true; btn.textContent = 'Guardando...';
+
+      try {
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/appointments`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            patient_id:  patientId,
+            doctor_id:   user.id,
+            fecha,
+            hora_inicio: horaInicio,
+            hora_fin:    horaFin || null,
+            motivo:      motivo || null,
+            source,
+          }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Error al guardar');
+
+        okDiv.textContent = '✓ Cita agendada correctamente.';
+        okDiv.classList.remove('hidden');
+        setTimeout(() => showAppointmentList(fecha), 1500);
+      } catch (err) {
+        errDiv.textContent = err.message;
+        errDiv.classList.remove('hidden');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Guardar Cita';
+      }
+    });
+
+    /* ══════════════════════════════════════════════════════════
+       CONFIGURACIÓN — Templates
+    ══════════════════════════════════════════════════════════ */
+    const TIPO_ICONS_WEB = { soap_general:'📋', cardiologia:'❤️', pediatria:'👶', ginecologia:'🌸' };
+
+    async function showConfig() {
+      showView('view-config');
+      await fetchTemplates();
+    }
+
+    async function fetchTemplates() {
+      const list    = document.getElementById('templates-list');
+      const spinner = document.getElementById('templates-spinner');
+      const empty   = document.getElementById('templates-empty');
+
+      list.innerHTML = '';
+      empty.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      try {
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/templates`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json  = await res.json();
+        const templates = json.templates || [];
+
+        spinner.classList.add('hidden');
+
+        if (templates.length === 0) { empty.classList.remove('hidden'); return; }
+
+        templates.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'session-card';
+          card.style.cssText = 'display:flex;align-items:flex-start;gap:14px;padding:16px;margin-bottom:10px';
+          const icon = TIPO_ICONS_WEB[t.tipo] || '📄';
+          card.innerHTML = `
+            <div style="font-size:26px;flex-shrink:0;margin-top:2px">${icon}</div>
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:4px">${t.nombre}</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:8px">${t.descripcion || ''}</div>
+              <details style="cursor:pointer">
+                <summary style="font-size:12px;color:var(--teal);font-weight:600;list-style:none">Ver instrucción para IA ▾</summary>
+                <div style="margin-top:8px;background:#f8fafc;border-radius:8px;padding:12px;font-size:13px;color:var(--muted);line-height:1.5;border:1px solid var(--border)">
+                  ${t.prompt_adicional || 'Sin instrucción adicional.'}
+                </div>
+              </details>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+      } catch (err) {
+        spinner.classList.add('hidden');
+        list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger)">Error: ${err.message}</div>`;
+      }
+    }
+
+    document.getElementById('btn-refresh-templates').addEventListener('click', fetchTemplates);
 
     /* ── Boot ────────────────────────────────────────────────── */
     bootstrap();
