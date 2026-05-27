@@ -596,6 +596,8 @@
       <span class="nav-subtitle">Portal Médico</span>
     </div>
     <div style="display:flex;align-items:center;gap:0">
+      <button id="btn-nav-sessions">📋 Consultas</button>
+      <button id="btn-nav-patients">👥 Pacientes</button>
       <button id="btn-change-pw">🔑 Contraseña</button>
       <button id="btn-logout">Salir</button>
     </div>
@@ -748,6 +750,64 @@
     </div>
   </div>
 
+  <!-- ══ PATIENT LIST VIEW ════════════════════════════════════ -->
+  <div id="view-patients" class="hidden">
+    <div class="page">
+      <div class="page-header">
+        <h2 class="page-title">👥 Pacientes</h2>
+      </div>
+      <div class="list-toolbar">
+        <input id="patient-search" type="text" placeholder="Buscar por nombre o teléfono..." style="flex:1;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:14px;background:var(--surface);color:var(--text);" />
+        <button id="btn-add-patient" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;font-size:14px;">+ Agregar</button>
+        <button class="refresh-btn" id="btn-refresh-patients">↻</button>
+      </div>
+      <div id="patients-spinner" class="hidden" style="text-align:center;padding:40px">
+        <div class="spinner"></div>
+      </div>
+      <div id="patients-count" style="font-size:13px;color:var(--text-muted);margin-bottom:10px"></div>
+      <div id="patients-list"></div>
+      <div id="patients-empty" class="hidden" style="text-align:center;padding:60px 20px;color:var(--text-muted)">
+        <div style="font-size:40px;margin-bottom:12px">👥</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:6px">No hay pacientes registrados</div>
+        <div style="font-size:13px">Presiona + Agregar para registrar el primero</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ADD PATIENT VIEW ══════════════════════════════════════ -->
+  <div id="view-add-patient" class="hidden">
+    <div class="page">
+      <button class="back-btn" id="btn-back-from-add-patient">← Volver a pacientes</button>
+      <h2 style="font-size:20px;font-weight:800;margin:0 0 20px">Nuevo Paciente</h2>
+
+      <div id="add-patient-error" class="hidden" style="background:#fee2e2;color:#dc2626;border-radius:8px;padding:12px;margin-bottom:16px;font-size:14px"></div>
+      <div id="add-patient-success" class="hidden" style="background:#d1fae5;color:#065f46;border-radius:8px;padding:12px;margin-bottom:16px;font-size:14px"></div>
+
+      <label style="font-size:13px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px">Nombre completo *</label>
+      <input id="ap-nombre" type="text" placeholder="Ej. Ana García" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px" />
+
+      <label style="font-size:13px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px">Teléfono</label>
+      <input id="ap-telefono" type="tel" placeholder="Ej. +593 98 765 4321" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px" />
+
+      <label style="font-size:13px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px">Correo electrónico</label>
+      <input id="ap-email" type="email" placeholder="Ej. ana@email.com" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px" />
+
+      <label style="font-size:13px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px">Fecha de nacimiento</label>
+      <input id="ap-fechanac" type="date" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px" />
+
+      <label style="font-size:13px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px">Notas</label>
+      <textarea id="ap-notas" placeholder="Alergias conocidas, antecedentes relevantes..." rows="4" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:14px;resize:vertical"></textarea>
+
+      <p style="font-size:12px;color:var(--text-muted);background:#fffbeb;border-radius:8px;padding:12px;margin-bottom:20px">
+        ⚠️ No registrar número de cédula ni información de identificación personal. Los datos clínicos se almacenan en sesiones de Ambient AI.
+      </p>
+
+      <button id="btn-save-patient" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:14px;font-size:16px;font-weight:800;cursor:pointer">
+        Guardar Paciente
+      </button>
+    </div>
+  </div>
+
   <!-- ══ CHANGE PASSWORD VIEW (logged-in) ═════════════════════ -->
   <div id="view-change-pw" class="hidden">
     <div class="page">
@@ -816,7 +876,7 @@
     let currentSession = null;
 
     /* ── Views ───────────────────────────────────────────────── */
-    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw'];
+    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw', 'view-patients', 'view-add-patient'];
     function showView(id) {
       views.forEach(v => document.getElementById(v).classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
@@ -1125,6 +1185,170 @@
     }
 
     document.getElementById('btn-refresh').addEventListener('click', fetchSessions);
+
+    // Nav buttons
+    document.getElementById('btn-nav-sessions').addEventListener('click', () => showSessionList());
+    document.getElementById('btn-nav-patients').addEventListener('click', () => showPatientList());
+
+    /* ── Patient CRM ─────────────────────────────────────────── */
+    let allPatients = [];
+
+    async function showPatientList() {
+      showView('view-patients');
+      await fetchPatients();
+    }
+
+    async function fetchPatients(search = '') {
+      const list    = document.getElementById('patients-list');
+      const spinner = document.getElementById('patients-spinner');
+      const empty   = document.getElementById('patients-empty');
+      const count   = document.getElementById('patients-count');
+
+      list.innerHTML = '';
+      empty.classList.add('hidden');
+      spinner.classList.remove('hidden');
+      count.textContent = '';
+
+      try {
+        const token  = await getAuthToken();
+        const params = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : '';
+        const res    = await fetch(`${API_URL}/patients${params}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json   = await res.json();
+        allPatients  = json.patients || [];
+
+        spinner.classList.add('hidden');
+        count.textContent = `${allPatients.length} paciente${allPatients.length !== 1 ? 's' : ''}`;
+
+        if (allPatients.length === 0) { empty.classList.remove('hidden'); return; }
+
+        allPatients.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'session-card';
+          card.style.cssText = 'cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px';
+          const initials = (p.nombre || '?').charAt(0).toUpperCase();
+          card.innerHTML = `
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;flex-shrink:0">${initials}</div>
+            <div style="flex:1">
+              <div style="font-weight:700;color:var(--text);font-size:15px">${p.nombre}</div>
+              <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${p.telefono || 'Sin teléfono'}</div>
+            </div>
+            <div style="font-size:22px;color:var(--text-muted)">›</div>
+          `;
+          card.addEventListener('click', () => openPatient(p));
+          list.appendChild(card);
+        });
+      } catch (err) {
+        spinner.classList.add('hidden');
+        list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger)">Error al cargar pacientes.</div>`;
+      }
+    }
+
+    // Live search filter
+    document.getElementById('patient-search').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      if (!term) { fetchPatients(); return; }
+      const filtered = allPatients.filter(p =>
+        p.nombre.toLowerCase().includes(term) || (p.telefono || '').includes(term)
+      );
+      renderFilteredPatients(filtered);
+    });
+
+    function renderFilteredPatients(list) {
+      const el    = document.getElementById('patients-list');
+      const empty = document.getElementById('patients-empty');
+      const count = document.getElementById('patients-count');
+      el.innerHTML = '';
+      count.textContent = `${list.length} paciente${list.length !== 1 ? 's' : ''}`;
+      if (list.length === 0) { empty.classList.remove('hidden'); return; }
+      empty.classList.add('hidden');
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'session-card';
+        card.style.cssText = 'cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16px';
+        const initials = (p.nombre || '?').charAt(0).toUpperCase();
+        card.innerHTML = `
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;flex-shrink:0">${initials}</div>
+          <div style="flex:1">
+            <div style="font-weight:700;color:var(--text);font-size:15px">${p.nombre}</div>
+            <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${p.telefono || 'Sin teléfono'}</div>
+          </div>
+          <div style="font-size:22px;color:var(--text-muted)">›</div>
+        `;
+        card.addEventListener('click', () => openPatient(p));
+        el.appendChild(card);
+      });
+    }
+
+    function openPatient(p) {
+      // For Phase 2 we show a simple detail panel in the same view
+      // Full patient detail page comes with Block 4 (appointments)
+      const msg = [
+        `👤 ${p.nombre}`,
+        p.telefono      ? `📞 ${p.telefono}`  : '',
+        p.email         ? `✉️  ${p.email}`    : '',
+        p.fecha_nacimiento ? `🎂 ${p.fecha_nacimiento}` : '',
+        p.notas         ? `📝 ${p.notas}`     : '',
+      ].filter(Boolean).join('\n');
+      alert(msg);
+    }
+
+    document.getElementById('btn-refresh-patients').addEventListener('click', () => fetchPatients());
+
+    // Add patient form
+    document.getElementById('btn-add-patient').addEventListener('click', () => {
+      document.getElementById('add-patient-error').classList.add('hidden');
+      document.getElementById('add-patient-success').classList.add('hidden');
+      ['ap-nombre','ap-telefono','ap-email','ap-fechanac','ap-notas'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      showView('view-add-patient');
+    });
+
+    document.getElementById('btn-back-from-add-patient').addEventListener('click', () => showView('view-patients'));
+
+    document.getElementById('btn-save-patient').addEventListener('click', async () => {
+      const errEl  = document.getElementById('add-patient-error');
+      const okEl   = document.getElementById('add-patient-success');
+      const saveBtn = document.getElementById('btn-save-patient');
+      errEl.classList.add('hidden');
+      okEl.classList.add('hidden');
+
+      const nombre = document.getElementById('ap-nombre').value.trim();
+      if (!nombre) { errEl.textContent = 'El nombre es obligatorio.'; errEl.classList.remove('hidden'); return; }
+
+      saveBtn.textContent = 'Guardando...';
+      saveBtn.disabled    = true;
+
+      try {
+        const token = await getAuthToken();
+        const body  = {
+          nombre,
+          telefono:         document.getElementById('ap-telefono').value.trim()  || null,
+          email:            document.getElementById('ap-email').value.trim()     || null,
+          fecha_nacimiento: document.getElementById('ap-fechanac').value         || null,
+          notas:            document.getElementById('ap-notas').value.trim()     || null,
+        };
+        const res  = await fetch(`${API_URL}/patients`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Error al guardar');
+
+        okEl.textContent = `✓ Paciente "${nombre}" registrado exitosamente.`;
+        okEl.classList.remove('hidden');
+        setTimeout(() => showPatientList(), 1200);
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.classList.remove('hidden');
+      } finally {
+        saveBtn.textContent = 'Guardar Paciente';
+        saveBtn.disabled    = false;
+      }
+    });
 
     /* ── Session detail ──────────────────────────────────────── */
     async function openSession(preloaded) {
