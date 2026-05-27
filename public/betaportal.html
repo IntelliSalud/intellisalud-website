@@ -519,11 +519,70 @@
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* ── Link / secondary buttons ────────────────────────────── */
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .btn-link:hover { color: var(--teal-dark); }
+
+    .btn-secondary {
+      width: 100%;
+      background: none;
+      color: var(--teal);
+      border: 1.5px solid var(--teal);
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .btn-secondary:hover { background: rgba(0,194,199,0.08); }
+    .btn-secondary:disabled { opacity: 0.6; cursor: default; }
+
+    .alert-success {
+      color: var(--success);
+      font-size: 13px;
+      padding: 10px 12px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    #btn-change-pw {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-right: 8px;
+    }
+    #btn-change-pw:hover { border-color: var(--teal); color: var(--teal); }
+
     /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 500px) {
       .login-card { padding: 28px 20px; }
       .session-card-right { max-width: 45%; }
       .detail-header { padding: 14px 16px; }
+      #btn-change-pw { display: none; }
     }
   </style>
 </head>
@@ -536,7 +595,10 @@
       <span class="nav-title">IntelliSalud</span>
       <span class="nav-subtitle">Portal Médico</span>
     </div>
-    <button id="btn-logout">Salir</button>
+    <div style="display:flex;align-items:center;gap:0">
+      <button id="btn-change-pw">🔑 Contraseña</button>
+      <button id="btn-logout">Salir</button>
+    </div>
   </nav>
 
   <!-- ══ LOGIN VIEW ════════════════════════════════════════════ -->
@@ -575,6 +637,7 @@
       </button>
 
       <div class="login-footer">
+        <button class="btn-link" id="btn-forgot" style="display:block;margin:0 auto 10px">¿Olvidaste tu contraseña?</button>
         Usa las mismas credenciales que en la app IntelliSalud.<br />
         ¿Problemas? Escribe a <a href="mailto:jonathan@intellisalud.com" style="color:var(--teal)">jonathan@intellisalud.com</a>
       </div>
@@ -624,6 +687,102 @@
     </div>
   </div>
 
+  <!-- ══ FORGOT PASSWORD VIEW ════════════════════════════════ -->
+  <div id="view-forgot" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px">
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <img id="forgot-logo" src="" alt="IntelliSalud" class="login-logo" />
+        <span class="login-brand">IntelliSalud</span>
+        <span class="login-tagline">Recuperar contraseña</span>
+      </div>
+      <div id="forgot-error" class="login-error"></div>
+      <div id="forgot-success" class="alert-success"></div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6">
+        Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+      </p>
+      <div class="form-group">
+        <label class="form-label" for="forgot-email">Correo electrónico</label>
+        <input id="forgot-email" class="form-input" type="email"
+               placeholder="medico@clinica.com" autocomplete="email" />
+      </div>
+      <button id="btn-send-reset" class="btn-primary">
+        <span id="send-reset-text">Enviar enlace</span>
+      </button>
+      <button class="btn-secondary" id="btn-back-to-login">← Volver al inicio de sesión</button>
+    </div>
+  </div>
+
+  <!-- ══ RESET PASSWORD VIEW (PASSWORD_RECOVERY redirect) ════ -->
+  <div id="view-reset" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px">
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <img id="reset-logo" src="" alt="IntelliSalud" class="login-logo" />
+        <span class="login-brand">IntelliSalud</span>
+        <span class="login-tagline">Nueva contraseña</span>
+      </div>
+      <div id="reset-error" class="login-error"></div>
+      <div id="reset-success" class="alert-success"></div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6">
+        Elige una nueva contraseña segura para tu cuenta.
+      </p>
+      <div class="form-group">
+        <label class="form-label" for="new-password">Nueva contraseña</label>
+        <div class="password-wrap">
+          <input id="new-password" class="form-input" type="password"
+                 placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+          <button class="eye-btn" id="eye-reset" type="button" aria-label="Mostrar contraseña">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="confirm-password">Confirmar contraseña</label>
+        <input id="confirm-password" class="form-input" type="password"
+               placeholder="Repite la contraseña" autocomplete="new-password" />
+      </div>
+      <button id="btn-save-reset" class="btn-primary">
+        <span id="save-reset-text">Guardar contraseña</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ CHANGE PASSWORD VIEW (logged-in) ═════════════════════ -->
+  <div id="view-change-pw" class="hidden">
+    <div class="page">
+      <button class="back-btn" id="btn-back-from-change">← Volver a consultas</button>
+      <div class="login-card" style="max-width:100%;padding:28px 24px">
+        <h2 style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px">Cambiar contraseña</h2>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">
+          Elige una nueva contraseña para tu cuenta.
+        </p>
+        <div id="change-error" class="login-error"></div>
+        <div id="change-success" class="alert-success"></div>
+        <div class="form-group">
+          <label class="form-label" for="change-new-pw">Nueva contraseña</label>
+          <div class="password-wrap">
+            <input id="change-new-pw" class="form-input" type="password"
+                   placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+            <button class="eye-btn" id="eye-change" type="button" aria-label="Mostrar contraseña">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="change-confirm-pw">Confirmar contraseña</label>
+          <input id="change-confirm-pw" class="form-input" type="password"
+                 placeholder="Repite la contraseña" autocomplete="new-password" />
+        </div>
+        <button id="btn-save-change" class="btn-primary">
+          <span id="save-change-text">Guardar contraseña</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Toast ─────────────────────────────────────────────── -->
   <div id="toast">✓ Copiado al portapapeles</div>
 
@@ -642,13 +801,11 @@
     const LOGO_SRC = 'https://intellisalud.pages.dev/assets/icon.png';
 
     function setLogos() {
-      ['login-logo', 'nav-logo'].forEach(id => {
+      ['login-logo', 'nav-logo', 'forgot-logo', 'reset-logo'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.src = LOGO_SRC;
-          el.onerror = () => {
-            el.style.display = 'none';
-          };
+          el.onerror = () => { el.style.display = 'none'; };
         }
       });
     }
@@ -659,13 +816,20 @@
     let currentSession = null;
 
     /* ── Views ───────────────────────────────────────────────── */
-    const views = ['view-login', 'view-sessions', 'view-detail'];
+    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw'];
     function showView(id) {
       views.forEach(v => document.getElementById(v).classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
       const nav = document.getElementById('nav');
-      nav.classList.toggle('hidden', id === 'view-login');
+      const noNav = ['view-login', 'view-forgot', 'view-reset'];
+      nav.classList.toggle('hidden', noNav.includes(id));
       window.scrollTo(0, 0);
+    }
+
+    /* ── Auth token helper ───────────────────────────────────── */
+    async function getAuthToken() {
+      const { data: { session } } = await sb.auth.getSession();
+      return session?.access_token || null;
     }
 
     /* ── Toast ───────────────────────────────────────────────── */
@@ -882,8 +1046,11 @@
       spinner.classList.remove('hidden');
 
       try {
-        const uid = currentUser.id;
-        const res = await fetch(`${API_URL}/session?clinic_id=${uid}&doctor_id=${uid}`);
+        const uid   = currentUser.id;
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/session?clinic_id=${uid}&doctor_id=${uid}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
         const json = await res.json();
         const sessions = json.sessions || [];
 
@@ -935,7 +1102,10 @@
       // Fetch full session (includes transcript)
       let session = preloaded;
       try {
-        const res  = await fetch(`${API_URL}/session/${preloaded.id}?clinic_id=${currentUser.id}`);
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/session/${preloaded.id}?clinic_id=${currentUser.id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
         const json = await res.json();
         if (json.session) session = json.session;
       } catch (_) { /* use preloaded */ }
@@ -1188,6 +1358,189 @@
 </html>`);
       win.document.close();
     }
+
+    /* ── Forgot password flow ────────────────────────────────── */
+    document.getElementById('btn-forgot').addEventListener('click', () => {
+      document.getElementById('forgot-email').value = document.getElementById('inp-email').value;
+      document.getElementById('forgot-error').style.display   = 'none';
+      document.getElementById('forgot-success').style.display = 'none';
+      showView('view-forgot');
+    });
+
+    document.getElementById('btn-back-to-login').addEventListener('click', () => {
+      showView('view-login');
+    });
+
+    document.getElementById('btn-send-reset').addEventListener('click', async () => {
+      const email = document.getElementById('forgot-email').value.trim();
+      const errEl = document.getElementById('forgot-error');
+      const okEl  = document.getElementById('forgot-success');
+      const btn   = document.getElementById('btn-send-reset');
+      const txt   = document.getElementById('send-reset-text');
+
+      errEl.style.display = 'none';
+      okEl.style.display  = 'none';
+
+      if (!email) {
+        errEl.textContent = 'Por favor ingresa tu correo electrónico.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      txt.textContent = 'Enviando...';
+
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://intellisalud.com/betaportal',
+      });
+
+      btn.disabled = false;
+      txt.textContent = 'Enviar enlace';
+
+      if (error) {
+        errEl.textContent = 'Error al enviar el correo. Verifica la dirección e intenta de nuevo.';
+        errEl.style.display = 'block';
+      } else {
+        okEl.textContent = '✓ Enlace enviado. Revisa tu correo e ingresa desde el enlace.';
+        okEl.style.display = 'block';
+        document.getElementById('forgot-email').value = '';
+      }
+    });
+
+    // Enter key in forgot email field
+    document.getElementById('forgot-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('btn-send-reset').click();
+    });
+
+    /* ── Reset password flow (PASSWORD_RECOVERY from email link) ─ */
+    document.getElementById('eye-reset').addEventListener('click', function () {
+      const inp = document.getElementById('new-password');
+      const isPassword = inp.type === 'password';
+      inp.type = isPassword ? 'text' : 'password';
+      this.innerHTML = isPassword ? EYE_SHUT : EYE_OPEN;
+    });
+
+    document.getElementById('btn-save-reset').addEventListener('click', async () => {
+      const pw1   = document.getElementById('new-password').value;
+      const pw2   = document.getElementById('confirm-password').value;
+      const errEl = document.getElementById('reset-error');
+      const okEl  = document.getElementById('reset-success');
+      const btn   = document.getElementById('btn-save-reset');
+      const txt   = document.getElementById('save-reset-text');
+
+      errEl.style.display = 'none';
+      okEl.style.display  = 'none';
+
+      if (!pw1 || pw1.length < 8) {
+        errEl.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (pw1 !== pw2) {
+        errEl.textContent = 'Las contraseñas no coinciden.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      txt.textContent = 'Guardando...';
+
+      const { error } = await sb.auth.updateUser({ password: pw1 });
+
+      btn.disabled = false;
+      txt.textContent = 'Guardar contraseña';
+
+      if (error) {
+        errEl.textContent = 'Error al cambiar la contraseña: ' + error.message;
+        errEl.style.display = 'block';
+      } else {
+        okEl.textContent = '✓ Contraseña actualizada. Redirigiendo...';
+        okEl.style.display = 'block';
+        document.getElementById('new-password').value     = '';
+        document.getElementById('confirm-password').value = '';
+        setTimeout(() => {
+          const { data: { session } } = sb.auth.getSession().then(({ data: { session } }) => {
+            if (session) { currentUser = session.user; showSessionList(); }
+            else showView('view-login');
+          });
+        }, 1500);
+      }
+    });
+
+    /* ── Change password flow (logged-in doctor) ─────────────── */
+    document.getElementById('btn-change-pw').addEventListener('click', () => {
+      document.getElementById('change-error').style.display   = 'none';
+      document.getElementById('change-success').style.display = 'none';
+      document.getElementById('change-new-pw').value          = '';
+      document.getElementById('change-confirm-pw').value      = '';
+      showView('view-change-pw');
+    });
+
+    document.getElementById('btn-back-from-change').addEventListener('click', () => {
+      showView('view-sessions');
+    });
+
+    document.getElementById('eye-change').addEventListener('click', function () {
+      const inp = document.getElementById('change-new-pw');
+      const isPassword = inp.type === 'password';
+      inp.type = isPassword ? 'text' : 'password';
+      this.innerHTML = isPassword ? EYE_SHUT : EYE_OPEN;
+    });
+
+    document.getElementById('btn-save-change').addEventListener('click', async () => {
+      const pw1   = document.getElementById('change-new-pw').value;
+      const pw2   = document.getElementById('change-confirm-pw').value;
+      const errEl = document.getElementById('change-error');
+      const okEl  = document.getElementById('change-success');
+      const btn   = document.getElementById('btn-save-change');
+      const txt   = document.getElementById('save-change-text');
+
+      errEl.style.display = 'none';
+      okEl.style.display  = 'none';
+
+      if (!pw1 || pw1.length < 8) {
+        errEl.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (pw1 !== pw2) {
+        errEl.textContent = 'Las contraseñas no coinciden.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      txt.textContent = 'Guardando...';
+
+      const { error } = await sb.auth.updateUser({ password: pw1 });
+
+      btn.disabled = false;
+      txt.textContent = 'Guardar contraseña';
+
+      if (error) {
+        errEl.textContent = 'Error al cambiar la contraseña: ' + error.message;
+        errEl.style.display = 'block';
+      } else {
+        okEl.textContent = '✓ Contraseña actualizada correctamente.';
+        okEl.style.display = 'block';
+        document.getElementById('change-new-pw').value    = '';
+        document.getElementById('change-confirm-pw').value = '';
+        setTimeout(() => showView('view-sessions'), 2000);
+      }
+    });
+
+    /* ── onAuthStateChange — PASSWORD_RECOVERY handler ───────── */
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        // Doctor clicked email reset link — show the new-password form
+        currentUser = session?.user || null;
+        document.getElementById('reset-error').style.display   = 'none';
+        document.getElementById('reset-success').style.display = 'none';
+        document.getElementById('new-password').value          = '';
+        document.getElementById('confirm-password').value      = '';
+        showView('view-reset');
+      }
+    });
 
     /* ── Boot ────────────────────────────────────────────────── */
     bootstrap();
