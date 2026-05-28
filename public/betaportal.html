@@ -501,6 +501,93 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Analytics ──────────────────────────────────────────── */
+    .analytics-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .analytics-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-card-value {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .bar-label {
+      width: 72px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .bar-track {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 6px;
+      height: 28px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      transition: width 0.5s ease;
+      min-width: 2px;
+    }
+    .bar-fill.bar-today { background: var(--navy); }
+    .bar-value { font-size: 12px; font-weight: 700; color: #fff; }
+    .bar-value-outside { font-size: 12px; font-weight: 700; color: var(--muted); padding-left: 6px; }
+    .rank-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .rank-row:last-child { border-bottom: none; }
+    .rank-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--bg); border: 1.5px solid var(--border);
+      font-size: 12px; font-weight: 800; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .rank-name { flex: 1; font-size: 14px; color: var(--text); font-weight: 600; }
+    .rank-count { font-size: 14px; font-weight: 800; color: var(--teal); min-width: 32px; text-align: right; }
+    .rank-bar-wrap { flex: 1; background: var(--bg); border-radius: 4px; height: 6px; }
+    .rank-bar-fill { height: 100%; background: var(--teal); border-radius: 4px; }
+
     /* ── Toast ───────────────────────────────────────────────── */
     #toast {
       position: fixed;
@@ -599,6 +686,7 @@
       <button id="btn-nav-sessions">📋 Consultas</button>
       <button id="btn-nav-patients">👥 Pacientes</button>
       <button id="btn-nav-appointments">📅 Citas</button>
+      <button id="btn-nav-analytics">📊 Analítica</button>
       <button id="btn-nav-config">⚙️ Configuración</button>
       <button id="btn-change-pw">🔑 Contraseña</button>
       <button id="btn-logout">Salir</button>
@@ -909,6 +997,52 @@
     </div>
   </div>
 
+  <!-- ══ ANALYTICS VIEW ══════════════════════════════════════ -->
+  <div id="view-analytics" class="hidden">
+    <div class="page">
+      <div class="page-header">
+        <h2 class="page-title">📊 Analítica</h2>
+        <button class="refresh-btn" id="btn-refresh-analytics">↻ Actualizar</button>
+      </div>
+      <div id="analytics-spinner" style="text-align:center;padding:60px"><div class="spinner"></div></div>
+      <div id="analytics-content" class="hidden">
+
+        <!-- Stat cards -->
+        <div id="analytics-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px"></div>
+
+        <!-- 7-day bar chart -->
+        <div class="analytics-section">
+          <h3 class="analytics-section-title">Últimos 7 días</h3>
+          <div id="chart-7days"></div>
+        </div>
+
+        <!-- Per-doctor table -->
+        <div class="analytics-section" id="section-by-doctor">
+          <h3 class="analytics-section-title">Consultas por doctor</h3>
+          <div id="chart-by-doctor"></div>
+        </div>
+
+        <!-- Templates ranking -->
+        <div class="analytics-section">
+          <h3 class="analytics-section-title">Plantillas utilizadas</h3>
+          <div id="chart-templates"></div>
+        </div>
+
+        <!-- Most common reasons -->
+        <div class="analytics-section">
+          <h3 class="analytics-section-title">Motivos de consulta frecuentes</h3>
+          <div id="chart-motivos"></div>
+        </div>
+
+      </div>
+      <div id="analytics-empty" class="hidden" style="text-align:center;padding:60px;color:var(--muted)">
+        <div style="font-size:36px;margin-bottom:12px">📊</div>
+        <p>No hay consultas registradas aún.</p>
+        <p style="font-size:13px;margin-top:6px">Los datos aparecerán aquí una vez que se realicen consultas.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ CHANGE PASSWORD VIEW (logged-in) ═════════════════════ -->
   <div id="view-change-pw" class="hidden">
     <div class="page">
@@ -977,7 +1111,7 @@
     let currentSession = null;
 
     /* ── Views ───────────────────────────────────────────────── */
-    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw', 'view-patients', 'view-add-patient', 'view-appointments', 'view-add-appt', 'view-config'];
+    const views = ['view-login', 'view-sessions', 'view-detail', 'view-forgot', 'view-reset', 'view-change-pw', 'view-patients', 'view-add-patient', 'view-appointments', 'view-add-appt', 'view-config', 'view-analytics'];
     function showView(id) {
       views.forEach(v => document.getElementById(v).classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
@@ -1075,9 +1209,23 @@
         s.sintomas.forEach(x => lines.push(`• ${x}`));
         lines.push('');
       }
+      if (s.antecedentes_familiares) {
+        lines.push('ANTECEDENTES FAMILIARES / CONDICIONES PREEXISTENTES');
+        lines.push(s.antecedentes_familiares);
+        lines.push('');
+      }
       if (s.antecedentes_relevantes) {
         lines.push('ANTECEDENTES RELEVANTES');
         lines.push(s.antecedentes_relevantes);
+        lines.push('');
+      }
+      if (s.medicamentos_actuales && s.medicamentos_actuales.length) {
+        lines.push('MEDICAMENTOS ACTUALES DEL PACIENTE');
+        s.medicamentos_actuales.forEach(x => lines.push(`• ${x}`));
+        lines.push('');
+      } else if (s.medicamentos && s.medicamentos.length && !s.medicamentos_recomendados) {
+        lines.push('MEDICAMENTOS');
+        s.medicamentos.forEach(x => lines.push(`• ${x}`));
         lines.push('');
       }
       if (s.diagnostico_presuntivo) {
@@ -1090,9 +1238,14 @@
         s.plan.forEach((x, i) => lines.push(`${i + 1}. ${x}`));
         lines.push('');
       }
-      if (s.medicamentos && s.medicamentos.length) {
-        lines.push('MEDICAMENTOS');
-        s.medicamentos.forEach(x => lines.push(`• ${x}`));
+      if (s.medicamentos_recomendados && s.medicamentos_recomendados.length) {
+        lines.push('MEDICAMENTOS RECOMENDADOS');
+        s.medicamentos_recomendados.forEach(x => lines.push(`• ${x}`));
+        lines.push('');
+      }
+      if (s.dosis_frecuencia && s.dosis_frecuencia.length) {
+        lines.push('DOSIS Y FRECUENCIA');
+        s.dosis_frecuencia.forEach(x => lines.push(`• ${x}`));
         lines.push('');
       }
       if (s.observaciones) {
@@ -1291,7 +1444,9 @@
     document.getElementById('btn-nav-sessions').addEventListener('click', () => showSessionList());
     document.getElementById('btn-nav-patients').addEventListener('click', () => showPatientList());
     document.getElementById('btn-nav-appointments').addEventListener('click', () => showAppointmentList());
+    document.getElementById('btn-nav-analytics').addEventListener('click', () => showAnalytics());
     document.getElementById('btn-nav-config').addEventListener('click', () => showConfig());
+    document.getElementById('btn-refresh-analytics').addEventListener('click', () => showAnalytics());
 
     /* ── Patient CRM ─────────────────────────────────────────── */
     let allPatients = [];
@@ -1516,8 +1671,17 @@
       if (s.sintomas && s.sintomas.length) {
         addListField(container, 'Síntomas', s.sintomas, false);
       }
+      if (s.antecedentes_familiares) {
+        addField(container, 'Antecedentes familiares / Preexistentes', s.antecedentes_familiares, false, false);
+      }
       if (s.antecedentes_relevantes) {
         addField(container, 'Antecedentes relevantes', s.antecedentes_relevantes, false, false);
+      }
+      if (s.medicamentos_actuales && s.medicamentos_actuales.length) {
+        addListField(container, 'Medicamentos actuales del paciente', s.medicamentos_actuales, false);
+      } else if (s.medicamentos && s.medicamentos.length && !s.medicamentos_recomendados) {
+        // Backward compat: old sessions used a single "medicamentos" field
+        addListField(container, 'Medicamentos', s.medicamentos, false);
       }
       if (s.diagnostico_presuntivo) {
         addField(container, 'Diagnóstico presuntivo', s.diagnostico_presuntivo, true, false);
@@ -1525,8 +1689,11 @@
       if (s.plan && s.plan.length) {
         addListField(container, 'Plan de tratamiento', s.plan, true);
       }
-      if (s.medicamentos && s.medicamentos.length) {
-        addListField(container, 'Medicamentos', s.medicamentos, false);
+      if (s.medicamentos_recomendados && s.medicamentos_recomendados.length) {
+        addListField(container, 'Medicamentos recomendados', s.medicamentos_recomendados, false);
+      }
+      if (s.dosis_frecuencia && s.dosis_frecuencia.length) {
+        addListField(container, 'Dosis y frecuencia', s.dosis_frecuencia, false);
       }
       if (s.observaciones) {
         addField(container, 'Observaciones', s.observaciones, false, false);
@@ -2228,6 +2395,199 @@
     }
 
     document.getElementById('btn-refresh-templates').addEventListener('click', fetchTemplates);
+
+    /* ── Analytics (Block 9) ─────────────────────────────────── */
+    async function showAnalytics() {
+      showView('view-analytics');
+      const spinner = document.getElementById('analytics-spinner');
+      const content = document.getElementById('analytics-content');
+      const empty   = document.getElementById('analytics-empty');
+
+      content.classList.add('hidden');
+      empty.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      try {
+        const token = await getAuthToken();
+        const res   = await fetch(`${API_URL}/session`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json     = await res.json();
+        const sessions = json.sessions || [];
+
+        spinner.classList.add('hidden');
+
+        if (sessions.length === 0) {
+          empty.classList.remove('hidden');
+          return;
+        }
+
+        renderAnalytics(sessions);
+        content.classList.remove('hidden');
+      } catch (err) {
+        spinner.classList.add('hidden');
+        document.getElementById('analytics-content').innerHTML =
+          `<div style="text-align:center;padding:40px;color:var(--danger)">Error: ${err.message}</div>`;
+        document.getElementById('analytics-content').classList.remove('hidden');
+      }
+    }
+
+    function renderAnalytics(sessions) {
+      const today   = new Date().toISOString().split('T')[0];
+      const todayLabel = new Date().toLocaleDateString('es-EC', { weekday: 'short', day: 'numeric', month: 'short' });
+
+      // ── 7-day map ───────────────────────────────────────────
+      const dayMap   = {};
+      const dayLabels = {};
+      for (let i = 6; i >= 0; i--) {
+        const d   = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+        const key = d.toISOString().split('T')[0];
+        dayMap[key]    = 0;
+        dayLabels[key] = d.toLocaleDateString('es-EC', { weekday: 'short', day: 'numeric' });
+      }
+
+      // ── Aggregations ────────────────────────────────────────
+      const doctorMap   = {};
+      const templateMap = {};
+      const motivoWords = {};
+
+      sessions.forEach(s => {
+        // days
+        if (s.session_date in dayMap) dayMap[s.session_date]++;
+
+        // doctor
+        const doc = s.doctor_name || 'Desconocido';
+        doctorMap[doc] = (doctorMap[doc] || 0) + 1;
+
+        // template
+        const tpl = s.summary?._template || 'Sin plantilla';
+        templateMap[tpl] = (templateMap[tpl] || 0) + 1;
+
+        // motivo keywords (first 3 words)
+        const motivo = s.summary?.motivo_consulta;
+        if (motivo) {
+          motivo.toLowerCase().split(/\s+/).slice(0, 4).forEach(w => {
+            if (w.length > 4) motivoWords[w] = (motivoWords[w] || 0) + 1;
+          });
+        }
+      });
+
+      const weekSessions = Object.values(dayMap).reduce((a, b) => a + b, 0);
+      const todaySessions = dayMap[today] || 0;
+      const doctorCount  = Object.keys(doctorMap).length;
+
+      // ── Stat cards ──────────────────────────────────────────
+      const cards = document.getElementById('analytics-cards');
+      cards.innerHTML = '';
+      [
+        { label: 'Activas',    value: sessions.length },
+        { label: 'Hoy',        value: todaySessions   },
+        { label: 'Esta semana',value: weekSessions     },
+        { label: 'Doctores',   value: doctorCount      },
+      ].forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'stat-card';
+        el.innerHTML = `<div class="stat-card-value">${c.value}</div><div class="stat-card-label">${c.label}</div>`;
+        cards.appendChild(el);
+      });
+
+      // ── 7-day bar chart ─────────────────────────────────────
+      const maxDay = Math.max(...Object.values(dayMap), 1);
+      const chart7 = document.getElementById('chart-7days');
+      chart7.innerHTML = '';
+      Object.entries(dayMap).forEach(([date, count]) => {
+        const pct      = Math.round((count / maxDay) * 100);
+        const isToday  = date === today;
+        const row      = document.createElement('div');
+        row.className  = 'bar-row';
+        const labelTxt = isToday ? `<strong>${dayLabels[date]}</strong>` : dayLabels[date];
+        row.innerHTML  = `
+          <div class="bar-label">${labelTxt}</div>
+          <div class="bar-track">
+            <div class="bar-fill ${isToday ? 'bar-today' : ''}" style="width:${Math.max(pct, count > 0 ? 4 : 0)}%">
+              ${count > 0 ? `<span class="bar-value">${count}</span>` : ''}
+            </div>
+          </div>
+          ${count === 0 ? '<span class="bar-value-outside">0</span>' : ''}
+        `;
+        chart7.appendChild(row);
+      });
+
+      // ── By doctor ───────────────────────────────────────────
+      const sectionDoc = document.getElementById('section-by-doctor');
+      const sorted     = Object.entries(doctorMap).sort((a, b) => b[1] - a[1]);
+      if (sorted.length <= 1) {
+        sectionDoc.classList.add('hidden'); // hide if only one doctor (no insight)
+      } else {
+        sectionDoc.classList.remove('hidden');
+        const maxDoc = sorted[0][1];
+        const docEl  = document.getElementById('chart-by-doctor');
+        docEl.innerHTML = '';
+        sorted.forEach(([name, count], i) => {
+          const pct = Math.round((count / maxDoc) * 100);
+          const row = document.createElement('div');
+          row.className = 'rank-row';
+          row.innerHTML = `
+            <div class="rank-num">${i + 1}</div>
+            <div class="rank-name">${name}</div>
+            <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${pct}%"></div></div>
+            <div class="rank-count">${count}</div>
+          `;
+          docEl.appendChild(row);
+        });
+      }
+
+      // ── Templates ranking ───────────────────────────────────
+      const tplSorted = Object.entries(templateMap).sort((a, b) => b[1] - a[1]);
+      const maxTpl    = tplSorted[0]?.[1] || 1;
+      const tplEl     = document.getElementById('chart-templates');
+      tplEl.innerHTML = '';
+      if (tplSorted.length === 0) {
+        tplEl.innerHTML = '<p style="color:var(--muted);font-size:14px">Sin datos de plantillas aún.</p>';
+      } else {
+        tplSorted.forEach(([name, count], i) => {
+          const pct = Math.round((count / maxTpl) * 100);
+          const row = document.createElement('div');
+          row.className = 'rank-row';
+          row.innerHTML = `
+            <div class="rank-num">${i + 1}</div>
+            <div class="rank-name">${name}</div>
+            <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${pct}%"></div></div>
+            <div class="rank-count">${count}</div>
+          `;
+          tplEl.appendChild(row);
+        });
+      }
+
+      // ── Frequent motivos ────────────────────────────────────
+      const motivoSorted = Object.entries(motivoWords)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8);
+      const motivoEl = document.getElementById('chart-motivos');
+      motivoEl.innerHTML = '';
+      if (motivoSorted.length === 0) {
+        motivoEl.innerHTML = '<p style="color:var(--muted);font-size:14px">Sin datos de motivos aún.</p>';
+      } else {
+        const maxMot = motivoSorted[0][1];
+        motivoEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px';
+        motivoSorted.forEach(([word, count]) => {
+          const opacity = 0.5 + (count / maxMot) * 0.5;
+          const size    = 13 + Math.round((count / maxMot) * 5);
+          const tag     = document.createElement('span');
+          tag.style.cssText = `
+            background: var(--teal);
+            color: #fff;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: ${size}px;
+            font-weight: 700;
+            opacity: ${opacity.toFixed(2)};
+          `;
+          tag.textContent = word;
+          motivoEl.appendChild(tag);
+        });
+      }
+    }
 
     /* ── Boot ────────────────────────────────────────────────── */
     bootstrap();
