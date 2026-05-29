@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /betaportal
+Disallow: /betaportal.html
+Disallow: /betatest
+Disallow: /betatest.html
 
 Sitemap: https://intellisalud.com/sitemap.xml

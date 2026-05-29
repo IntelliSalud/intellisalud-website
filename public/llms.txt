@@ -1,0 +1,67 @@
+# IntelliSalud
+
+> IntelliSalud es una empresa ecuatoriana de inteligencia artificial para médicos. Su producto principal es Ambient AI, una aplicación móvil que transcribe y resume consultas médicas en tiempo real — sin grabar audio ni almacenar datos personales del paciente.
+
+## ¿Qué es IntelliSalud?
+
+IntelliSalud S.A.S. es una startup tecnológica fundada en Ecuador (Daule, Guayas) en 2025. Se especializa en soluciones de inteligencia artificial para consultorios médicos y clínicas privadas en América Latina.
+
+## Producto principal: Ambient AI
+
+IntelliSalud Ambient AI es una aplicación móvil (Android e iOS) que:
+
+- Escucha la consulta médica en tiempo real desde el teléfono del médico
+- Genera automáticamente un resumen clínico estructurado (motivo, síntomas, diagnóstico, recomendaciones)
+- **No graba audio** en ningún momento — solo procesa texto en tiempo real
+- **No almacena datos personales del paciente** (sin nombre, cédula, fecha de nacimiento ni PII)
+- Elimina automáticamente las sesiones a las **24 horas**
+- Cumple con la Ley Orgánica de Protección de Datos Personales (LOPDP) de Ecuador
+
+## Beneficios para médicos
+
+- Reducción de hasta un 15% en tiempo de documentación clínica (Kaiser Permanente, 2024)
+- El médico puede concentrarse en el paciente sin tomar notas
+- Resumen disponible en portal web y aplicación móvil
+- Sin curva de aprendizaje — funciona desde la primera consulta
+
+## Tecnología
+
+- Transcripción de voz a texto en tiempo real (sin almacenamiento de audio)
+- Resumen clínico generado por IA (Claude de Anthropic)
+- Infraestructura: Supabase (base de datos), Railway (backend), Cloudflare (hosting)
+- Datos alojados en AWS São Paulo (Brasil) — dentro de estándares latinoamericanos
+
+## Mercado objetivo
+
+- Médicos generales y especialistas en Ecuador (mercado principal)
+- Clínicas privadas y consultorios médicos
+- Expansión planificada: Panamá, Perú, Chile, Uruguay, Argentina
+
+## Modelo de negocio
+
+Suscripción mensual por consultorio médico (SaaS). Contacto para precios.
+
+## Contacto
+
+- Sitio web: https://intellisalud.com
+- Email: jonathan@intellisalud.com
+- WhatsApp: +593 99 828 6930
+- Demo: https://intellisalud.com/#contacto
+
+## Páginas del sitio
+
+- [Inicio](https://intellisalud.com/): Descripción del producto, servicios, cómo funciona, contacto
+- [Política de Privacidad](https://intellisalud.com/privacidad): Datos recopilados, derechos LOPDP, procesadores terceros
+
+## Otros servicios (en desarrollo)
+
+- **Voice AI para citas**: Automatización de llamadas para agendamiento y recordatorios de citas
+- **WhatsApp Automation**: Confirmaciones de citas y seguimientos post-consulta vía WhatsApp
+
+## Lo que IntelliSalud NO hace
+
+- No graba audio de las consultas
+- No almacena nombre, cédula ni datos personales del paciente
+- No vende datos a terceros
+- No crea historias clínicas (es una herramienta de asistencia, no un EHR)
+- No requiere integración con sistemas existentes del consultorio
