@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prueba Gratuita 30 Días | IntelliSalud Ambient AI para Médicos</title>
+  <meta name="description" content="Inicia tu prueba gratuita de 30 días de IntelliSalud Ambient AI. Sin tarjeta de crédito. Sin compromiso. Empieza a ahorrar tiempo en tus consultas hoy." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://intellisalud.com/prueba" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Page layout ── */
+    .trial-page {
+      min-height: 100vh;
+      background: var(--grad-hero-bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .trial-main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 24px 64px;
+      gap: 48px;
+    }
+
+    /* ── Left: value prop ── */
+    .trial-value {
+      max-width: 420px;
+      color: var(--white);
+      padding-top: 16px;
+    }
+
+    .trial-value .eyebrow {
+      color: var(--accent-light);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .trial-value h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .trial-value h1 span { color: var(--accent-light); }
+
+    .trial-value .lead {
+      font-size: 1rem;
+      opacity: 0.85;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .trial-benefits { list-style: none; padding: 0; margin: 0; }
+    .trial-benefits li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      opacity: 0.92;
+      line-height: 1.5;
+    }
+
+    .trial-benefits li .icon {
+      font-size: 1.1rem;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .trial-note {
+      margin-top: 32px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    /* ── Right: signup form card ── */
+    .trial-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+      flex-shrink: 0;
+    }
+
+    .trial-card h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .trial-card .card-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .trial-card .card-sub strong { color: var(--primary); }
+
+    /* ── Form ── */
+    .signup-form { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-group input,
+    .form-group select {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      color: var(--dark);
+      background: var(--white);
+      transition: border-color 0.15s;
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(14,109,181,0.12);
+    }
+
+    .form-group input.error { border-color: #ef4444; }
+
+    .field-error {
+      font-size: 0.75rem;
+      color: #ef4444;
+      display: none;
+    }
+
+    .field-error.visible { display: block; }
+
+    /* Password strength */
+    .pw-strength {
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .pw-strength-bar {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s, background 0.3s;
+      width: 0%;
+    }
+
+    /* Submit button */
+    .btn-signup {
+      background: var(--grad);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 4px;
+    }
+
+    .btn-signup:hover:not(:disabled) { opacity: 0.88; }
+    .btn-signup:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .form-legal {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .form-legal a { color: var(--primary); text-decoration: underline; }
+
+    /* Divider */
+    .form-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .form-divider::before,
+    .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Success state ── */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .success-state .success-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .success-state h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .success-state p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .success-steps {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .success-steps p {
+      margin: 0 0 8px;
+      font-size: 0.88rem;
+      color: var(--dark);
+    }
+
+    .success-steps p:last-child { margin-bottom: 0; }
+
+    /* ── Error banner ── */
+    .error-banner {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #991b1b;
+      display: none;
+    }
+
+    .error-banner.visible { display: block; }
+
+    /* Login link */
+    .login-link {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .login-link a { color: var(--primary); font-weight: 600; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .trial-main { flex-direction: column; align-items: center; padding: 32px 16px 48px; }
+      .trial-value { max-width: 100%; text-align: center; padding-top: 0; }
+      .trial-benefits li { justify-content: flex-start; text-align: left; }
+      .trial-card { padding: 28px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr; }
+      .trial-card { border-radius: 16px; }
+    }
+  </style>
+</head>
+
+<body class="trial-page">
+
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <img src="assets/logo.jpg" alt="Logo IntelliSalud" class="logo-image" />
+        <span>IntelliSalud</span>
+      </a>
+      <div class="nav-links">
+        <a href="/#servicios">Servicios</a>
+        <a href="/#como-funciona">Cómo funciona</a>
+        <a href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20tengo%20preguntas%20sobre%20la%20prueba%20gratuita."
+           class="nav-wa" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── Main ── -->
+  <main class="trial-main">
+
+    <!-- Left: Value proposition -->
+    <div class="trial-value">
+      <p class="eyebrow">Prueba gratuita · 30 días · Sin tarjeta</p>
+      <h1>Deja que la IA<br>tome las notas.<br><span>Tú atiende al paciente.</span></h1>
+      <p class="lead">
+        IntelliSalud escucha tu consulta y genera el resumen clínico automáticamente.
+        Sin grabar audio. Sin datos personales del paciente. Listo en segundos.
+      </p>
+
+      <ul class="trial-benefits">
+        <li>
+          <span class="icon">🎙️</span>
+          <span><strong>Transcripción en tiempo real</strong> — solo texto, nunca audio almacenado</span>
+        </li>
+        <li>
+          <span class="icon">🏷️</span>
+          <span><strong>Códigos CIE-10 sugeridos</strong> por IA después de cada consulta</span>
+        </li>
+        <li>
+          <span class="icon">🔗</span>
+          <span><strong>Exportación FHIR (HL7)</strong> compatible con cualquier EHR</span>
+        </li>
+        <li>
+          <span class="icon">⏱️</span>
+          <span><strong>Datos eliminados a las 24 horas</strong> — sin riesgo de privacidad</span>
+        </li>
+        <li>
+          <span class="icon">🇪🇨</span>
+          <span><strong>Cumple LOPDP Ecuador</strong> — privacidad del paciente garantizada</span>
+        </li>
+      </ul>
+
+      <div class="trial-note">
+        ⭐ Prueba gratuita de 30 días · Sin tarjeta de crédito · Cancela cuando quieras.<br>
+        Al finalizar la prueba te contactaremos para conocer tu experiencia.
+      </div>
+    </div>
+
+    <!-- Right: Signup form -->
+    <div class="trial-card">
+      <h2>Crear cuenta gratuita</h2>
+      <p class="card-sub">Tu prueba de <strong>30 días</strong> comienza al verificar tu correo.</p>
+
+      <div class="error-banner" id="error-banner" role="alert"></div>
+
+      <!-- Signup form -->
+      <form class="signup-form" id="signup-form" novalidate>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Dr. Juan García" autocomplete="name" required />
+            <span class="field-error" id="err-nombre"></span>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono / WhatsApp *</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+593 99 000 0000" autocomplete="tel" required />
+            <span class="field-error" id="err-telefono"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo electrónico *</label>
+          <input type="email" id="email" name="email" placeholder="doctor@miconsultorio.com" autocomplete="email" required />
+          <span class="field-error" id="err-email"></span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Contraseña *</label>
+            <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required />
+            <div class="pw-strength"><div class="pw-strength-bar" id="pw-bar"></div></div>
+            <span class="field-error" id="err-password"></span>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirmar contraseña *</label>
+            <input type="password" id="confirm-password" placeholder="Repetir contraseña" autocomplete="new-password" required />
+            <span class="field-error" id="err-confirm"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="especialidad">Especialidad *</label>
+          <select id="especialidad" name="especialidad" required>
+            <option value="" disabled selected>Selecciona tu especialidad</option>
+          </select>
+          <span class="field-error" id="err-especialidad"></span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre_clinica">Nombre del consultorio *</label>
+            <input type="text" id="nombre_clinica" name="nombre_clinica" placeholder="Clínica San Rafael" required />
+            <span class="field-error" id="err-clinica"></span>
+          </div>
+          <div class="form-group">
+            <label for="ciudad">Ciudad *</label>
+            <input type="text" id="ciudad" name="ciudad" placeholder="Guayaquil" required />
+            <span class="field-error" id="err-ciudad"></span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-signup" id="btn-signup">
+          Iniciar prueba gratuita de 30 días →
+        </button>
+
+        <p class="form-legal">
+          Al registrarte aceptas nuestra
+          <a href="/privacidad" target="_blank">Política de Privacidad</a>.
+          No almacenamos datos personales de tus pacientes.
+        </p>
+
+      </form>
+
+      <!-- Success state (hidden until signup completes) -->
+      <div class="success-state" id="success-state">
+        <div class="success-icon">✅</div>
+        <h3>¡Cuenta creada!</h3>
+        <p>Revisa tu correo electrónico — te enviamos un enlace de verificación para activar tu prueba.</p>
+        <div class="success-steps">
+          <p>📧 <strong>Paso 1:</strong> Verifica tu correo (revisa también spam)</p>
+          <p>📱 <strong>Paso 2:</strong> Descarga la app en <a href="/betatest" style="color:var(--primary)">intellisalud.com/betatest</a></p>
+          <p>🌐 <strong>Paso 3:</strong> Accede al portal web en <a href="/betaportal" style="color:var(--primary)">intellisalud.com/betaportal</a></p>
+        </div>
+        <p>¿Preguntas? Escríbenos por
+          <a href="https://wa.me/593998286930" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600">WhatsApp</a>
+        </p>
+      </div>
+
+      <div class="form-divider">o</div>
+      <p class="login-link">¿Ya tienes cuenta? <a href="/betaportal">Iniciar sesión</a></p>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer" style="background:rgba(0,0,0,0.2);border-top:1px solid rgba(255,255,255,0.1)">
+    <p style="color:rgba(255,255,255,0.6)">© 2026 IntelliSalud S.A.S. · Daule, Ecuador</p>
+    <p><a href="/privacidad" style="color:rgba(255,255,255,0.5)">Política de Privacidad</a></p>
+  </footer>
+
+  <script>
+    const API_URL = 'https://intellisalud-backend-production.up.railway.app';
+
+    // ── Load specialties from backend ────────────────────────
+    async function loadSpecialties() {
+      try {
+        const res  = await fetch(`${API_URL}/auth/specialties`);
+        const json = await res.json();
+        const sel  = document.getElementById('especialidad');
+        (json.especialidades || []).forEach(e => {
+          const opt = document.createElement('option');
+          opt.value = e; opt.textContent = e;
+          sel.appendChild(opt);
+        });
+      } catch {
+        // fallback — list inline
+        ['Medicina General','Pediatría','Ginecología','Cardiología','Otra'].forEach(e => {
+          const opt = document.createElement('option');
+          opt.value = e; opt.textContent = e;
+          document.getElementById('especialidad').appendChild(opt);
+        });
+      }
+    }
+
+    loadSpecialties();
+
+    // ── Password strength indicator ──────────────────────────
+    document.getElementById('password').addEventListener('input', function () {
+      const val = this.value;
+      const bar = document.getElementById('pw-bar');
+      let score = 0;
+      if (val.length >= 8)  score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const colors = ['#ef4444','#f97316','#eab308','#22c55e'];
+      const widths = ['25%','50%','75%','100%'];
+      bar.style.width      = score ? widths[score - 1] : '0%';
+      bar.style.background = score ? colors[score - 1] : 'transparent';
+    });
+
+    // ── Show/hide field error ─────────────────────────────────
+    function showErr(id, msg) {
+      const el = document.getElementById('err-' + id);
+      if (el) { el.textContent = msg; el.classList.add('visible'); }
+      const input = document.getElementById(id === 'clinica' ? 'nombre_clinica' : id);
+      if (input) input.classList.add('error');
+    }
+
+    function clearErr(id) {
+      const el = document.getElementById('err-' + id);
+      if (el) { el.textContent = ''; el.classList.remove('visible'); }
+      const input = document.getElementById(id === 'clinica' ? 'nombre_clinica' : id);
+      if (input) input.classList.remove('error');
+    }
+
+    function clearAllErrors() {
+      ['nombre','telefono','email','password','confirm','especialidad','clinica','ciudad']
+        .forEach(id => clearErr(id));
+      const banner = document.getElementById('error-banner');
+      banner.textContent = '';
+      banner.classList.remove('visible');
+    }
+
+    // ── Form submission ──────────────────────────────────────
+    document.getElementById('signup-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clearAllErrors();
+
+      const nombre         = document.getElementById('nombre').value.trim();
+      const telefono       = document.getElementById('telefono').value.trim();
+      const email          = document.getElementById('email').value.trim().toLowerCase();
+      const password       = document.getElementById('password').value;
+      const confirmPw      = document.getElementById('confirm-password').value;
+      const especialidad   = document.getElementById('especialidad').value;
+      const nombre_clinica = document.getElementById('nombre_clinica').value.trim();
+      const ciudad         = document.getElementById('ciudad').value.trim();
+
+      // Client-side validation
+      let hasError = false;
+
+      if (!nombre || nombre.length < 2) {
+        showErr('nombre', 'Ingresa tu nombre completo'); hasError = true;
+      }
+      if (!telefono || telefono.length < 7) {
+        showErr('telefono', 'Ingresa un teléfono válido'); hasError = true;
+      }
+      if (!email || !email.includes('@')) {
+        showErr('email', 'Ingresa un correo válido'); hasError = true;
+      }
+      if (!password || password.length < 8) {
+        showErr('password', 'La contraseña debe tener al menos 8 caracteres'); hasError = true;
+      }
+      if (password !== confirmPw) {
+        showErr('confirm', 'Las contraseñas no coinciden'); hasError = true;
+      }
+      if (!especialidad) {
+        showErr('especialidad', 'Selecciona tu especialidad'); hasError = true;
+      }
+      if (!nombre_clinica || nombre_clinica.length < 2) {
+        showErr('clinica', 'Ingresa el nombre de tu consultorio'); hasError = true;
+      }
+      if (!ciudad || ciudad.length < 2) {
+        showErr('ciudad', 'Ingresa tu ciudad'); hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Submit
+      const btn = document.getElementById('btn-signup');
+      btn.disabled = true;
+      btn.textContent = 'Creando tu cuenta...';
+
+      try {
+        const res = await fetch(`${API_URL}/auth/trial-signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, telefono, email, password, especialidad, nombre_clinica, ciudad }),
+        });
+
+        const json = await res.json();
+
+        if (res.ok) {
+          // Show success state
+          document.getElementById('signup-form').style.display = 'none';
+          document.getElementById('success-state').style.display = 'block';
+        } else {
+          const banner = document.getElementById('error-banner');
+
+          if (json.code === 'EMAIL_EXISTS') {
+            showErr('email', 'Este correo ya está registrado');
+          } else {
+            banner.textContent = json.error || 'Error al crear la cuenta. Intenta de nuevo.';
+            banner.classList.add('visible');
+          }
+
+          btn.disabled = false;
+          btn.textContent = 'Iniciar prueba gratuita de 30 días →';
+        }
+      } catch {
+        const banner = document.getElementById('error-banner');
+        banner.textContent = 'Error de conexión. Verifica tu internet e intenta de nuevo.';
+        banner.classList.add('visible');
+        btn.disabled = false;
+        btn.textContent = 'Iniciar prueba gratuita de 30 días →';
+      }
+    });
+  </script>
+
+</body>
+</html>
