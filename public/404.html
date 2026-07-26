@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página no encontrada — IntelliSalud</title>
+
+  <!-- Sin esta página, Cloudflare Pages devuelve index.html con HTTP 200 para
+       cualquier ruta desconocida (soft 404). Eso genera duplicados infinitos de
+       la portada y diluye las señales de indexación. No eliminar este archivo. -->
+  <meta name="robots" content="noindex, follow" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .nf-wrap  { max-width: 620px; margin: 0 auto; padding: 160px 24px 120px; text-align: center; }
+    .nf-code  { font-size: 4rem; font-weight: 700; opacity: .35; margin-bottom: 8px; line-height: 1; }
+    .nf-wrap h1 { margin-bottom: 16px; }
+    .nf-wrap p  { line-height: 1.75; margin-bottom: 32px; opacity: .85; }
+    .nf-links   { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <img src="/assets/logo.jpg" alt="Logo de IntelliSalud" class="logo-image" />
+        <span>IntelliSalud</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Inicio</a>
+        <a href="/nosotros">Nosotros</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="nf-wrap">
+      <p class="nf-code">404</p>
+      <h1>Esta página no existe</h1>
+      <p>
+        La dirección que buscas no corresponde a ninguna página de IntelliSalud.
+        Puede que el enlace esté desactualizado o que contenga un error de escritura.
+      </p>
+      <div class="nf-links">
+        <a href="/" class="btn">Ir al inicio</a>
+        <a href="/nosotros" class="btn">Sobre IntelliSalud</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

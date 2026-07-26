@@ -1,8 +1,51 @@
+# robots.txt — intellisalud.com
+# Política de acceso para rastreadores. Mantenida a mano.
+# NO reactivar "Managed robots.txt" en Cloudflare: sobrescribe este archivo
+# y bloquea a los rastreadores de IA de los que depende nuestra estrategia GEO.
+
+# Señales de contenido:
+#   search=yes    → indexación en buscadores permitida
+#   ai-input=yes  → uso para fundamentar respuestas de IA permitido (esto es lo
+#                   que permite que nos citen; el valor por defecto de Cloudflare
+#                   lo dejaba sin declarar)
+#   ai-train=no   → entrenamiento de modelos no autorizado
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 User-agent: *
 Allow: /
 Disallow: /betaportal
 Disallow: /betaportal.html
 Disallow: /betatest
 Disallow: /betatest.html
+Disallow: /informe/
+
+# ── Asistentes de IA: acceso explícito ──
+# Son la razón de ser de la estrategia GEO. No bloquear.
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /betaportal
+Disallow: /betatest
+Disallow: /informe/
+
+# ── Extractores masivos sin valor de citación ──
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
 
 Sitemap: https://intellisalud.com/sitemap.xml

@@ -25,15 +25,37 @@ if (menuToggle && navLinks) {
    8. Ambient AI scene cycle starts
    ══════════════════════════════════════════════════ */
 
-function countUp(elementId, target, suffix, duration) {
+/* Animating the digits themselves means the DOM briefly holds a WRONG number
+   (e.g. "1%" instead of "62%"). AI crawlers that execute JS and snapshot mid-
+   animation ingest that wrong value and attribute it to the cited source.
+   In a health context that's a credibility liability, so the digits are static
+   by default. Set ANIMATE_NUMBERS = true to restore the count-up. */
+const ANIMATE_NUMBERS = false;
+
+const prefersReducedMotion =
+  window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* The HTML is the source of truth for every statistic — never a JS literal. */
+function countUp(elementId, duration) {
   const el = document.getElementById(elementId);
   if (!el) return;
+
+  const finalText = el.textContent.trim();
+  if (!ANIMATE_NUMBERS || prefersReducedMotion) return;
+
+  const target = parseFloat(finalText.replace(',', '.'));
+  if (isNaN(target)) return;
+
   let current = 0;
   const step = target / (duration / 16);
   const timer = setInterval(() => {
     current = Math.min(current + step, target);
-    el.textContent = Math.round(current) + suffix;
-    if (current >= target) clearInterval(timer);
+    if (current >= target) {
+      clearInterval(timer);
+      el.textContent = finalText;   // restore exact formatting: "9 min", "62%"
+    } else {
+      el.textContent = finalText.replace(String(target), String(Math.round(current)));
+    }
   }, 16);
 }
 
@@ -57,24 +79,17 @@ function runStatsAnimation() {
   /* Phase 2 — stat blocks count up, staggered */
   setTimeout(() => {
     document.getElementById('stat1').classList.add('visible');
-    countUp('num1', 62, '%', 1100);
+    countUp('num1', 1100);
   }, 900);
 
   setTimeout(() => {
     document.getElementById('stat2').classList.add('visible');
-    /* Custom counter for minutes */
-    const el = document.getElementById('num2');
-    let v = 0;
-    const t = setInterval(() => {
-      v = Math.min(v + 0.5, 9);
-      el.textContent = Math.round(v) + ' min';
-      if (v >= 9) clearInterval(t);
-    }, 40);
+    countUp('num2', 1100);
   }, 1400);
 
   setTimeout(() => {
     document.getElementById('stat3').classList.add('visible');
-    countUp('num3', 15, '%', 1100);
+    countUp('num3', 1100);
   }, 1900);
 
   /* Phase 3 — transition bar fills */
