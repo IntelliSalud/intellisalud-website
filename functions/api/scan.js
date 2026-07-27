@@ -1,0 +1,210 @@
+/**
+ * POST /api/scan
+ *
+ * Recibe nombre + especialidad + ciudad, busca en la web, puntúa con la
+ * rúbrica v1.0 y devuelve ÚNICAMENTE las dimensiones 1 y 2.
+ *
+ * ► Las dimensiones 3–10 se calculan aquí y se guardan en D1, pero NUNCA
+ *   salen en esta respuesta. Recortar del lado del servidor es lo único que
+ *   sostiene los niveles del embudo: si viajan al navegador y solo se ocultan
+ *   con CSS, cualquiera las lee abriendo las herramientas de desarrollo.
+ */
+
+import {
+  validarNombre, validarEspecialidad, validarCiudad,
+  claveCache, json,
+} from './_shared.js';
+
+const MODELO = 'claude-haiku-4-5';
+const CACHE_DIAS = 30;
+
+/** La rúbrica v1.0, condensada para el modelo. */
+const SISTEMA = `Eres el motor de puntuación del Índice de Visibilidad Médica de IntelliSalud.
+
+Evalúas la VISIBILIDAD DIGITAL de un profesional de la salud a partir de resultados de búsqueda web. Nunca evalúas su calidad clínica ni su competencia profesional.
+
+Diez dimensiones, 10 puntos cada una, todas con el mismo peso:
+1. Visibilidad en buscadores — ¿aparece al buscar su especialidad y ciudad?
+2. Visibilidad en asistentes de IA — ¿hay información corroborada que un asistente pueda citar?
+3. Presencia en redes profesionales — LinkedIn, Instagram, Facebook: existencia, completitud, actividad.
+4. Consistencia de identidad — ¿nombre, credenciales, dirección y teléfono coinciden entre fuentes?
+5. Sitio web propio — ¿existe? ¿es suyo o de una clínica?
+6. Perfil de Google Business — ficha, verificación, datos.
+7. Datos estructurados — schema.org en su sitio.
+8. Acceso para rastreadores de IA — robots.txt, contenido servido.
+9. Directorios médicos y corroboración externa — Doctoralia y similares, menciones independientes.
+10. Reseñas y contenido propio — reseñas, respuestas, artículos.
+
+BANDAS: 0-3 ausente · 4-6 parcial · 7-10 sólido.
+Si la evidencia no alcanza para decidir, usa banda "no_evaluable" y puntos 0.
+
+REGLAS DE REDACCIÓN — obligatorias:
+- Reporta lo que ENCONTRASTE, nunca afirmes que algo "no existe".
+  Correcto: "No encontramos un sitio web propio asociado a su nombre en estos resultados."
+  Incorrecto: "Usted no tiene sitio web."
+- Nunca prometas posiciones ni resultados.
+- Nunca sugieras generar reseñas: es contrario a las políticas de las plataformas.
+- Nunca infieras calidad médica a partir del puntaje.
+- Escribe en español, dirigiéndote al profesional de usted.
+- Cada "evidencia" cita qué se encontró concretamente. Si no hallaste nada para una
+  dimensión, dilo así y baja la confianza — no inventes.
+
+IMPORTANTE: la ausencia de huella digital es un resultado válido y esperado.
+Muchos profesionales excelentes tienen puntajes bajos. Puntúa con honestidad;
+un puntaje bajo es información útil, no un error.
+
+"puntaje_total" es la suma de los diez valores de "puntos".`;
+
+async function buscar(consulta, apiKey) {
+  const url = 'https://api.search.brave.com/res/v1/web/search'
+    + `?q=${encodeURIComponent(consulta)}&count=20&country=ec&search_lang=es`;
+  const r = await fetch(url, {
+    headers: { Accept: 'application/json', 'X-Subscription-Token': apiKey },
+  });
+  if (!r.ok) throw new Error(`Brave ${r.status}`);
+  const data = await r.json();
+  return (data.web?.results || []).map((x) => ({
+    titulo: x.title,
+    url: x.url,
+    extracto: x.description,
+  }));
+}
+
+const ESQUEMA = {
+  type: 'object',
+  properties: {
+    puntaje_total: { type: 'integer' },
+    dimensiones: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer' },
+          nombre: { type: 'string' },
+          puntos: { type: 'integer' },
+          banda: { type: 'string', enum: ['ausente', 'parcial', 'solido', 'no_evaluable'] },
+          evidencia: { type: 'string' },
+          recomendacion: { type: 'string' },
+          confianza: { type: 'string', enum: ['alta', 'media', 'baja'] },
+        },
+        required: ['id', 'nombre', 'puntos', 'banda', 'evidencia', 'recomendacion', 'confianza'],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ['puntaje_total', 'dimensiones'],
+  additionalProperties: false,
+};
+
+async function puntuar(nombre, especialidad, ciudad, resultados, apiKey) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: MODELO,
+      max_tokens: 4000,
+      system: SISTEMA,
+      output_config: { format: { type: 'json_schema', schema: ESQUEMA } },
+      messages: [{
+        role: 'user',
+        content: `Profesional: ${nombre}\nEspecialidad: ${especialidad}\nCiudad: ${ciudad}\n`
+          + `Fecha: ${new Date().toISOString().slice(0, 10)}\n\n`
+          + `Resultados de búsqueda (${resultados.length}):\n`
+          + JSON.stringify(resultados, null, 1)
+          + `\n\nPuntúa las diez dimensiones según la rúbrica.`,
+      }],
+    }),
+  });
+
+  if (!r.ok) throw new Error(`Anthropic ${r.status}: ${(await r.text()).slice(0, 300)}`);
+  const data = await r.json();
+
+  // Los clasificadores pueden declinar: hay que comprobarlo antes de leer content.
+  if (data.stop_reason === 'refusal') throw new Error('refusal');
+
+  const texto = data.content.find((b) => b.type === 'text')?.text;
+  if (!texto) throw new Error('respuesta sin texto');
+  return JSON.parse(texto);
+}
+
+export async function onRequestPost(context) {
+  const { request, env } = context;
+
+  let cuerpo;
+  try { cuerpo = await request.json(); }
+  catch { return json({ error: 'Solicitud inválida.' }, 400); }
+
+  // ── Capa 0/1: validación de formato. Coste de un rechazo: cero. ──
+  const v = validarNombre(cuerpo.nombre);
+  if (!v.ok) return json({ error: v.motivo }, 400);
+  if (!validarEspecialidad(cuerpo.especialidad)) {
+    return json({ error: 'Selecciona una especialidad de la lista.' }, 400);
+  }
+  if (!validarCiudad(cuerpo.ciudad)) {
+    return json({ error: 'Selecciona una ciudad de la lista.' }, 400);
+  }
+
+  const { nombre } = v;
+  const especialidad = cuerpo.especialidad.trim();
+  const ciudad = cuerpo.ciudad.trim();
+  const clave = claveCache(nombre, especialidad, ciudad);
+
+  // ── Capa 2: caché. Un reescaneo no vuelve a pagar. ──
+  const cache = await env.DB.prepare(
+    `SELECT id, puntaje_total, resultado FROM scans
+      WHERE clave = ? AND creado_en > datetime('now', ?)
+      ORDER BY creado_en DESC LIMIT 1`,
+  ).bind(clave, `-${CACHE_DIAS} days`).first();
+
+  let scanId, completo;
+
+  if (cache) {
+    scanId = cache.id;
+    completo = JSON.parse(cache.resultado);
+  } else {
+    // ── Capa 3: la búsqueda cuesta ~$0.001; la puntuación ~$0.007.
+    //    Se busca primero para no pagar la cara si la barata no devuelve nada. ──
+    let resultados;
+    try {
+      resultados = await buscar(`"${nombre}" ${especialidad} ${ciudad} Ecuador`, env.BRAVE_API_KEY);
+    } catch (e) {
+      return json({ error: 'No pudimos completar la búsqueda. Intenta de nuevo en unos minutos.' }, 502);
+    }
+
+    // Cero resultados NO significa "no es médico": significa que es invisible,
+    // que es justamente nuestro cliente. Se continúa y se puntúa bajo.
+    try {
+      completo = await puntuar(nombre, especialidad, ciudad, resultados, env.ANTHROPIC_API_KEY);
+    } catch (e) {
+      return json({ error: 'No pudimos completar el análisis. Intenta de nuevo en unos minutos.' }, 502);
+    }
+
+    const ins = await env.DB.prepare(
+      `INSERT INTO scans (clave, nombre, especialidad, ciudad, puntaje_total, resultado, creado_en)
+       VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
+    ).bind(clave, nombre, especialidad, ciudad, completo.puntaje_total,
+      JSON.stringify(completo)).run();
+    scanId = ins.meta.last_row_id;
+  }
+
+  // ── Recorte del lado del servidor: solo dimensiones 1 y 2. ──
+  const libres = (completo.dimensiones || [])
+    .filter((d) => d.id === 1 || d.id === 2)
+    .map(({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }) =>
+      ({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }));
+
+  return json({
+    scan_id: scanId,
+    nombre,
+    especialidad,
+    ciudad,
+    puntaje_total: completo.puntaje_total,
+    dimensiones_evaluadas: (completo.dimensiones || []).length,
+    dimensiones: libres,
+    bloqueadas: 8,
+  });
+}

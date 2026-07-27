@@ -1,0 +1,17 @@
+# Configuración del proyecto Cloudflare Pages "intellisalud-website".
+#
+# pages_build_output_dir debe seguir siendo "public": es lo que el proyecto ya
+# servía antes de existir este archivo. Cambiarlo rompe el sitio en vivo.
+#
+# Los secretos NO van aquí. Se cargan con:
+#   npx wrangler pages secret put ANTHROPIC_API_KEY --project-name intellisalud-website
+#   npx wrangler pages secret put BRAVE_API_KEY     --project-name intellisalud-website
+
+name = "intellisalud-website"
+compatibility_date = "2026-07-27"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "intellisalud-visibilidad"
+database_id = "653e95fb-43af-44b8-9404-da6cfc9da8e6"

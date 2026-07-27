@@ -1,0 +1,11 @@
+# Caché local de wrangler. Se regenera solo; no debe versionarse ni desplegarse.
+.wrangler/
+
+# Dependencias, si en algún momento se añaden.
+node_modules/
+
+# Los secretos NUNCA van al repositorio. Se cargan con:
+#   npx wrangler pages secret put NOMBRE --project-name intellisalud-website
+.dev.vars
+.env
+.env.*

@@ -54,32 +54,65 @@
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    .vis-page      { max-width: 760px; margin: 0 auto; padding: 110px 24px 80px; }
-    .vis-page h1   { margin-bottom: 14px; }
-    .vis-lede      { font-size: 1.12rem; line-height: 1.7; color: var(--muted); margin-bottom: 36px; }
-    .vis-page h2   { margin-top: 46px; margin-bottom: 16px; font-size: 1.5rem; }
-    .vis-page p    { line-height: 1.75; margin-bottom: 16px; }
+    /* ── Cabecera con el mismo tratamiento visual que la portada ── */
+    .vis-hero { background: var(--grad-hero-bg); padding: 110px 24px 64px; text-align: center; }
+    .vis-hero .eyebrow { color: #7deaef; }
+    .vis-hero h1 { color: #fff; max-width: 820px; margin: 0 auto 16px; }
+    .vis-hero p { color: rgba(255,255,255,.85); max-width: 640px; margin: 0 auto; line-height: 1.7; }
 
-    .areas-grid    { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 22px 0 8px; }
-    .area-item     { display: flex; gap: 9px; align-items: flex-start; font-size: 0.92rem; line-height: 1.5; }
-    .area-num      { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--grad);
-                     color: #fff; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .vis-page { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+    .vis-page h2 { margin-top: 44px; margin-bottom: 14px; font-size: 1.5rem; }
+    .vis-page p  { line-height: 1.75; margin-bottom: 16px; }
 
-    .vis-form      { background: var(--light); border: 1px solid var(--border); border-radius: 20px; padding: 30px; margin-top: 12px; }
-    .vis-form label{ display: block; margin-bottom: 16px; font-weight: 600; font-size: 0.92rem; }
-    .vis-form input[type="text"],
-    .vis-form input[type="email"] {
-      width: 100%; margin-top: 6px; padding: 12px 14px; border: 1.5px solid var(--border);
-      border-radius: 10px; font-family: inherit; font-size: 1rem; background: #fff;
-    }
-    .consent       { display: flex; gap: 10px; align-items: flex-start; font-weight: 400 !important;
-                     font-size: 0.86rem !important; line-height: 1.55; color: var(--muted); }
-    .consent input { margin-top: 3px; flex-shrink: 0; }
-    .vis-form .btn { width: 100%; margin-top: 8px; }
-    .form-legal    { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-top: 16px; }
+    /* ── Buscador ── */
+    .buscador { background: var(--light); border: 1px solid var(--border); border-radius: 20px;
+                padding: 28px; margin-top: -40px; position: relative; box-shadow: var(--shadow); }
+    .buscador label { display:block; margin-bottom:14px; font-weight:600; font-size:.9rem; }
+    .buscador input, .buscador select {
+      width:100%; margin-top:6px; padding:12px 14px; border:1.5px solid var(--border);
+      border-radius:10px; font-family:inherit; font-size:1rem; background:#fff; }
+    .campo-fila { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width:560px){ .campo-fila{ grid-template-columns:1fr; } }
+    .buscador .btn { width:100%; margin-top:6px; }
+    .aviso-error { color:#c0392b; font-size:.9rem; margin-top:10px; display:none; }
 
-    .interim-note  { border-left: 3px solid var(--accent); background: rgba(0,194,199,.07);
-                     padding: 16px 20px; border-radius: 0 10px 10px 0; font-size: 0.95rem; line-height: 1.7; }
+    /* ── Estados ── */
+    #cargando, #resultado, #bloque-form, #extra { display:none; }
+    .cargando-caja { text-align:center; padding:48px 24px; }
+    .spinner { width:38px; height:38px; margin:0 auto 18px; border:3px solid var(--border);
+               border-top-color: var(--accent); border-radius:50%; animation: giro 1s linear infinite; }
+    @keyframes giro { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce){ .spinner{ animation:none; } }
+
+    /* ── Puntaje ── */
+    .puntaje-caja { text-align:center; padding:36px 24px; background:var(--light);
+                    border:1px solid var(--border); border-radius:20px; }
+    .puntaje-num { font-size:4.2rem; font-weight:800; line-height:1; letter-spacing:-.04em; }
+    .puntaje-num.poor{color:#c0392b} .puntaje-num.fair{color:#e08a1e}
+    .puntaje-num.good{color:#1c9e6b} .puntaje-num.excellent{color:#0e6db5}
+    .puntaje-de { color:var(--muted); font-size:.95rem; }
+    .barra { height:8px; background:var(--border); border-radius:99px; overflow:hidden; margin:20px auto 0; max-width:420px; }
+    .barra span { display:block; height:100%; background:var(--grad); border-radius:99px; }
+
+    /* ── Tarjetas de dimensión ── */
+    .dim { border:1px solid var(--border); border-radius:16px; padding:22px 24px; margin-bottom:14px; }
+    .dim-cab { display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+    .dim-num { width:26px; height:26px; border-radius:50%; background:var(--grad); color:#fff;
+               font-size:.78rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .dim-tit { font-weight:700; }
+    .dim-pts { margin-left:auto; font-weight:800; color:var(--primary); }
+    .dim-ev  { color:var(--muted); font-size:.92rem; margin-bottom:10px; }
+    .dim-rec { line-height:1.7; }
+    .dim-conf{ display:inline-block; font-size:.72rem; text-transform:uppercase; letter-spacing:.1em;
+               color:var(--muted); margin-top:10px; }
+    .dim.bloqueada { background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 10px,#f1f5f9 10px,#f1f5f9 20px); }
+    .dim.bloqueada .dim-tit { color:var(--muted); }
+    .dim-lock { margin-left:auto; font-size:.8rem; color:var(--muted); }
+
+    .consent { display:flex; gap:10px; align-items:flex-start; font-weight:400 !important;
+               font-size:.86rem !important; line-height:1.55; color:var(--muted); }
+    .consent input { margin-top:3px; flex-shrink:0; width:auto; }
+    .form-legal { font-size:.78rem; color:var(--muted); line-height:1.6; margin-top:16px; }
   </style>
 </head>
 
@@ -102,101 +135,241 @@
   </header>
 
   <main>
+    <section class="vis-hero">
+      <p class="eyebrow">Diagnóstico gratuito</p>
+      <h1>¿Qué tan preparada está tu marca profesional para la era de la IA?</h1>
+      <p>
+        Descúbrelo en menos de un minuto. Busca tu nombre y recibe tu puntaje de
+        visibilidad de 0 a 100, junto con las primeras recomendaciones para
+        mejorarlo. Sin costo y sin compromiso.
+      </p>
+    </section>
+
     <div class="vis-page">
 
-      <p class="eyebrow">Diagnóstico gratuito</p>
-      <h1>¿Qué tan visible eres para tus pacientes?</h1>
-      <p class="vis-lede">
-        Evaluamos tu presencia en buscadores, directorios médicos y asistentes de
-        inteligencia artificial, y te entregamos un puntaje de 0 a 100 con las
-        recomendaciones que más impacto tendrían en tu caso.
-      </p>
-
-      <div class="interim-note">
-        <strong>Por ahora el diagnóstico se realiza de forma personalizada.</strong>
-        Completa el formulario y recibirás tu evaluación por correo. La herramienta
-        automática de búsqueda por nombre está en desarrollo.
-      </div>
-
-      <h2>Las diez áreas que evaluamos</h2>
-      <div class="areas-grid">
-        <div class="area-item"><span class="area-num">1</span><span>Visibilidad en buscadores</span></div>
-        <div class="area-item"><span class="area-num">2</span><span>Visibilidad en asistentes de IA</span></div>
-        <div class="area-item"><span class="area-num">3</span><span>Presencia en redes profesionales</span></div>
-        <div class="area-item"><span class="area-num">4</span><span>Consistencia de identidad</span></div>
-        <div class="area-item"><span class="area-num">5</span><span>Sitio web propio</span></div>
-        <div class="area-item"><span class="area-num">6</span><span>Perfil de Google Business</span></div>
-        <div class="area-item"><span class="area-num">7</span><span>Datos estructurados</span></div>
-        <div class="area-item"><span class="area-num">8</span><span>Acceso para rastreadores de IA</span></div>
-        <div class="area-item"><span class="area-num">9</span><span>Directorios médicos</span></div>
-        <div class="area-item"><span class="area-num">10</span><span>Reseñas y contenido propio</span></div>
-      </div>
-
-      <h2>Solicita tu diagnóstico</h2>
-
-      <form class="vis-form" action="https://formspree.io/f/xgodvzvl" method="POST">
-        <input type="hidden" name="_subject" value="Solicitud de diagnóstico de visibilidad" />
-
+      <!-- ── Buscador ── -->
+      <form class="buscador" id="buscador" autocomplete="off">
         <label>
           Nombre profesional completo
-          <input type="text" name="nombre" required placeholder="Dra. Nombre Apellido" />
+          <input type="text" id="nombre" required placeholder="Ej. Fanny Sañay Goyes" maxlength="80" />
         </label>
-
-        <label>
-          Especialidad
-          <input type="text" name="especialidad" required placeholder="Ginecología y Obstetricia" />
-        </label>
-
-        <label>
-          Lugar de trabajo
-          <input type="text" name="lugar_de_trabajo" required placeholder="Consultorio, clínica o ciudad" />
-        </label>
-
-        <label>
-          Correo electrónico
-          <input type="email" name="email" required placeholder="nombre@correo.com" />
-        </label>
-
-        <!-- Salvaguarda: la herramienta genera un juicio público sobre la reputación
-             de un profesional identificado. Sin esta confirmación, cualquiera podría
-             solicitar el diagnóstico de un colega o competidor. -->
-        <label class="consent">
-          <input type="checkbox" name="es_titular" value="si" required />
-          <span>Confirmo que soy este profesional o que cuento con su autorización para solicitar esta evaluación.</span>
-        </label>
-
-        <!-- LOPDP: base legal, finalidad y derechos declarados antes de recolectar. -->
-        <label class="consent">
-          <input type="checkbox" name="consentimiento_lopdp" value="si" required />
-          <span>
-            Autorizo a IntelliSalud S.A.S. a tratar mis datos personales con la única
-            finalidad de elaborar y enviarme este diagnóstico y dar seguimiento comercial.
-            He leído la <a href="/privacidad">Política de Privacidad</a>.
-          </span>
-        </label>
-
-        <button type="submit" class="btn btn-primary">Solicitar mi diagnóstico</button>
-
-        <p class="form-legal">
-          Tus datos se conservan mientras dure la relación comercial y hasta 24 meses
-          después del último contacto. Puedes solicitar acceso, rectificación o
-          eliminación escribiendo a
-          <a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a>,
-          conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador.
-          No enviamos información médica ni datos de pacientes por este canal.
-        </p>
+        <div class="campo-fila">
+          <label>
+            Especialidad
+            <select id="especialidad" required></select>
+          </label>
+          <label>
+            Ciudad donde atiendes
+            <select id="ciudad" required></select>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-buscar">Analizar mi visibilidad</button>
+        <p class="aviso-error" id="error"></p>
       </form>
 
-      <h2>Qué recibes</h2>
-      <p>
-        Un puntaje de 0 a 100 con el detalle por área y las recomendaciones ordenadas
-        por impacto — empezando por lo que más mueve la aguja en tu caso concreto.
-        Si decides trabajar con nosotros, ese diagnóstico se convierte en el plan de
-        trabajo. Si no, te queda igual y puedes aplicarlo por tu cuenta.
-      </p>
+      <!-- ── Cargando ── -->
+      <div id="cargando">
+        <div class="cargando-caja">
+          <div class="spinner"></div>
+          <p><strong>Analizando tu presencia digital…</strong></p>
+          <p style="color:var(--muted);font-size:.92rem">
+            Consultamos buscadores y evaluamos diez áreas. Toma entre 20 y 60 segundos.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── Resultado ── -->
+      <div id="resultado">
+        <div class="puntaje-caja">
+          <div class="puntaje-num" id="puntaje">–</div>
+          <div class="puntaje-de">de 100 puntos</div>
+          <div class="barra"><span id="barra" style="width:0"></span></div>
+          <p style="margin-top:18px" id="lectura"></p>
+        </div>
+
+        <h2>Tus primeras áreas</h2>
+        <div id="dims"></div>
+
+        <!-- ── Formulario de desbloqueo ── -->
+        <div id="bloque-form">
+          <h2>Desbloquea dos áreas más</h2>
+          <p>
+            Completa tus datos y te mostramos otras dos áreas de tu diagnóstico.
+            También te las enviamos por correo para que las tengas a mano.
+          </p>
+          <form class="buscador" id="form-unlock" autocomplete="off">
+            <label>
+              Lugar de trabajo
+              <input type="text" id="lugar" required placeholder="Consultorio, clínica u hospital" maxlength="160" />
+            </label>
+            <label>
+              Correo electrónico
+              <input type="email" id="email" required placeholder="nombre@correo.com" maxlength="120" />
+            </label>
+            <label class="consent">
+              <input type="checkbox" id="titular" required />
+              <span>Confirmo que soy este profesional o que cuento con su autorización.</span>
+            </label>
+            <label class="consent">
+              <input type="checkbox" id="lopdp" required />
+              <span>
+                Autorizo a IntelliSalud S.A.S. a tratar mis datos con la única finalidad
+                de elaborar y enviarme este diagnóstico y dar seguimiento comercial.
+                He leído la <a href="/privacidad">Política de Privacidad</a>.
+              </span>
+            </label>
+            <button type="submit" class="btn btn-primary" id="btn-unlock">Ver mis dos áreas adicionales</button>
+            <p class="aviso-error" id="error2"></p>
+            <p class="form-legal">
+              Tus datos se conservan mientras dure la relación comercial y hasta 24 meses
+              después del último contacto. Puedes solicitar acceso, rectificación o
+              eliminación escribiendo a
+              <a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a>,
+              conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador.
+            </p>
+          </form>
+        </div>
+
+        <!-- ── Áreas desbloqueadas + bloqueadas ── -->
+        <div id="extra"></div>
+      </div>
 
     </div>
   </main>
+
+  <script>
+  const ESPECIALIDADES = ['Medicina General','Medicina Interna','Medicina Familiar','Ginecología y Obstetricia','Pediatría','Cardiología','Dermatología','Traumatología','Oftalmología','Otorrinolaringología','Neurología','Psiquiatría','Endocrinología','Gastroenterología','Urología','Nefrología','Neumología','Oncología','Cirugía General','Cirugía Plástica','Anestesiología','Reumatología','Hematología','Infectología','Geriatría','Fisiatría','Nutrición','Odontología'];
+  const CIUDADES = ['Guayaquil','Quito','Cuenca','Santo Domingo','Machala','Durán','Manta','Portoviejo','Loja','Ambato','Esmeraldas','Quevedo','Riobamba','Milagro','Ibarra','Babahoyo','Latacunga','Tulcán','Daule','Samborondón','Salinas','La Libertad','Playas'];
+
+  // Estas listas deben coincidir con functions/api/_shared.js. El servidor
+  // vuelve a validar: el desplegable es comodidad, no seguridad.
+  function llenar(sel, items, vacio) {
+    sel.innerHTML = '<option value="">' + vacio + '</option>'
+      + items.map(i => '<option>' + i + '</option>').join('');
+  }
+  llenar(document.getElementById('especialidad'), ESPECIALIDADES, 'Selecciona…');
+  llenar(document.getElementById('ciudad'), CIUDADES, 'Selecciona…');
+
+  const $ = id => document.getElementById(id);
+  let scanId = null;
+
+  function claseP(p) {
+    if (p >= 75) return 'excellent';
+    if (p >= 50) return 'good';
+    if (p >= 25) return 'fair';
+    return 'poor';
+  }
+  function lecturaP(p) {
+    if (p >= 75) return 'Tu presencia digital es sólida. Las oportunidades que quedan son de afinamiento.';
+    if (p >= 50) return 'Tienes una base construida, con áreas concretas donde ganarías visibilidad rápido.';
+    if (p >= 25) return 'Existe algo de presencia, pero está dispersa y en plataformas que no controlas.';
+    return 'Hoy es muy difícil que un paciente que no te conoce llegue a ti por internet. Es un punto de partida común y se corrige.';
+  }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function tarjeta(d) {
+    return '<div class="dim"><div class="dim-cab">'
+      + '<span class="dim-num">' + d.id + '</span>'
+      + '<span class="dim-tit">' + esc(d.nombre) + '</span>'
+      + '<span class="dim-pts">' + d.puntos + '/10</span></div>'
+      + '<p class="dim-ev">' + esc(d.evidencia) + '</p>'
+      + '<p class="dim-rec">' + esc(d.recomendacion) + '</p>'
+      + (d.confianza === 'baja'
+          ? '<span class="dim-conf">⚠ Confianza baja — conviene verificar manualmente</span>' : '')
+      + '</div>';
+  }
+  function bloqueada(n, titulo) {
+    return '<div class="dim bloqueada"><div class="dim-cab">'
+      + '<span class="dim-num">' + n + '</span>'
+      + '<span class="dim-tit">' + titulo + '</span>'
+      + '<span class="dim-lock">🔒 En el informe completo</span></div></div>';
+  }
+
+  $('buscador').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('error').style.display = 'none';
+    $('btn-buscar').disabled = true;
+    $('cargando').style.display = 'block';
+    $('resultado').style.display = 'none';
+
+    try {
+      const r = await fetch('/api/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: $('nombre').value,
+          especialidad: $('especialidad').value,
+          ciudad: $('ciudad').value,
+        }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'No pudimos completar el análisis.');
+
+      scanId = data.scan_id;
+      $('puntaje').textContent = data.puntaje_total;
+      $('puntaje').className = 'puntaje-num ' + claseP(data.puntaje_total);
+      $('barra').style.width = data.puntaje_total + '%';
+      $('lectura').textContent = lecturaP(data.puntaje_total);
+      $('dims').innerHTML = data.dimensiones.map(tarjeta).join('');
+      $('bloque-form').style.display = 'block';
+      $('resultado').style.display = 'block';
+      $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      $('error').textContent = err.message;
+      $('error').style.display = 'block';
+    } finally {
+      $('cargando').style.display = 'none';
+      $('btn-buscar').disabled = false;
+    }
+  });
+
+  $('form-unlock').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('error2').style.display = 'none';
+    $('btn-unlock').disabled = true;
+
+    try {
+      const r = await fetch('/api/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scan_id: scanId,
+          nombre: $('nombre').value,
+          especialidad: $('especialidad').value,
+          lugar_trabajo: $('lugar').value,
+          email: $('email').value,
+          es_titular: $('titular').checked,
+          consentimiento_lopdp: $('lopdp').checked,
+        }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'No pudimos completar el desbloqueo.');
+
+      $('bloque-form').style.display = 'none';
+      $('extra').innerHTML = '<h2>Tus dos áreas adicionales</h2>'
+        + data.dimensiones.map(tarjeta).join('')
+        + '<h2>Las seis áreas restantes</h2>'
+        + '<p>Son las que no se resuelven solas: requieren cambios en tu sitio, '
+        + 'en tus fichas y en cómo te encuentran los sistemas automatizados.</p>'
+        + bloqueada(5,'Sitio web propio') + bloqueada(6,'Perfil de Google Business')
+        + bloqueada(7,'Datos estructurados') + bloqueada(8,'Acceso para rastreadores de IA')
+        + bloqueada(9,'Directorios médicos') + bloqueada(10,'Reseñas y contenido propio')
+        + '<p style="margin-top:24px"><a class="btn btn-primary" target="_blank" rel="noopener" '
+        + 'href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20el%20informe%20completo%20de%20visibilidad.">'
+        + 'Hablar por WhatsApp</a></p>';
+      $('extra').style.display = 'block';
+      $('extra').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      $('error2').textContent = err.message;
+      $('error2').style.display = 'block';
+    } finally {
+      $('btn-unlock').disabled = false;
+    }
+  });
+
+  const mt = $('menuToggle'), nl = $('navLinks');
+  if (mt && nl) mt.addEventListener('click', () => nl.classList.toggle('active'));
+  </script>
 
 </body>
 </html>
