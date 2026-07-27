@@ -45,11 +45,20 @@ export async function onRequestPost(context) {
     return json({ error: 'No encontramos ese análisis. Vuelve a buscar tu nombre.' }, 404);
   }
 
-  await env.DB.prepare(
+  const insLead = await env.DB.prepare(
     `INSERT INTO leads (scan_id, nombre, especialidad, lugar_trabajo, email,
                         consentimiento_lopdp, es_titular, creado_en)
      VALUES (?, ?, ?, ?, ?, 1, 1, datetime('now'))`,
   ).bind(scan_id, v.nombre, String(especialidad || '').slice(0, 80), trabajo, correo).run();
+
+  // Token de 128 bits: es la única credencial que protege el informe.
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  const token = [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+
+  await env.DB.prepare(
+    'INSERT INTO informes (token, scan_id, lead_id, creado_en) VALUES (?, ?, ?, datetime(\'now\'))',
+  ).bind(token, scan_id, insLead.meta.last_row_id).run();
 
   const completo = JSON.parse(scan.resultado);
   const desbloqueadas = (completo.dimensiones || [])
@@ -60,8 +69,9 @@ export async function onRequestPost(context) {
   return json({
     ok: true,
     dimensiones: desbloqueadas,
-    // TODO(correo): enviar el informe a `correo` y crear /informe/<token>.
-    // Mientras tanto se muestran en pantalla y el lead ya quedó guardado.
-    mensaje: 'Tus dos áreas adicionales están abajo. Te escribiremos a ' + correo + '.',
+    informe_url: `/informe/${token}`,
+    // TODO(correo): enviar informe_url por Microsoft Graph cuando el registro
+    // de la aplicación en Entra esté listo. El enlace ya funciona sin correo.
+    mensaje: 'Tus dos áreas adicionales están abajo. Guarda el enlace de tu informe.',
   });
 }

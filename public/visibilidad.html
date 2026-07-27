@@ -346,8 +346,16 @@
       if (!r.ok) throw new Error(data.error || 'No pudimos completar el desbloqueo.');
 
       $('bloque-form').style.display = 'none';
+      const enlace = data.informe_url
+        ? '<div class="dim" style="background:var(--light)"><p style="margin:0"><strong>Tu informe permanente:</strong> '
+          + '<a href="' + data.informe_url + '" target="_blank" rel="noopener">'
+          + location.origin + data.informe_url + '</a><br>'
+          + '<span style="color:var(--muted);font-size:.9rem">Guarda este enlace. '
+          + 'Puedes volver a consultarlo cuando quieras.</span></p></div>'
+        : '';
       $('extra').innerHTML = '<h2>Tus dos áreas adicionales</h2>'
         + data.dimensiones.map(tarjeta).join('')
+        + enlace
         + '<h2>Las seis áreas restantes</h2>'
         + '<p>Son las que no se resuelven solas: requieren cambios en tu sitio, '
         + 'en tus fichas y en cómo te encuentran los sistemas automatizados.</p>'

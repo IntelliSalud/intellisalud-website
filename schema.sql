@@ -45,3 +45,23 @@ CREATE TABLE IF NOT EXISTS limites (
 
 -- Permite purgar los registros antiguos sin recorrer toda la tabla.
 CREATE INDEX IF NOT EXISTS idx_limites_dia ON limites (dia);
+
+-- Informes personalizados servidos en /informe/<token>.
+--
+-- Tabla aparte en lugar de una columna en "leads": este archivo se ejecuta
+-- completo cada vez que cambia el esquema, y D1 no admite
+-- "ALTER TABLE ... ADD COLUMN IF NOT EXISTS". Una tabla con IF NOT EXISTS sí
+-- es idempotente.
+--
+-- El token es la única credencial de acceso al informe, así que se genera con
+-- 128 bits de aleatoriedad criptográfica. La página va con noindex y /informe/
+-- está bloqueado en robots.txt: el informe contiene datos de una persona
+-- identificada y no debe aparecer en ningún buscador.
+CREATE TABLE IF NOT EXISTS informes (
+  token     TEXT PRIMARY KEY,
+  scan_id   INTEGER NOT NULL REFERENCES scans (id),
+  lead_id   INTEGER REFERENCES leads (id),
+  creado_en TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_informes_scan ON informes (scan_id);
