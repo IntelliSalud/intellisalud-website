@@ -1,67 +1,86 @@
 # IntelliSalud
 
-> IntelliSalud es una empresa ecuatoriana de inteligencia artificial para médicos. Su producto principal es Ambient AI, una aplicación móvil que transcribe y resume consultas médicas en tiempo real — sin grabar audio ni almacenar datos personales del paciente.
+> IntelliSalud es una empresa ecuatoriana de desarrollo de software que ayuda a médicos, especialistas y clínicas a ser encontrados por sus pacientes — en buscadores y en asistentes de inteligencia artificial — mediante SEO, GEO, desarrollo web y construcción de identidad profesional.
 
 ## ¿Qué es IntelliSalud?
 
-IntelliSalud S.A.S. es una startup tecnológica fundada en Ecuador (Daule, Guayas) en 2025. Se especializa en soluciones de inteligencia artificial para consultorios médicos y clínicas privadas en América Latina.
+IntelliSalud S.A.S. es una empresa de tecnología fundada en Ecuador (Daule, provincia del Guayas) en 2025. Desarrolla software y automatizaciones con inteligencia artificial para el sector salud, y presta servicios de visibilidad digital a profesionales de la salud en Ecuador y América Latina.
 
-## Producto principal: Ambient AI
+Fundador: Jonathan L. Aviles, Magíster en Gestión de Sistemas de Información, con certificaciones Microsoft en inteligencia artificial (AI-900), seguridad y cumplimiento (SC-900) y administración de plataformas de colaboración (MS-700).
 
-IntelliSalud Ambient AI es una aplicación móvil (Android e iOS) que:
+## Servicios disponibles hoy
 
-- Escucha la consulta médica en tiempo real desde el teléfono del médico
-- Genera automáticamente un resumen clínico estructurado (motivo, síntomas, diagnóstico, recomendaciones)
-- **No graba audio** en ningún momento — solo procesa texto en tiempo real
-- **No almacena datos personales del paciente** (sin nombre, cédula, fecha de nacimiento ni PII)
-- Elimina automáticamente las sesiones a las **24 horas**
-- Cumple con la Ley Orgánica de Protección de Datos Personales (LOPDP) de Ecuador
+### SEO y GEO para profesionales de la salud
+Posicionamiento en buscadores (SEO) y optimización para motores generativos (GEO). Incluye:
 
-## Beneficios para médicos
+- Aparecer en resultados cuando un paciente busca una especialidad en una ciudad
+- Consistencia del nombre, títulos y consultorios en todas las plataformas
+- Datos estructurados schema.org (`Physician`, `MedicalBusiness`, `Person`)
+- Presencia verificable ante ChatGPT, Claude, Gemini y Perplexity
+- Contenido que responde preguntas reales de pacientes
 
-- Reducción de hasta un 15% en tiempo de documentación clínica (Kaiser Permanente, 2024)
-- El médico puede concentrarse en el paciente sin tomar notas
-- Resumen disponible en portal web y aplicación móvil
-- Sin curva de aprendizaje — funciona desde la primera consulta
+### Sitio web y marca digital
+- Sitio web propio, rápido y optimizado para móvil
+- Perfil de Google Business con mapa, horarios y reseñas
+- Perfil profesional unificado — una sola versión oficial de la información
+- Perfil de LinkedIn y presencia en directorios médicos
+- Blog y artículos escritos para pacientes y para sistemas de IA
 
-## Tecnología
+### Diagnóstico de visibilidad
+Evaluación gratuita del estado actual de un profesional en buscadores, directorios y asistentes de IA. Genera un puntaje de 0 a 100 sobre diez áreas, con recomendaciones priorizadas.
 
-- Transcripción de voz a texto en tiempo real (sin almacenamiento de audio)
-- Resumen clínico generado por IA (Claude de Anthropic)
-- Infraestructura: Supabase (base de datos), Railway (backend), Cloudflare (hosting)
-- Datos alojados en AWS São Paulo (Brasil) — dentro de estándares latinoamericanos
+## Herramientas en desarrollo (no disponibles comercialmente)
 
-## Mercado objetivo
+- **Ambient AI** — documentación clínica automática de la consulta médica. En fase beta. No graba audio ni almacena datos personales del paciente.
+- **CRM/EHR** — gestión de pacientes, citas y seguimientos.
+- **Automatización por WhatsApp** — recordatorios y confirmaciones de citas.
+
+Estas herramientas se documentan porque explican el origen técnico de la empresa. No están a la venta.
+
+## Diferencia entre SEO y GEO
+
+El SEO posiciona **páginas** en un buscador. El GEO busca que un asistente de inteligencia artificial pueda encontrar, entender y **citar correctamente** a una persona u organización.
+
+La distinción importa: un buscador ordena páginas por relevancia, mientras que un asistente de IA recupera **entidades** — nombres cuya información aparece corroborada en varias fuentes independientes, con credenciales verificables y datos consistentes. Un profesional puede tener buen SEO y seguir siendo invisible para la IA.
+
+## Datos que sustentan el problema
+
+- El 90% de los pacientes investiga a su especialista en internet antes de agendar una cita (Doctoralia, Doctoralia Awards 2026).
+- Cuando aparece un resumen generado por IA, solo el 8% de las búsquedas termina en un clic a un resultado tradicional, frente al 15% cuando no aparece (Pew Research Center, 68.879 búsquedas, marzo 2025).
+- El tráfico referido por modelos de lenguaje creció 527% interanual; los sitios de negocios y servicios son el 50% de las fuentes que cita ChatGPT (Semrush).
+
+## Lo que IntelliSalud NO promete
+
+- **No garantiza el primer lugar en Google** ni una mención específica en ningún asistente de IA. Ninguna empresa controla esos algoritmos.
+- No compra reseñas ni genera reseñas falsas.
+- No publica información clínica ni datos de pacientes.
+- No ofrece Ambient AI, CRM/EHR ni automatización por WhatsApp como productos a la venta en este momento.
+
+## Plazos realistas
+
+Las correcciones técnicas se implementan en semanas. La visibilidad en buscadores suele moverse entre el segundo y el cuarto mes. Las menciones en asistentes de inteligencia artificial tardan más — normalmente entre cinco y ocho meses — porque dependen de corroboración en fuentes externas.
+
+## Mercado
 
 - Médicos generales y especialistas en Ecuador (mercado principal)
 - Clínicas privadas y consultorios médicos
-- Expansión planificada: Panamá, Perú, Chile, Uruguay, Argentina
-
-## Modelo de negocio
-
-Suscripción mensual por consultorio médico (SaaS). Contacto para precios.
+- Expansión planificada a otros países de América Latina
 
 ## Contacto
 
 - Sitio web: https://intellisalud.com
 - Email: jonathan@intellisalud.com
 - WhatsApp: +593 99 828 6930
-- Demo: https://intellisalud.com/#contacto
 
 ## Páginas del sitio
 
-- [Inicio](https://intellisalud.com/): Descripción del producto, servicios, cómo funciona, contacto
-- [Política de Privacidad](https://intellisalud.com/privacidad): Datos recopilados, derechos LOPDP, procesadores terceros
+- [Inicio](https://intellisalud.com/): servicios, el problema de la visibilidad, cómo funciona el diagnóstico, contacto
+- [Sobre IntelliSalud](https://intellisalud.com/nosotros): qué hace la empresa, datos de la organización, cómo citarnos
+- [Jonathan L. Aviles](https://intellisalud.com/equipo/jonathan-aviles): fundador, formación y credenciales
+- [Diagnóstico de visibilidad](https://intellisalud.com/visibilidad): evaluación gratuita
+- [Casos](https://intellisalud.com/casos): trabajos realizados
+- [Política de Privacidad](https://intellisalud.com/privacidad): datos recopilados, derechos LOPDP
 
-## Otros servicios (en desarrollo)
+## Cómo citarnos
 
-- **Voice AI para citas**: Automatización de llamadas para agendamiento y recordatorios de citas
-- **WhatsApp Automation**: Confirmaciones de citas y seguimientos post-consulta vía WhatsApp
-
-## Lo que IntelliSalud NO hace
-
-- No graba audio de las consultas
-- No almacena nombre, cédula ni datos personales del paciente
-- No vende datos a terceros
-- No crea historias clínicas (es una herramienta de asistencia, no un EHR)
-- No requiere integración con sistemas existentes del consultorio
+IntelliSalud — empresa ecuatoriana de visibilidad digital para profesionales de la salud. Fundada en 2025 en Daule, Guayas. https://intellisalud.com/

@@ -4,28 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>IntelliSalud | Ambient AI para Médicos en Ecuador</title>
+  <title>IntelliSalud | Visibilidad digital para médicos en Ecuador</title>
 
   <!-- ═══ SEO — Core ═══ -->
   <meta
     name="description"
-    content="IntelliSalud es una empresa ecuatoriana de inteligencia artificial para médicos. Su producto principal, Ambient AI, transcribe y resume consultas médicas en tiempo real — sin grabar audio ni almacenar datos personales del paciente. Disponible en Ecuador para consultorios y clínicas privadas."
+    content="IntelliSalud ayuda a médicos y clínicas en Ecuador a ser encontrados por sus pacientes: posicionamiento en buscadores (SEO), optimización para asistentes de inteligencia artificial (GEO), sitios web y perfil profesional. Diagnóstico de visibilidad gratuito."
   />
   <meta
     name="keywords"
-    content="IntelliSalud, ambient AI médicos Ecuador, IA para consultorios médicos, transcripción consultas médicas, resumen clínico automático, inteligencia artificial salud Ecuador, software médico Ecuador, automatización consultorios"
+    content="SEO para médicos Ecuador, GEO optimización IA, visibilidad digital médicos, posicionamiento web médicos Guayaquil, sitio web para consultorio médico, marca personal médica, Google Business para médicos, aparecer en ChatGPT, presencia digital profesionales de la salud"
   />
   <link rel="canonical" href="https://intellisalud.com/" />
 
   <!-- ═══ Open Graph ═══ -->
-  <meta property="og:title" content="IntelliSalud | Ambient AI para Médicos en Ecuador" />
-  <meta property="og:description" content="Transcribe y resume consultas médicas automáticamente con IA. Sin grabar audio. Sin datos personales del paciente. Más tiempo para tus pacientes." />
+  <meta property="og:title" content="IntelliSalud | Visibilidad digital para médicos en Ecuador" />
+  <meta property="og:description" content="Que los pacientes que te buscan sí te encuentren — en Google y en asistentes de inteligencia artificial. SEO, GEO y sitios web para profesionales de la salud." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://intellisalud.com/" />
   <meta property="og:locale" content="es_EC" />
   <meta property="og:site_name" content="IntelliSalud" />
 
   <!-- ═══ GEO — Schema.org Structured Data ═══ -->
+  <!-- El @id de Organization debe coincidir exactamente con el de /nosotros y con
+       el worksFor de /equipo/jonathan-aviles. Ese enlace por @id es lo que permite
+       que un modelo resuelva "¿quién fundó IntelliSalud?". No cambiar sin actualizar
+       las tres páginas a la vez. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -44,6 +48,8 @@
           "addressRegion": "Guayas",
           "addressLocality": "Daule"
         },
+        "founder": { "@id": "https://intellisalud.com/#jonathan-aviles" },
+        "employee": { "@id": "https://intellisalud.com/#jonathan-aviles" },
         "contactPoint": {
           "@type": "ContactPoint",
           "email": "jonathan@intellisalud.com",
@@ -51,38 +57,46 @@
           "availableLanguage": "Spanish"
         },
         "sameAs": [
-          "https://wa.me/593998286930"
+          "https://wa.me/593998286930",
+          "https://github.com/IntelliSalud"
         ],
-        "areaServed": {
-          "@type": "Country",
-          "name": "Ecuador"
-        },
-        "description": "IntelliSalud es una empresa ecuatoriana especializada en inteligencia artificial para consultorios médicos. Ofrece soluciones de Ambient AI que transcriben y resumen consultas médicas en tiempo real, sin grabar audio ni almacenar datos personales de los pacientes."
+        "areaServed": { "@type": "Country", "name": "Ecuador" },
+        "knowsAbout": [
+          "Optimización para motores de búsqueda (SEO) para médicos",
+          "Optimización para motores generativos (GEO)",
+          "Desarrollo web para consultorios médicos",
+          "Datos estructurados schema.org para profesionales de la salud",
+          "Perfil de Google Business para consultorios",
+          "Presencia digital de profesionales de la salud",
+          "Ley Orgánica de Protección de Datos Personales del Ecuador"
+        ],
+        "description": "IntelliSalud es una empresa ecuatoriana de desarrollo de software que ayuda a médicos y clínicas a ser encontrados por sus pacientes, en buscadores y en asistentes de inteligencia artificial, mediante SEO, GEO, desarrollo web y construcción de identidad profesional."
       },
       {
-        "@type": "SoftwareApplication",
-        "@id": "https://intellisalud.com/#product-ambient-ai",
-        "name": "IntelliSalud Ambient AI",
-        "applicationCategory": "HealthApplication",
-        "operatingSystem": "Android, iOS",
-        "url": "https://intellisalud.com",
+        "@type": "Service",
+        "@id": "https://intellisalud.com/#servicio-seo-geo",
+        "name": "SEO y GEO para profesionales de la salud",
+        "serviceType": "Optimización de visibilidad en buscadores y asistentes de inteligencia artificial",
         "provider": { "@id": "https://intellisalud.com/#organization" },
-        "offers": {
-          "@type": "Offer",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock",
-          "description": "Suscripción mensual para consultorios médicos. Contactar para precio."
+        "areaServed": { "@type": "Country", "name": "Ecuador" },
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "Médicos, especialistas y clínicas privadas"
         },
-        "description": "Aplicación móvil de Ambient AI para médicos en Ecuador. Escucha la consulta médica en tiempo real, genera un resumen clínico estructurado automáticamente, y lo elimina a las 24 horas. No graba audio. No almacena datos personales del paciente.",
-        "featureList": [
-          "Transcripción en tiempo real de consultas médicas",
-          "Generación automática de resumen clínico estructurado",
-          "Sin grabación de audio — solo texto",
-          "Sin almacenamiento de datos personales del paciente (PII)",
-          "Eliminación automática de sesiones a las 24 horas",
-          "Disponible para Android e iOS",
-          "Integración con portal web para médicos"
-        ]
+        "description": "Posicionamiento en buscadores y optimización para motores generativos, para que un profesional de la salud aparezca cuando un paciente busca su especialidad — en Google y en asistentes como ChatGPT, Claude, Gemini o Perplexity."
+      },
+      {
+        "@type": "Service",
+        "@id": "https://intellisalud.com/#servicio-web",
+        "name": "Sitio web y marca digital para médicos",
+        "serviceType": "Desarrollo web y construcción de identidad profesional",
+        "provider": { "@id": "https://intellisalud.com/#organization" },
+        "areaServed": { "@type": "Country", "name": "Ecuador" },
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "Médicos, especialistas y clínicas privadas"
+        },
+        "description": "Sitio web propio, perfil de Google Business, perfil profesional unificado, presencia en directorios médicos y contenido escrito para pacientes y para sistemas de inteligencia artificial."
       },
       {
         "@type": "FAQPage",
@@ -90,50 +104,50 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "¿IntelliSalud graba audio de las consultas?",
+            "name": "¿Qué es GEO y en qué se diferencia del SEO?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. IntelliSalud Ambient AI no graba ni almacena audio en ningún momento. La transcripción ocurre en tiempo real en el dispositivo y solo se conserva el texto del resumen clínico, que se elimina automáticamente a las 24 horas."
+              "text": "El SEO busca posicionar páginas web en los resultados de un buscador. El GEO (optimización para motores generativos) busca que un asistente de inteligencia artificial pueda encontrar, entender y citar correctamente a una persona u organización. La diferencia es importante: un buscador ordena páginas, mientras que un asistente de IA recupera entidades — nombres cuya información aparece corroborada en varias fuentes independientes. Un médico puede tener buen SEO y aun así ser invisible para la IA."
             }
           },
           {
             "@type": "Question",
-            "name": "¿Se almacenan datos personales del paciente?",
+            "name": "¿Por qué un médico necesita aparecer en ChatGPT o Claude?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. IntelliSalud no almacena nombre, cédula, fecha de nacimiento ni ningún otro dato de identificación personal del paciente. Los resúmenes clínicos son anonimizados y se eliminan automáticamente a las 24 horas."
+              "text": "Porque cada vez más pacientes preguntan directamente a un asistente de inteligencia artificial en lugar de buscar en Google. Según Pew Research Center, cuando aparece un resumen generado por IA, solo el 8% de las búsquedas termina en un clic a un resultado tradicional, frente al 15% cuando no aparece. Si el asistente no tiene información sobre un profesional, sencillamente no lo menciona."
             }
           },
           {
             "@type": "Question",
-            "name": "¿Qué hace IntelliSalud Ambient AI?",
+            "name": "¿Necesito tener un sitio web para empezar?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "IntelliSalud Ambient AI escucha la consulta médica en tiempo real desde el teléfono del médico y genera automáticamente un resumen clínico estructurado. El resumen incluye el motivo de la consulta, los síntomas, el diagnóstico provisional y las recomendaciones del médico — sin que el médico tenga que escribir nada."
+              "text": "No. El diagnóstico de visibilidad funciona aunque el profesional no tenga sitio web ni cuentas en redes sociales. De hecho, no tener sitio propio es uno de los factores que más baja el puntaje, porque significa que la información sobre el profesional vive en directorios y perfiles que él no controla."
             }
           },
           {
             "@type": "Question",
-            "name": "¿En qué países está disponible IntelliSalud?",
+            "name": "¿IntelliSalud garantiza aparecer en el primer lugar de Google?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "IntelliSalud está disponible actualmente en Ecuador, con expansión planificada a Panamá, Perú, Chile, Uruguay y Argentina."
+              "text": "No. Nadie puede garantizar una posición específica en Google ni una mención específica en un asistente de inteligencia artificial: ninguna empresa controla esos algoritmos. Lo que sí se puede hacer es construir las condiciones que esos sistemas premian — información consistente, datos estructurados correctos, contenido verificable y corroboración en fuentes independientes. Cualquier proveedor que garantice un primer lugar está prometiendo algo que no puede cumplir."
             }
           },
           {
             "@type": "Question",
-            "name": "¿Cuánto cuesta IntelliSalud?",
+            "name": "¿Cuánto tiempo toma ver resultados?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "IntelliSalud opera con un modelo de suscripción mensual por consultorio. Contáctanos por WhatsApp o formulario para obtener información de precios adaptada a tu consultorio."
+              "text": "Las correcciones técnicas — datos estructurados, sitio web, consistencia de nombre y datos de contacto — se implementan en semanas. La visibilidad en buscadores suele empezar a moverse entre el segundo y el cuarto mes. Las menciones en asistentes de inteligencia artificial tardan más, normalmente entre cinco y ocho meses, porque dependen de que la información aparezca corroborada en fuentes externas que no controlamos."
             }
           },
           {
             "@type": "Question",
-            "name": "¿IntelliSalud cumple con la ley de protección de datos de Ecuador?",
+            "name": "¿Qué es el diagnóstico de visibilidad?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Sí. IntelliSalud cumple con la Ley Orgánica de Protección de Datos Personales (LOPDP) de Ecuador. No se almacenan datos personales de pacientes, no se graba audio, y las sesiones se eliminan automáticamente a las 24 horas."
+              "text": "Es una evaluación gratuita del estado actual de un profesional de la salud en buscadores, directorios médicos y asistentes de inteligencia artificial. Genera un puntaje de 0 a 100 sobre diez áreas y entrega recomendaciones priorizadas, empezando por las que tienen mayor impacto."
             }
           }
         ]
@@ -158,7 +172,7 @@
   <!-- ═══════════════════════════════════════════ HEADER ══ -->
   <header class="site-header">
     <nav class="navbar">
-      <a href="#" class="logo">
+      <a href="/" class="logo">
         <img src="assets/logo.jpg" alt="Logo de IntelliSalud" class="logo-image" />
         <span>IntelliSalud</span>
       </a>
@@ -169,6 +183,11 @@
         <a href="#servicios">Servicios</a>
         <a href="#beneficios">Beneficios</a>
         <a href="#como-funciona">Cómo funciona</a>
+        <!-- Enlaces a las páginas de entidad. Sin estos enlaces internos, /nosotros
+             y /equipo/jonathan-aviles quedaban huérfanas: solo se llegaba por el
+             sitemap, lo que debilita mucho su peso para buscadores y modelos. -->
+        <a href="/nosotros">Nosotros</a>
+        <a href="/equipo/jonathan-aviles">Equipo</a>
         <!-- WhatsApp link visible in nav -->
         <a
           href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
@@ -179,8 +198,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
           WhatsApp
         </a>
-        <a href="#contacto" class="nav-cta">Agendar demo</a>
-        <a href="/prueba" class="nav-cta" style="background:linear-gradient(135deg,#00c2c7,#00e5d4);margin-left:4px;display:none">Prueba gratis →</a>
+        <a href="#diagnostico" class="nav-cta">Consultar visibilidad</a>
       </div>
     </nav>
   </header>
@@ -188,46 +206,65 @@
   <main>
 
     <!-- ═══════════════════════════════════════ STATS INTRO ══ -->
-    <section class="stats-intro" id="statsIntro" aria-label="Estadísticas de Ambient AI para médicos">
+    <!-- REGLA: el valor final de cada estadística vive SIEMPRE aquí, en el HTML.
+         Nunca contarlo desde 0 con JavaScript — un rastreador que capture la
+         página a mitad de la animación registra el número equivocado y se lo
+         atribuye a la fuente citada. Ese error ya ocurrió una vez (62% -> 1%).
+         TODO: completar los href de cada fuente con la URL primaria. -->
+    <section class="stats-intro" id="statsIntro" aria-label="Cómo buscan los pacientes a su médico">
       <div class="stats-intro-inner">
-        <p class="stats-eyebrow" id="statsEyebrow">El tiempo del médico es demasiado valioso para el papeleo</p>
-        <p class="stats-subtitle" id="statsSubtitle">Datos reales de estudios clínicos internacionales</p>
+        <p class="stats-eyebrow">La primera consulta ya no ocurre en tu consultorio</p>
+        <p class="stats-subtitle">Ocurre en internet — y cada vez más, dentro de un asistente de inteligencia artificial</p>
 
         <div class="stats-row">
-          <div class="stat-block" id="stat1">
-            <div class="stat-num red" id="num1" aria-live="polite">62%</div>
-            <div class="stat-label">de médicos citan documentación excesiva como la principal causa de agotamiento profesional</div>
-            <div class="stat-source">American Medical Association · Estudio Nacional 2024</div>
+          <div class="stat-block">
+            <div class="stat-num gold">90%</div>
+            <div class="stat-label">de los pacientes investiga a su especialista en internet antes de agendar una cita</div>
+            <div class="stat-source">
+              <a href="https://press.doctoralia.com.mx/461103-la-primera-consulta-ocurre-en-internet-90-de-los-pacientes-investiga-especialistas-antes-de-agendar-doctoralia-awards-2026" target="_blank" rel="noopener">Doctoralia · Doctoralia Awards 2026</a>
+            </div>
           </div>
-          <div class="stat-block" id="stat2">
-            <div class="stat-num gold" id="num2" aria-live="polite">9 min</div>
-            <div class="stat-label">en el EHR por cada 15 minutos frente al paciente — tiempo perdido en papelería</div>
-            <div class="stat-source">Universidad de Nuevo México · Análisis de carga administrativa 2024</div>
+          <div class="stat-block">
+            <div class="stat-num red">8%</div>
+            <div class="stat-label">de las búsquedas termina en un clic a un resultado tradicional cuando aparece un resumen de IA — frente al 15% cuando no aparece</div>
+            <div class="stat-source">
+              <a href="https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/" target="_blank" rel="noopener">Pew Research Center · 68.879 búsquedas · marzo 2025</a>
+            </div>
           </div>
-          <div class="stat-block" id="stat3">
-            <div class="stat-num cyan" id="num3" aria-live="polite">15%</div>
-            <div class="stat-label">de reducción en tiempo de documentación con Ambient AI — en práctica clínica real</div>
-            <div class="stat-source">Kaiser Permanente · 7,260 médicos, 2.5M consultas · 2024</div>
+          <div class="stat-block">
+            <div class="stat-num cyan">527%</div>
+            <div class="stat-label">creció en un año el tráfico referido por modelos de lenguaje. Los sitios de negocios y servicios son el 50% de lo que cita ChatGPT</div>
+            <div class="stat-source">
+              <a href="https://www.semrush.com/blog/ai-seo-statistics/" target="_blank" rel="noopener">Semrush · AI SEO Statistics</a>
+            </div>
           </div>
         </div>
+
+        <p class="stats-note">
+          Y cuando por fin te encuentran, lo que leen decide: un estudio experimental publicado en el
+          <a href="https://www.jmir.org/2024/1/e46713" target="_blank" rel="noopener"><em>Journal of Medical Internet Research</em></a>
+          concluyó que las características de las reseñas negativas — y la forma en que el médico
+          responde a ellas — influyen de manera significativa en la elección del paciente.
+        </p>
       </div>
-      <div class="transition-bar" id="transitionBar"></div>
     </section>
 
     <!-- ═══════════════════════════════════════════ HERO ══ -->
     <section class="hero" id="heroSection">
       <div class="hero-content">
-        <p class="eyebrow">Ambient AI para médicos · Disponible en Ecuador</p>
+        <p class="eyebrow">Visibilidad digital para médicos · Ecuador</p>
 
-        <h1>Más tiempo con tus pacientes, <span class="h1-gradient">menos tiempo frente al computador</span></h1>
+        <h1>Que los pacientes que te buscan <span class="h1-gradient">sí te encuentren</span></h1>
 
         <p class="hero-subtitle">
-          IntelliSalud captura, transcribe y resume automáticamente cada consulta médica
-          — sin grabar audio, sin almacenar datos del paciente.
+          Tu preparación y tu experiencia ya están. Lo que falta es que aparezcan cuando
+          alguien busca un especialista — en Google y, cada vez más, en asistentes de
+          inteligencia artificial como ChatGPT, Claude o Gemini. IntelliSalud construye
+          esa visibilidad para que más pacientes lleguen a ti.
         </p>
 
         <div class="hero-actions">
-          <a href="#contacto" class="btn btn-primary">Agendar una demo</a>
+          <a href="/visibilidad" class="btn btn-primary">Diagnóstico gratuito de visibilidad</a>
           <a href="#como-funciona" class="btn btn-secondary">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
             Ver cómo funciona
@@ -237,207 +274,65 @@
         <!-- Mini stat bar under CTA buttons -->
         <div class="hero-mini-stats">
           <div class="mini-stat">
-            <span class="mini-num">Sin PII</span>
-            <span class="mini-label">Sin datos personales del paciente</span>
+            <span class="mini-num">0–100</span>
+            <span class="mini-label">Puntaje de visibilidad de tu perfil</span>
           </div>
           <div class="mini-divider"></div>
           <div class="mini-stat">
-            <span class="mini-num">24 h</span>
-            <span class="mini-label">Expiración automática de sesiones</span>
+            <span class="mini-num">10</span>
+            <span class="mini-label">Áreas evaluadas en el diagnóstico</span>
           </div>
           <div class="mini-divider"></div>
           <div class="mini-stat">
-            <span class="mini-num">Beta</span>
-            <span class="mini-label">Disponible en Ecuador hoy</span>
+            <span class="mini-num">Gratis</span>
+            <span class="mini-label">Primer diagnóstico, sin costo</span>
           </div>
         </div>
       </div>
 
-      <!-- ── Ambient AI demo animation ── -->
-      <div class="hero-card ambient-hero-card" aria-label="Animación: cómo funciona IntelliSalud Ambient AI">
+      <!-- ── ANIMACIÓN: ANTES / DESPUÉS DE SEO + GEO ── -->
+      <!-- 100% CSS, sin JavaScript: no puede romperse si un script falla y se
+           detiene sola si el usuario pidió menos movimiento (prefers-reduced-motion),
+           en cuyo caso queda fija en el estado "después".
+           Es decorativa — el mensaje real está en el <h1> y el subtítulo. -->
+      <div class="hero-card seo-anim" role="img"
+           aria-label="Antes de aplicar SEO y GEO, una búsqueda del Dr. IntelliSalud no arroja resultados ni en Google ni en ChatGPT. Después de aplicarlos, el perfil aparece en ambos.">
 
-        <!-- SCENE LABELS -->
-        <div class="scene-label-bar">
-          <span class="scene-label-item sl-active" id="slabel1">Consulta</span>
-          <span class="scene-label-sep">→</span>
-          <span class="scene-label-item" id="slabel2">Transcripción</span>
-          <span class="scene-label-sep">→</span>
-          <span class="scene-label-item" id="slabel3">Resumen</span>
-          <span class="scene-label-sep">→</span>
-          <span class="scene-label-item" id="slabel4">EHR</span>
-        </div>
-
-        <!-- SCENE 1: Doctor + Patient consultation -->
-        <div class="anim-scene" id="ascene1">
-          <svg class="consult-svg" viewBox="0 0 440 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <!-- Floor line -->
-            <rect x="0" y="230" width="440" height="30" fill="rgba(14,109,181,0.06)" rx="0"/>
-
-            <!-- Desk -->
-            <rect x="155" y="175" width="130" height="10" rx="4" fill="#c8d8ec"/>
-            <rect x="168" y="185" width="7" height="45" rx="3" fill="#b0c4de"/>
-            <rect x="265" y="185" width="7" height="45" rx="3" fill="#b0c4de"/>
-
-            <!-- DOCTOR (left) — seated silhouette -->
-            <g class="fig-doctor">
-              <!-- coat/body -->
-              <rect x="78" y="148" width="52" height="60" rx="14" fill="#0e6db5"/>
-              <!-- lapels -->
-              <rect x="98" y="148" width="4" height="30" rx="2" fill="#1a3a8f"/>
-              <rect x="108" y="148" width="4" height="30" rx="2" fill="#1a3a8f"/>
-              <!-- stethoscope arc -->
-              <path d="M93,162 Q104,174 115,162" fill="none" stroke="#00c2c7" stroke-width="2.2" stroke-linecap="round"/>
-              <!-- head -->
-              <circle cx="104" cy="130" r="20" fill="#0e6db5"/>
-              <!-- hair highlight -->
-              <ellipse cx="104" cy="114" rx="14" ry="6" fill="#1a3a8f"/>
-              <!-- legs -->
-              <rect x="82" y="208" width="20" height="22" rx="5" fill="#0e6db5"/>
-              <rect x="108" y="208" width="20" height="22" rx="5" fill="#0e6db5"/>
-            </g>
-
-            <!-- PATIENT (right) — seated silhouette -->
-            <g class="fig-patient">
-              <!-- body -->
-              <rect x="310" y="155" width="48" height="55" rx="13" fill="#94a3b8"/>
-              <!-- head -->
-              <circle cx="334" cy="137" r="19" fill="#94a3b8"/>
-              <!-- legs -->
-              <rect x="314" y="210" width="18" height="20" rx="4" fill="#94a3b8"/>
-              <rect x="336" y="210" width="18" height="20" rx="4" fill="#94a3b8"/>
-            </g>
-
-            <!-- Doctor chair back -->
-            <rect x="73" y="155" width="6" height="55" rx="3" fill="#b0c4de"/>
-            <rect x="73" y="155" width="55" height="7" rx="3" fill="#b0c4de"/>
-            <!-- Patient chair back -->
-            <rect x="361" y="162" width="6" height="48" rx="3" fill="#b0c4de"/>
-            <rect x="307" y="162" width="60" height="7" rx="3" fill="#b0c4de"/>
-
-            <!-- PHONE on desk -->
-            <g class="phone-on-desk">
-              <rect x="203" y="148" width="34" height="28" rx="5" fill="#1a3a8f" stroke="#00c2c7" stroke-width="1.4"/>
-              <rect x="206" y="151" width="28" height="22" rx="3" fill="#0b2060"/>
-              <!-- Recording dot -->
-              <circle cx="220" cy="143" r="4.5" fill="#ef4444" class="rec-pulse"/>
-              <!-- Mic icon on phone screen -->
-              <path d="M220,154 Q220,162 220,162" stroke="#00c2c7" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-              <rect x="216" y="153" width="8" height="6" rx="3" fill="none" stroke="#00c2c7" stroke-width="1.3"/>
-              <!-- Waveform lines -->
-              <rect x="209" y="164" width="4" height="3" rx="1" fill="#00c2c7" opacity="0.7"/>
-              <rect x="215" y="162" width="4" height="6" rx="1" fill="#00c2c7" opacity="0.9"/>
-              <rect x="221" y="163" width="4" height="5" rx="1" fill="#00c2c7" opacity="0.8"/>
-              <rect x="227" y="165" width="4" height="2" rx="1" fill="#00c2c7" opacity="0.6"/>
-            </g>
-
-            <!-- SPEECH BUBBLES — doctor -->
-            <g class="bubble-doc" id="bdoc">
-              <rect x="136" y="82" width="88" height="34" rx="10" fill="#0e6db5"/>
-              <polygon points="148,116 140,128 162,116" fill="#0e6db5"/>
-              <rect x="142" y="91" width="58" height="4" rx="2" fill="rgba(255,255,255,0.65)"/>
-              <rect x="142" y="99" width="44" height="4" rx="2" fill="rgba(255,255,255,0.4)"/>
-              <rect x="142" y="107" width="50" height="4" rx="2" fill="rgba(255,255,255,0.35)"/>
-            </g>
-
-            <!-- SPEECH BUBBLES — patient -->
-            <g class="bubble-patient" id="bpatient">
-              <rect x="216" y="82" width="88" height="34" rx="10" fill="#64748b"/>
-              <polygon points="292,116 314,128 300,116" fill="#64748b"/>
-              <rect x="222" y="91" width="55" height="4" rx="2" fill="rgba(255,255,255,0.55)"/>
-              <rect x="222" y="99" width="66" height="4" rx="2" fill="rgba(255,255,255,0.35)"/>
-              <rect x="222" y="107" width="40" height="4" rx="2" fill="rgba(255,255,255,0.28)"/>
-            </g>
-
-            <!-- Label -->
-            <text x="220" y="255" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="Inter,sans-serif" font-weight="600">IntelliSalud capturando la consulta</text>
-          </svg>
-        </div>
-
-        <!-- SCENE 2: Phone zoomed — transcript appearing -->
-        <div class="anim-scene" id="ascene2">
-          <div class="phone-zoom-wrap">
-            <div class="phone-zoom-device">
-              <div class="phone-zoom-bar">
-                <span class="rec-dot-bar"></span>
-                <span>IntelliSalud · Grabando</span>
-                <span class="live-tag">EN VIVO</span>
-              </div>
-              <div class="phone-zoom-screen">
-                <div class="tz-line tl1">Doctor pregunta sobre síntomas actuales...</div>
-                <div class="tz-line tl2">Paciente menciona dolor abdominal leve.</div>
-                <div class="tz-line tl3">Doctor consulta cambios recientes en dieta.</div>
-                <div class="tz-line tl4">Paciente menciona ingesta de mariscos.</div>
-                <div class="tz-line tl5">Doctor recomienda análisis y analgésicos.</div>
-              </div>
-              <div class="phone-zoom-footer">Transcripción en tiempo real · Sin datos del paciente</div>
-            </div>
+        <!-- Buscador -->
+        <div class="sa-panel">
+          <div class="sa-panel-head">
+            <span class="sa-dot g"></span> Buscador
+          </div>
+          <div class="sa-query">Dr. IntelliSalud</div>
+          <div class="sa-result sa-before">
+            <span class="sa-x">✕</span> Sin resultados relevantes
+          </div>
+          <div class="sa-result sa-after">
+            <span class="sa-check">✓</span>
+            <span>
+              <strong>Dr. IntelliSalud</strong> — Especialista · Guayaquil
+              <em>intellisalud.com</em>
+            </span>
           </div>
         </div>
 
-        <!-- SCENE 3: Clinical summary card -->
-        <div class="anim-scene" id="ascene3">
-          <div class="summary-card-wrap">
-            <div class="summary-card">
-              <div class="sc-header">
-                <div class="sc-logo-dot"></div>
-                <span class="sc-title">IntelliSalud</span>
-                <span class="sc-badge">Resumen clínico</span>
-              </div>
-              <div class="sc-session">DrAviles_20260521_1139AM</div>
-              <div class="sc-body">
-                <div class="sc-block">
-                  <span class="sc-tag">Motivo</span>
-                  <div class="sc-line full"></div>
-                </div>
-                <div class="sc-block">
-                  <span class="sc-tag">Síntomas</span>
-                  <div class="sc-line full"></div>
-                  <div class="sc-line med"></div>
-                </div>
-                <div class="sc-block">
-                  <span class="sc-tag">Plan</span>
-                  <div class="sc-line full"></div>
-                  <div class="sc-line short"></div>
-                </div>
-              </div>
-              <div class="sc-footer">
-                <span class="sc-expires">Expira en 24h</span>
-                <span class="sc-export-btn">Exportar al EHR</span>
-              </div>
-            </div>
-            <div class="sc-fly-arrow">&#8594;</div>
+        <!-- Asistente de IA -->
+        <div class="sa-panel">
+          <div class="sa-panel-head">
+            <span class="sa-dot a"></span> Asistente de IA
+          </div>
+          <div class="sa-query">¿Quién es el Dr. IntelliSalud?</div>
+          <div class="sa-result sa-before">
+            <span class="sa-x">✕</span> No tengo información sobre ese profesional.
+          </div>
+          <div class="sa-result sa-after">
+            <span class="sa-check">✓</span>
+            <span>Es un especialista que atiende en Guayaquil. Puedes agendar en su sitio web.</span>
           </div>
         </div>
 
-        <!-- SCENE 4: Laptop / web portal -->
-        <div class="anim-scene" id="ascene4">
-          <div class="laptop-wrap">
-            <div class="laptop-body">
-              <div class="laptop-screen">
-                <div class="ls-topbar">
-                  <span class="ls-logo-dot"></span>
-                  <span class="ls-title">IntelliSalud Portal</span>
-                </div>
-                <div class="ls-row ls-active">
-                  <span class="ls-session-id">DrAviles_20260521_1139AM</span>
-                  <span class="ls-status done">&#10003; Exportado</span>
-                </div>
-                <div class="ls-row">
-                  <span class="ls-session-id ls-muted">DrAviles_20260520_0915AM</span>
-                  <span class="ls-status done ls-muted">&#10003;</span>
-                </div>
-                <div class="ls-row">
-                  <span class="ls-session-id ls-muted">DrAviles_20260519_1045AM</span>
-                  <span class="ls-status done ls-muted">&#10003;</span>
-                </div>
-              </div>
-            </div>
-            <div class="laptop-hinge"></div>
-            <div class="laptop-base"></div>
-          </div>
-          <p class="portal-label">Resumen listo en tu portal · Cópialo al EHR en un clic</p>
-        </div>
-
+        <!-- Franja de transición -->
+        <div class="sa-apply"><span>Aplica SEO + GEO</span></div>
       </div>
     </section>
 
@@ -445,34 +340,34 @@
     <section class="problem-section">
       <div class="section-container">
         <p class="eyebrow">El problema</p>
-        <h2>El médico moderno pasa más tiempo frente al computador que con sus pacientes.</h2>
+        <h2>El mejor especialista de la ciudad no sirve de nada si el paciente no logra encontrarlo.</h2>
 
         <div class="problem-grid">
           <div class="problem-item">
             <div class="problem-icon">
-              <!-- Monitor/typing icon -->
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="6" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="14" y2="12"/></svg>
+              <!-- Search / magnifier icon -->
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </div>
-            <h3>Consultas interrumpidas por el teclado</h3>
-            <p>El médico divide su atención entre el paciente y la pantalla, escribiendo notas mientras intenta escuchar. La calidad de la consulta se resiente.</p>
+            <h3>No apareces en Google cuando te buscan</h3>
+            <p>Un paciente escribe tu especialidad y tu ciudad, y encuentra directorios, clínicas y colegas — pero no a ti. Sin trabajo de posicionamiento (SEO), tu nombre queda enterrado bajo resultados que alguien más sí optimizó.</p>
           </div>
 
           <div class="problem-item">
             <div class="problem-icon">
-              <!-- Notepad/incomplete notes icon -->
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="12" y1="17" x2="8" y2="17"/><line x1="9" y1="9" x2="8" y2="9"/></svg>
+              <!-- AI / chip icon -->
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/><line x1="12" y1="2" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="2" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="22" y2="12"/></svg>
             </div>
-            <h3>Notas clínicas incompletas o tardías</h3>
-            <p>Las anotaciones apresuradas generan expedientes incompletos. Muchos médicos terminan completando notas en casa, bien pasada la noche.</p>
+            <h3>La inteligencia artificial no sabe que existes</h3>
+            <p>Cada vez más pacientes preguntan directamente a ChatGPT, Claude o Gemini por un especialista. Estos sistemas no ordenan páginas: recuperan profesionales cuyos datos aparecen corroborados en varias fuentes. Sin ese trabajo (GEO), no te mencionan.</p>
           </div>
 
           <div class="problem-item">
             <div class="problem-icon">
-              <!-- Burnout / battery-low icon -->
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <!-- Globe / website icon -->
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             </div>
-            <h3>Agotamiento por carga administrativa</h3>
-            <p>La documentación excesiva es la principal causa de burnout médico. Estudios de la AMA muestran que 1 de cada 2 médicos reporta síntomas de agotamiento profesional.</p>
+            <h3>Sin sitio propio, tu información la controlan otros</h3>
+            <p>Si no tienes un sitio web, lo que se dice de ti vive en directorios y redes que no controlas — con datos desactualizados, tu nombre mal escrito o consultorios que ya no atiendes. Eso es exactamente lo que buscadores y asistentes de IA leen y repiten.</p>
           </div>
         </div>
       </div>
@@ -482,56 +377,57 @@
     <section class="services-section" id="servicios">
       <div class="section-container">
         <p class="eyebrow">Servicios</p>
-        <h2>Soluciones de Inteligencia Artificial (IA) simples y listas para tu consultorio</h2>
+        <h2>Que tu preparación se note — en Google y en la inteligencia artificial</h2>
 
         <div class="cards-grid">
 
-          <!-- 1. AMBIENT AI — primary service -->
+          <!-- 1. SEO + GEO — primary service -->
           <article class="service-card service-card-featured">
             <div class="svc-icon-wrap teal">
-              <!-- Waveform / ambient mic icon -->
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/><line x1="2" y1="9" x2="2" y2="15"/><line x1="22" y1="9" x2="22" y2="15"/></svg>
+              <!-- Search + spark icon -->
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7"/><line x1="21" y1="21" x2="15.8" y2="15.8"/><path d="M10.5 7v7M7 10.5h7"/></svg>
             </div>
-            <h3>Ambient AI — Asistente clínico de consulta</h3>
+            <h3>SEO y GEO — Visibilidad en buscadores e IA</h3>
             <ul class="svc-bullets">
-              <li>Captura la consulta en tiempo real desde tu teléfono</li>
-              <li>Genera automáticamente un resumen clínico estructurado</li>
-              <li>Sin grabación de audio · Sin datos personales del paciente</li>
-              <li>Exporta al EHR con un clic desde el portal web</li>
-              <li>El médico se enfoca en el paciente, no en el teclado</li>
+              <li>Apareces cuando un paciente busca tu especialidad en tu ciudad</li>
+              <li>Tu nombre, títulos y consultorios escritos igual en todas partes</li>
+              <li>Datos estructurados para que buscadores y asistentes de IA entiendan quién eres</li>
+              <li>Presencia verificable ante ChatGPT, Claude, Gemini y Perplexity</li>
+              <li>Contenido que responde las preguntas que tus pacientes realmente hacen</li>
             </ul>
-            <span class="svc-badge available">Disponible · Beta</span>
+            <span class="svc-badge available">Disponible</span>
           </article>
 
-          <!-- 2. CRM/EHR — Coming soon -->
+          <!-- 2. WEB + MARCA DIGITAL -->
           <article class="service-card">
             <div class="svc-icon-wrap blue">
-              <!-- Patient management / folder icon -->
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <!-- Browser window icon -->
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><circle cx="5.5" cy="5.5" r="0.6" fill="currentColor"/><circle cx="8" cy="5.5" r="0.6" fill="currentColor"/></svg>
             </div>
-            <h3>CRM/EHR — Sistema de gestión de pacientes</h3>
+            <h3>Sitio web y marca digital</h3>
             <ul class="svc-bullets">
-              <li>Gestión integrada de pacientes y citas en un solo lugar</li>
-              <li>Resúmenes clínicos de Ambient AI se importan automáticamente</li>
-              <li>Historial del paciente, seguimientos y notas clínicas organizadas</li>
-              <li>Compatible con tu flujo actual — no reemplaza, complementa</li>
+              <li>Sitio web propio, rápido y pensado para el celular</li>
+              <li>Perfil de Google Business con mapa, horarios y reseñas</li>
+              <li>Perfil profesional unificado — una sola versión oficial de tu información</li>
+              <li>Perfil de LinkedIn y presencia en directorios médicos</li>
+              <li>Blog y artículos a tu nombre, escritos para pacientes y para IA</li>
             </ul>
-            <span class="svc-badge soon">Proximamente</span>
+            <span class="svc-badge available">Disponible</span>
           </article>
 
-          <!-- 3. WHATSAPP INTEGRATION -->
+          <!-- 3. EN DESARROLLO — Ambient AI + CRM/EHR + WhatsApp merged -->
           <article class="service-card">
             <div class="svc-icon-wrap blue">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+              <!-- Lab flask icon -->
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2h6M10 2v6.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V2"/><line x1="7" y1="15" x2="17" y2="15"/></svg>
             </div>
-            <h3>Automatización por WhatsApp y SMS</h3>
+            <h3>Herramientas de IA para tu consultorio</h3>
             <ul class="svc-bullets">
-              <li>Recordatorios automáticos 24h antes de cada cita</li>
-              <li>Confirmaciones y seguimientos sin intervención humana</li>
-              <li>Notificaciones de resultados e instrucciones al paciente</li>
-              <li>Reduce inasistencias hasta un 40%</li>
+              <li><strong>Ambient AI</strong> — documentación clínica automática de la consulta</li>
+              <li><strong>CRM/EHR</strong> — gestión de pacientes, citas y seguimientos</li>
+              <li><strong>Automatización por WhatsApp</strong> — recordatorios y confirmaciones de citas</li>
             </ul>
-            <span class="svc-badge soon">Proximamente</span>
+            <span class="svc-badge soon">En desarrollo</span>
           </article>
 
         </div>
@@ -543,20 +439,21 @@
       <div class="section-container two-column">
         <div>
           <p class="eyebrow">Beneficios</p>
-          <h2>Tu consultorio merece tecnología de punta. Tus pacientes merecen toda tu atención.</h2>
+          <h2>Más pacientes te encuentran. Y llegan sabiendo quién eres.</h2>
           <p class="section-text">
-            IntelliSalud captura y resume cada consulta automáticamente para que el médico
-            pueda enfocarse 100% en el paciente — sin teclado, sin pantalla, sin distracciones.
+            La visibilidad digital no es publicidad. Es asegurarse de que la información
+            correcta sobre tu formación, tus especialidades y tus consultorios esté donde
+            el paciente — y la inteligencia artificial — la van a buscar.
           </p>
         </div>
 
         <div class="benefits-list">
-          <div class="benefit-item">El médico mantiene contacto visual con el paciente 100% de la consulta</div>
-          <div class="benefit-item">Resumen clínico estructurado generado automáticamente — sin dictar, sin escribir</div>
-          <div class="benefit-item">Sin grabación de audio, sin almacenamiento de datos personales del paciente — cumple privacidad</div>
-          <div class="benefit-item">Resumen listo en el portal web en segundos, disponible 24 horas después expira</div>
-          <div class="benefit-item">Integración directa con tu EHR/CRM actual — exporta con un solo clic</div>
-          <div class="benefit-item">El médico termina su jornada sin papelería pendiente ni documentación tardía</div>
+          <div class="benefit-item">Apareces en los resultados cuando alguien busca tu especialidad en tu ciudad</div>
+          <div class="benefit-item">Los asistentes de IA pueden nombrarte y describir tu formación correctamente</div>
+          <div class="benefit-item">Una sola versión oficial de tu nombre, títulos y consultorios — sin datos contradictorios</div>
+          <div class="benefit-item">El paciente llega informado: conoce tu preparación y tus servicios antes de la primera cita</div>
+          <div class="benefit-item">Tu reputación deja de depender de directorios y perfiles que no controlas</div>
+          <div class="benefit-item">Tu presencia digital sigue trabajando por ti aunque no publiques todos los días</div>
         </div>
       </div>
     </section>
@@ -565,38 +462,39 @@
     <section class="how-section" id="como-funciona">
       <div class="section-container">
         <p class="eyebrow">Cómo funciona</p>
-        <h2>De la consulta al expediente — en segundos</h2>
+        <h2>Conoce tu punto de partida en menos de un minuto</h2>
 
         <div class="steps-grid">
           <div class="step-card">
             <span>1</span>
-            <h3>Doctor coloca el teléfono sobre la mesa</h3>
-            <p>Al empezar cada consulta, el médico inicia Ambient AI en su teléfono y lo deja en la mesa frente a la interacción. Sin configuración, sin interrupciones. El foco está 100% en el paciente.</p>
+            <h3>Busca tu nombre</h3>
+            <p>Escribe tu nombre profesional, tu especialidad y la ciudad donde atiendes. Nada más — no necesitas tener sitio web ni cuentas en redes para empezar.</p>
           </div>
           <div class="step-card">
             <span>2</span>
-            <h3>Ambient AI captura y resume en tiempo real</h3>
-            <p>Mientras médico y paciente hablan naturalmente, IntelliSalud transcribe la consulta y genera automáticamente un resumen clínico curado — motivo, síntomas, plan, medicamentos — sin datos personales del paciente.</p>
+            <h3>Analizamos tu presencia pública</h3>
+            <p>Revisamos qué información sobre ti existe hoy y cómo la interpretan buscadores y asistentes de inteligencia artificial: si te encuentran, si tus datos coinciden entre sí y si hay algo que puedan citar.</p>
           </div>
           <div class="step-card">
             <span>3</span>
-            <h3>Exporta al EHR que ya usas</h3>
-            <p>Al terminar el día, el médico entra al portal web, revisa el resumen de 30 segundos y lo copia a su EHR, CRM o expediente electrónico actual en un clic. Sin papelería tardía.</p>
+            <h3>Recibes tu puntaje y qué hacer</h3>
+            <p>Obtienes un puntaje de visibilidad de 0 a 100 y las primeras recomendaciones concretas para mejorarlo — en orden de prioridad, empezando por lo que más impacto tiene.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════ PRICING SECTION ══ -->
-    <section class="pricing-section">
+    <!-- ═══════════════════════ DIAGNÓSTICO — CTA PRINCIPAL ══ -->
+    <section class="pricing-section" id="diagnostico">
       <div class="section-container pricing-card">
-        <p class="eyebrow">Planes flexibles</p>
-        <h2>Soluciones mensuales para consultorios y clínicas pequeñas</h2>
+        <p class="eyebrow">Diagnóstico gratuito</p>
+        <h2>¿Qué tan preparada está tu marca profesional para la era de la IA?</h2>
         <p>
-          Ofrecemos planes según las necesidades de cada consultorio: recordatorios automáticos,
-          agentes de voz, volumen de llamadas y nivel de personalización.
+          Descúbrelo en menos de un minuto. Busca tu nombre y recibe tu puntaje de
+          visibilidad de 0 a 100, junto con las primeras recomendaciones para mejorarlo.
+          Sin costo y sin compromiso.
         </p>
-        <a href="#contacto" class="btn">Solicitar información</a>
+        <a href="/visibilidad" class="btn">Consultar mi visibilidad</a>
       </div>
     </section>
 
@@ -605,17 +503,25 @@
       <div class="section-container two-column">
         <div>
           <p class="eyebrow">Sobre IntelliSalud</p>
-          <h2>Tecnología inteligente al servicio de la salud en Ecuador</h2>
+          <h2>Software y automatización con IA para el día a día del médico</h2>
         </div>
         <div>
           <p class="section-text">
-            IntelliSalud es una empresa tecnológica ecuatoriana especializada en Ambient AI
-            para consultorios médicos y clínicas. Creamos herramientas que reducen la carga
-            administrativa del médico moderno sin comprometer la privacidad del paciente.
+            IntelliSalud es una empresa ecuatoriana de desarrollo de software. Construimos
+            herramientas y automatizaciones con inteligencia artificial para médicos y
+            clínicas pequeñas — soluciones pensadas para hacer más simple su trabajo diario,
+            no para agregarle una pantalla más.
           </p>
           <p class="section-text">
-            Nuestra misión es simple: devolver al médico el tiempo que le pertenece.
-            Tiempo para escuchar, para examinar, para conectar — no para escribir en un computador.
+            Hoy nos concentramos en la imagen digital del profesional de la salud: usamos
+            SEO y GEO para que un médico gane relevancia en buscadores y en asistentes de
+            inteligencia artificial, y llegue así a más pacientes.
+          </p>
+          <p class="section-text">
+            En paralelo seguimos desarrollando otras herramientas que llegarán al mercado
+            próximamente. La primera es <strong>Ambient AI</strong>, que documenta y resume
+            la consulta médica de forma automática. Puedes conocer más en
+            <a href="/nosotros">Sobre IntelliSalud</a>.
           </p>
         </div>
       </div>
@@ -626,10 +532,11 @@
       <div class="section-container contact-card">
         <div>
           <p class="eyebrow">Contacto</p>
-          <h2>Agenda una demo de Ambient AI</h2>
+          <h2>Hablemos de tu presencia digital</h2>
           <p>
-            Cuéntanos cómo trabajas y te mostraremos cómo IntelliSalud puede eliminar
-            la carga de documentación de tus consultas — desde el primer día.
+            Si quieres conocer más sobre SEO, GEO o cualquiera de nuestras soluciones con
+            inteligencia artificial, escríbenos. Cuéntanos tu especialidad y dónde atiendes,
+            y te respondemos con los primeros pasos para tu caso.
           </p>
         </div>
 
@@ -653,15 +560,15 @@
           </label>
           <button type="submit" class="btn btn-primary">Enviar mensaje</button>
           <a
-            href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20agendar%20una%20demo."
+            href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20consultar%20mi%20visibilidad%20digital."
             class="whatsapp-link"
             target="_blank"
             rel="noopener"
           >
             O escríbenos directamente por WhatsApp
           </a>
-          <p class="form-note">Te responderemos lo antes posible para coordinar una demo.</p>
-          <p class="form-note">Por favor no envíes información médica sensible por este formulario. Este canal es solo para consultas comerciales y coordinación de demos.</p>
+          <p class="form-note">Te responderemos lo antes posible.</p>
+          <p class="form-note">Por favor no envíes información médica sensible por este formulario. Este canal es solo para consultas comerciales.</p>
         </form>
       </div>
     </section>
