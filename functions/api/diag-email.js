@@ -11,12 +11,15 @@
 const TENANT_ID = '857f552d-f7ba-4bf9-92cb-07a77aa7da85';
 const CLIENT_ID = '5d744739-fa3a-440d-a1cc-caa6dba0dea6';
 
-export async function onRequestGet({ env }) {
+export async function onRequestGet({ env, request }) {
+  const enviar = new URL(request.url).searchParams.get('send') === '1';
+
   const salida = {
     secreto_definido: Boolean(env.GRAPH_CLIENT_SECRET),
     secreto_longitud: env.GRAPH_CLIENT_SECRET ? env.GRAPH_CLIENT_SECRET.length : 0,
     remitente: env.GRAPH_SENDER || 'jonathan@intellisalud.com',
     token: null,
+    envio: null,
     error: null,
   };
 
@@ -52,6 +55,31 @@ export async function onRequestGet({ env }) {
     } else {
       salida.token = true;
       salida.error = null;
+
+      // Con ?send=1 hace un envío real y devuelve el resultado exacto de
+      // Graph. Así el error llega aquí en vez de tener que buscarlo en una
+      // bandeja de entrada.
+      if (enviar) {
+        const acceso = JSON.parse(cuerpo).access_token;
+        const destino = env.GRAPH_SENDER || 'jonathan@intellisalud.com';
+        const s = await fetch(
+          `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(destino)}/sendMail`,
+          {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${acceso}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: {
+                subject: 'Prueba de envío — IntelliSalud',
+                body: { contentType: 'Text', content: 'Prueba de la cadena de envío por Microsoft Graph.' },
+                toRecipients: [{ emailAddress: { address: destino } }],
+              },
+              saveToSentItems: true,
+            }),
+          },
+        );
+        const t = await s.text().catch(() => '');
+        salida.envio = { status: s.status, ok: s.ok, detalle: t.slice(0, 400) || '(vacío)' };
+      }
     }
   } catch (e) {
     salida.token = false;
