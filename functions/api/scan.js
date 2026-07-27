@@ -17,6 +17,18 @@ import {
 
 const MODELO = 'claude-haiku-4-5';
 const CACHE_DIAS = 30;
+const LIMITE_DIARIO = 5;   // escaneos con coste, por IP y día
+
+/**
+ * Hash de la IP. Nunca se guarda la dirección en claro: una IP es dato
+ * personal bajo la LOPDP, y para contar peticiones el hash sirve igual.
+ */
+async function hashIP(ip) {
+  const datos = new TextEncoder().encode(`intellisalud:${ip}`);
+  const buf = await crypto.subtle.digest('SHA-256', datos);
+  return [...new Uint8Array(buf)].slice(0, 16)
+    .map((b) => b.toString(16).padStart(2, '0')).join('');
+}
 
 /** La rúbrica v1.0, condensada para el modelo. */
 const SISTEMA = `Eres el motor de puntuación del Índice de Visibilidad Médica de IntelliSalud.
@@ -203,9 +215,35 @@ export async function onRequestPost(context) {
   let scanId, completo;
 
   if (cache) {
+    // Un escaneo servido desde caché no cuesta nada, así que no consume cuota.
     scanId = cache.id;
     completo = JSON.parse(cache.resultado);
   } else {
+    // ── Límite por IP: solo se aplica al camino que sí gasta dinero. ──
+    const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
+    const ipHash = await hashIP(ip);
+    const hoy = new Date().toISOString().slice(0, 10);
+
+    const usoActual = await env.DB.prepare(
+      'SELECT conteo FROM limites WHERE ip_hash = ? AND dia = ?',
+    ).bind(ipHash, hoy).first();
+
+    if (usoActual && usoActual.conteo >= LIMITE_DIARIO) {
+      return json({
+        error: `Has alcanzado el máximo de ${LIMITE_DIARIO} análisis por día. `
+          + 'Vuelve mañana, o escríbenos por WhatsApp si necesitas más.',
+        codigo: 'limite_diario',
+      }, 429);
+    }
+
+    // Se incrementa ANTES de gastar: si el escaneo falla después, la cuota ya
+    // se consumió. Es lo correcto — si no, un fallo repetido permitiría
+    // llamadas ilimitadas a las APIs de pago.
+    await env.DB.prepare(
+      `INSERT INTO limites (ip_hash, dia, conteo) VALUES (?, ?, 1)
+       ON CONFLICT (ip_hash, dia) DO UPDATE SET conteo = conteo + 1`,
+    ).bind(ipHash, hoy).run();
+
     // ── Capa 3: la búsqueda cuesta ~$0.001; la puntuación ~$0.007.
     //    Se busca primero para no pagar la cara si la barata no devuelve nada. ──
     let resultados;
