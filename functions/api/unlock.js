@@ -6,9 +6,10 @@
  */
 
 import { validarNombre, json } from './_shared.js';
+import { enviarInforme } from './_email.js';
 
 export async function onRequestPost(context) {
-  const { request, env } = context;
+  const { request, env, waitUntil } = context;
 
   let cuerpo;
   try { cuerpo = await request.json(); }
@@ -66,12 +67,23 @@ export async function onRequestPost(context) {
     .map(({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }) =>
       ({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }));
 
+  const urlInforme = `${new URL(request.url).origin}/informe/${token}`;
+
+  // El correo se envía en segundo plano con waitUntil: el médico ya está
+  // esperando su resultado en pantalla y no debe quedarse mirando un spinner
+  // mientras hablamos con Microsoft. Si el envío falla, el lead ya está
+  // guardado y el enlace ya se le mostró — no pierde nada.
+  waitUntil(enviarInforme(env, {
+    destinatario: correo,
+    nombre: v.nombre,
+    puntaje: JSON.parse(scan.resultado).puntaje_total,
+    url: urlInforme,
+  }));
+
   return json({
     ok: true,
     dimensiones: desbloqueadas,
     informe_url: `/informe/${token}`,
-    // TODO(correo): enviar informe_url por Microsoft Graph cuando el registro
-    // de la aplicación en Entra esté listo. El enlace ya funciona sin correo.
-    mensaje: 'Tus dos áreas adicionales están abajo. Guarda el enlace de tu informe.',
+    mensaje: `Tus dos áreas adicionales están abajo. También te enviamos el informe a ${correo}.`,
   });
 }
