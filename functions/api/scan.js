@@ -55,13 +55,38 @@ un puntaje bajo es información útil, no un error.
 
 "puntaje_total" es la suma de los diez valores de "puntos".`;
 
+/** Error con código corto para diagnóstico. El código sí se devuelve al
+ *  cliente; el detalle solo se registra. Ningún secreto entra en ninguno. */
+class FalloEtapa extends Error {
+  constructor(codigo, detalle) {
+    super(detalle);
+    this.codigo = codigo;
+  }
+}
+
 async function buscar(consulta, apiKey) {
+  if (!apiKey) throw new FalloEtapa('busqueda_sin_clave', 'BRAVE_API_KEY no está definida');
+
+  // Parámetros mínimos a propósito: los planes gratuitos de Brave rechazan
+  // varios filtros opcionales, y un 422 por un parámetro que no necesitamos
+  // es un fallo que cuesta tiempo encontrar.
   const url = 'https://api.search.brave.com/res/v1/web/search'
-    + `?q=${encodeURIComponent(consulta)}&count=20&country=ec&search_lang=es`;
+    + `?q=${encodeURIComponent(consulta)}&count=20`;
+
   const r = await fetch(url, {
-    headers: { Accept: 'application/json', 'X-Subscription-Token': apiKey },
+    headers: {
+      Accept: 'application/json',
+      'Accept-Encoding': 'gzip',
+      'X-Subscription-Token': apiKey,
+    },
   });
-  if (!r.ok) throw new Error(`Brave ${r.status}`);
+
+  if (!r.ok) {
+    const cuerpo = await r.text().catch(() => '');
+    console.error('Brave', r.status, cuerpo.slice(0, 500));
+    throw new FalloEtapa(`busqueda_${r.status}`, cuerpo.slice(0, 200));
+  }
+
   const data = await r.json();
   return (data.web?.results || []).map((x) => ({
     titulo: x.title,
@@ -97,6 +122,8 @@ const ESQUEMA = {
 };
 
 async function puntuar(nombre, especialidad, ciudad, resultados, apiKey) {
+  if (!apiKey) throw new FalloEtapa('puntuacion_sin_clave', 'ANTHROPIC_API_KEY no está definida');
+
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -120,15 +147,28 @@ async function puntuar(nombre, especialidad, ciudad, resultados, apiKey) {
     }),
   });
 
-  if (!r.ok) throw new Error(`Anthropic ${r.status}: ${(await r.text()).slice(0, 300)}`);
+  if (!r.ok) {
+    const cuerpo = await r.text().catch(() => '');
+    console.error('Anthropic', r.status, cuerpo.slice(0, 500));
+    throw new FalloEtapa(`puntuacion_${r.status}`, cuerpo.slice(0, 200));
+  }
+
   const data = await r.json();
 
   // Los clasificadores pueden declinar: hay que comprobarlo antes de leer content.
-  if (data.stop_reason === 'refusal') throw new Error('refusal');
+  if (data.stop_reason === 'refusal') {
+    throw new FalloEtapa('puntuacion_rechazada', 'stop_reason=refusal');
+  }
 
   const texto = data.content.find((b) => b.type === 'text')?.text;
-  if (!texto) throw new Error('respuesta sin texto');
-  return JSON.parse(texto);
+  if (!texto) throw new FalloEtapa('puntuacion_vacia', JSON.stringify(data).slice(0, 200));
+
+  try {
+    return JSON.parse(texto);
+  } catch (e) {
+    console.error('JSON inválido', texto.slice(0, 500));
+    throw new FalloEtapa('puntuacion_json', texto.slice(0, 200));
+  }
 }
 
 export async function onRequestPost(context) {
@@ -172,7 +212,10 @@ export async function onRequestPost(context) {
     try {
       resultados = await buscar(`"${nombre}" ${especialidad} ${ciudad} Ecuador`, env.BRAVE_API_KEY);
     } catch (e) {
-      return json({ error: 'No pudimos completar la búsqueda. Intenta de nuevo en unos minutos.' }, 502);
+      return json({
+        error: 'No pudimos completar la búsqueda. Intenta de nuevo en unos minutos.',
+        codigo: e.codigo || 'busqueda_desconocido',
+      }, 502);
     }
 
     // Cero resultados NO significa "no es médico": significa que es invisible,
@@ -180,7 +223,10 @@ export async function onRequestPost(context) {
     try {
       completo = await puntuar(nombre, especialidad, ciudad, resultados, env.ANTHROPIC_API_KEY);
     } catch (e) {
-      return json({ error: 'No pudimos completar el análisis. Intenta de nuevo en unos minutos.' }, 502);
+      return json({
+        error: 'No pudimos completar el análisis. Intenta de nuevo en unos minutos.',
+        codigo: e.codigo || 'puntuacion_desconocido',
+      }, 502);
     }
 
     const ins = await env.DB.prepare(
