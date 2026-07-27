@@ -65,3 +65,32 @@ CREATE TABLE IF NOT EXISTS informes (
 );
 
 CREATE INDEX IF NOT EXISTS idx_informes_scan ON informes (scan_id);
+
+-- Credencial de desbloqueo por escaneo.
+--
+-- /api/unlock ya NO confía en el scan_id que manda el cliente (es un entero
+-- autoincremental, adivinable): exige este token de 128 bits, que /api/scan
+-- entrega junto al resultado. Tabla aparte en vez de una columna en "scans"
+-- por la misma razón que "informes": D1 no admite
+-- "ALTER TABLE ... ADD COLUMN IF NOT EXISTS", así que una columna nueva
+-- rompería la idempotencia de este archivo.
+CREATE TABLE IF NOT EXISTS scan_tokens (
+  scan_id   INTEGER PRIMARY KEY REFERENCES scans (id),
+  token     TEXT NOT NULL UNIQUE,
+  creado_en TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_scan_tokens_token ON scan_tokens (token);
+
+-- Límite por IP y día para /api/unlock, igual que "limites" pero para
+-- /api/scan. Tabla separada porque son cuotas independientes: unlock no
+-- gasta en Brave/Anthropic, pero sí envía un correo real y es la vía para
+-- iterar tokens si alguien lo automatiza.
+CREATE TABLE IF NOT EXISTS limites_unlock (
+  ip_hash TEXT NOT NULL,
+  dia     TEXT NOT NULL,
+  conteo  INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (ip_hash, dia)
+);
+
+CREATE INDEX IF NOT EXISTS idx_limites_unlock_dia ON limites_unlock (dia);

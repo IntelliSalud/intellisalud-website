@@ -251,7 +251,7 @@
   llenar(document.getElementById('ciudad'), CIUDADES, 'Selecciona…');
 
   const $ = id => document.getElementById(id);
-  let scanId = null;
+  let scanToken = null;
 
   function claseP(p) {
     if (p >= 75) return 'excellent';
@@ -305,7 +305,7 @@
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'No pudimos completar el análisis.');
 
-      scanId = data.scan_id;
+      scanToken = data.scan_token;
       $('puntaje').textContent = data.puntaje_total;
       $('puntaje').className = 'puntaje-num ' + claseP(data.puntaje_total);
       $('barra').style.width = data.puntaje_total + '%';
@@ -333,7 +333,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          scan_id: scanId,
+          scan_token: scanToken,
           nombre: $('nombre').value,
           especialidad: $('especialidad').value,
           lugar_trabajo: $('lugar').value,

@@ -3,10 +3,18 @@
  *
  * Recibe los datos del profesional, guarda el lead y devuelve las
  * dimensiones 3 y 4. Las dimensiones 5–10 siguen sin salir del servidor.
+ *
+ * ► El escaneo que se desbloquea NO se identifica por el scan_id que manda
+ *   el cliente: ese id es un entero autoincremental y adivinarlo permitiría
+ *   leer las dimensiones 3–4 de escaneos ajenos. La credencial real es
+ *   scan_token, el valor de 128 bits que /api/scan entregó junto al
+ *   resultado — igual de inadivinable que el token de /informe/<token>.
  */
 
-import { validarNombre, json } from './_shared.js';
+import { validarNombre, json, hashIP, generarToken } from './_shared.js';
 import { enviarInforme } from './_email.js';
+
+const LIMITE_DIARIO = 10; // desbloqueos por IP y día — no cuestan API, pero sí frenan enumeración y correo abusivo
 
 export async function onRequestPost(context) {
   const { request, env, waitUntil } = context;
@@ -15,7 +23,7 @@ export async function onRequestPost(context) {
   try { cuerpo = await request.json(); }
   catch { return json({ error: 'Solicitud inválida.' }, 400); }
 
-  const { scan_id, nombre, especialidad, lugar_trabajo, email,
+  const { scan_token, nombre, especialidad, lugar_trabajo, email,
     consentimiento_lopdp, es_titular } = cuerpo;
 
   // ── LOPDP: sin base legal no se guarda nada. ──
@@ -37,7 +45,43 @@ export async function onRequestPost(context) {
   if (trabajo.length < 2) {
     return json({ error: 'Indica dónde atiendes.' }, 400);
   }
+  if (typeof scan_token !== 'string' || !/^[0-9a-f]{32}$/.test(scan_token)) {
+    return json({ error: 'No encontramos ese análisis. Vuelve a buscar tu nombre.' }, 404);
+  }
 
+  // ── Límite por IP: independiente del de /api/scan. Este camino no gasta
+  //    en Brave/Anthropic, pero sí envía un correo real y permite iterar
+  //    tokens si alguien lo automatiza — hay que frenarlo igual. ──
+  const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
+  const ipHash = await hashIP(ip);
+  const hoy = new Date().toISOString().slice(0, 10);
+
+  const usoActual = await env.DB.prepare(
+    'SELECT conteo FROM limites_unlock WHERE ip_hash = ? AND dia = ?',
+  ).bind(ipHash, hoy).first();
+
+  if (usoActual && usoActual.conteo >= LIMITE_DIARIO) {
+    return json({
+      error: `Has alcanzado el máximo de ${LIMITE_DIARIO} solicitudes por día. `
+        + 'Vuelve mañana, o escríbenos por WhatsApp si necesitas más.',
+      codigo: 'limite_diario',
+    }, 429);
+  }
+
+  await env.DB.prepare(
+    `INSERT INTO limites_unlock (ip_hash, dia, conteo) VALUES (?, ?, 1)
+     ON CONFLICT (ip_hash, dia) DO UPDATE SET conteo = conteo + 1`,
+  ).bind(ipHash, hoy).run();
+
+  const filaToken = await env.DB.prepare(
+    'SELECT scan_id FROM scan_tokens WHERE token = ?',
+  ).bind(scan_token).first();
+
+  if (!filaToken) {
+    return json({ error: 'No encontramos ese análisis. Vuelve a buscar tu nombre.' }, 404);
+  }
+
+  const scan_id = filaToken.scan_id;
   const scan = await env.DB.prepare(
     'SELECT id, resultado FROM scans WHERE id = ?',
   ).bind(scan_id).first();
@@ -53,9 +97,7 @@ export async function onRequestPost(context) {
   ).bind(scan_id, v.nombre, String(especialidad || '').slice(0, 80), trabajo, correo).run();
 
   // Token de 128 bits: es la única credencial que protege el informe.
-  const bytes = new Uint8Array(16);
-  crypto.getRandomValues(bytes);
-  const token = [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+  const token = generarToken();
 
   await env.DB.prepare(
     'INSERT INTO informes (token, scan_id, lead_id, creado_en) VALUES (?, ?, ?, datetime(\'now\'))',

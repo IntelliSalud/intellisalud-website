@@ -12,23 +12,12 @@
 
 import {
   validarNombre, validarEspecialidad, validarCiudad,
-  claveCache, json,
+  claveCache, json, hashIP, generarToken,
 } from './_shared.js';
 
 const MODELO = 'claude-haiku-4-5';
 const CACHE_DIAS = 30;
 const LIMITE_DIARIO = 5;   // escaneos con coste, por IP y día
-
-/**
- * Hash de la IP. Nunca se guarda la dirección en claro: una IP es dato
- * personal bajo la LOPDP, y para contar peticiones el hash sirve igual.
- */
-async function hashIP(ip) {
-  const datos = new TextEncoder().encode(`intellisalud:${ip}`);
-  const buf = await crypto.subtle.digest('SHA-256', datos);
-  return [...new Uint8Array(buf)].slice(0, 16)
-    .map((b) => b.toString(16).padStart(2, '0')).join('');
-}
 
 /** La rúbrica v1.0, condensada para el modelo. */
 const SISTEMA = `Eres el motor de puntuación del Índice de Visibilidad Médica de IntelliSalud.
@@ -275,6 +264,29 @@ export async function onRequestPost(context) {
     scanId = ins.meta.last_row_id;
   }
 
+  // ── Token de desbloqueo: es la única credencial que /api/unlock acepta
+  //    para saber a qué escaneo se refiere. No basta con enviar el scan_id
+  //    (es un entero autoincremental, adivinable por fuerza bruta) — sin este
+  //    token, cualquiera podría iterar IDs y leer las dimensiones 3–4 de
+  //    escaneos ajenos. Un escaneo cacheado que no tenga token aún (creado
+  //    antes de este cambio) recibe uno la primera vez que se vuelve a pedir. ──
+  let scanToken = (await env.DB.prepare(
+    'SELECT token FROM scan_tokens WHERE scan_id = ?',
+  ).bind(scanId).first())?.token;
+
+  if (!scanToken) {
+    // ON CONFLICT DO NOTHING por si dos peticiones concurrentes llegan aquí a
+    // la vez para el mismo escaneo cacheado; la relectura evita devolver un
+    // token que perdió la carrera y no quedó guardado.
+    await env.DB.prepare(
+      `INSERT INTO scan_tokens (scan_id, token, creado_en) VALUES (?, ?, datetime('now'))
+       ON CONFLICT (scan_id) DO NOTHING`,
+    ).bind(scanId, generarToken()).run();
+    scanToken = (await env.DB.prepare(
+      'SELECT token FROM scan_tokens WHERE scan_id = ?',
+    ).bind(scanId).first()).token;
+  }
+
   // ── Recorte del lado del servidor: solo dimensiones 1 y 2. ──
   const libres = (completo.dimensiones || [])
     .filter((d) => d.id === 1 || d.id === 2)
@@ -283,6 +295,7 @@ export async function onRequestPost(context) {
 
   return json({
     scan_id: scanId,
+    scan_token: scanToken,
     nombre,
     especialidad,
     ciudad,

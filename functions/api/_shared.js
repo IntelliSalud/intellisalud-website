@@ -114,3 +114,23 @@ export function json(data, status = 200) {
     },
   });
 }
+
+/**
+ * Hash de la IP. Nunca se guarda la dirección en claro: una IP es dato
+ * personal bajo la LOPDP, y para contar peticiones el hash sirve igual.
+ * Compartido entre /api/scan y /api/unlock: ambos limitan por IP y día.
+ */
+export async function hashIP(ip) {
+  const datos = new TextEncoder().encode(`intellisalud:${ip}`);
+  const buf = await crypto.subtle.digest('SHA-256', datos);
+  return [...new Uint8Array(buf)].slice(0, 16)
+    .map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** 128 bits de aleatoriedad criptográfica, en hex. Mismo formato que el
+ *  token de /informe/<token>: suficiente para no ser adivinable. */
+export function generarToken() {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
