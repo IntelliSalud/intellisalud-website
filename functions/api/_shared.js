@@ -105,12 +105,17 @@ export function claveCache(nombre, especialidad, ciudad) {
   return `${norm(nombre)}|${norm(especialidad)}|${norm(ciudad)}`;
 }
 
+/** El _headers del proyecto NO se aplica a las respuestas de Pages
+ *  Functions (es un comportamiento documentado de Cloudflare, no un
+ *  descuido): cualquier cabecera para /api/* tiene que fijarse aquí, en el
+ *  código de la Function. */
 export function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
+      'Access-Control-Allow-Origin': 'https://intellisalud.com',
     },
   });
 }

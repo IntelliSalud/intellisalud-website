@@ -59,6 +59,16 @@ const bloqueada = ([n, titulo]) => `<div class="dim bloqueada">
     </div>
   </div>`;
 
+// El _headers del proyecto NO se aplica a las respuestas de Pages Functions
+// (comportamiento documentado de Cloudflare): CORS y clickjacking hay que
+// fijarlos aquí, no en public/_headers — esa ruta sí protege /visibilidad
+// y el resto del sitio estático, pero no esta página.
+const CABECERAS_COMUNES = {
+  'Access-Control-Allow-Origin': 'https://intellisalud.com',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Content-Security-Policy': "frame-ancestors 'self'",
+};
+
 function paginaError() {
   return new Response(
     `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
@@ -73,7 +83,7 @@ function paginaError() {
          Puedes generar uno nuevo desde el diagnóstico.</p>
        <p><a href="/visibilidad" class="btn btn-primary">Ir al diagnóstico</a></p>
      </div></body></html>`,
-    { status: 404, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+    { status: 404, headers: { 'Content-Type': 'text/html; charset=utf-8', ...CABECERAS_COMUNES } },
   );
 }
 
@@ -196,6 +206,7 @@ export async function onRequestGet(context) {
       // compartida y nada de indexación, por si el noindex se pierde.
       'Cache-Control': 'private, no-store',
       'X-Robots-Tag': 'noindex, nofollow',
+      ...CABECERAS_COMUNES,
     },
   });
 }
