@@ -12,7 +12,7 @@
  */
 
 import { validarNombre, json, hashIP, generarToken } from './_shared.js';
-import { enviarInforme } from './_email.js';
+import { enviarInforme, notificarLead } from './_email.js';
 
 const LIMITE_DIARIO = 10; // desbloqueos por IP y día — no cuestan API, pero sí frenan enumeración y correo abusivo
 
@@ -82,8 +82,10 @@ export async function onRequestPost(context) {
   }
 
   const scan_id = filaToken.scan_id;
+  // Se traen especialidad y ciudad además del resultado: el aviso interno los
+  // necesita, y la ciudad no viaja en el cuerpo de /api/unlock.
   const scan = await env.DB.prepare(
-    'SELECT id, resultado FROM scans WHERE id = ?',
+    'SELECT id, especialidad, ciudad, puntaje_total, resultado FROM scans WHERE id = ?',
   ).bind(scan_id).first();
 
   if (!scan) {
@@ -111,15 +113,30 @@ export async function onRequestPost(context) {
 
   const urlInforme = `${new URL(request.url).origin}/informe/${token}`;
 
-  // El correo se envía en segundo plano con waitUntil: el médico ya está
+  // Los dos correos salen en segundo plano con waitUntil: el médico ya está
   // esperando su resultado en pantalla y no debe quedarse mirando un spinner
-  // mientras hablamos con Microsoft. Si el envío falla, el lead ya está
-  // guardado y el enlace ya se le mostró — no pierde nada.
+  // mientras hablamos con Microsoft. Si un envío falla, el lead ya está
+  // guardado en D1 y el enlace ya se le mostró — no se pierde nada.
   waitUntil(enviarInforme(env, {
     destinatario: correo,
     nombre: v.nombre,
-    puntaje: JSON.parse(scan.resultado).puntaje_total,
+    puntaje: scan.puntaje_total,
     url: urlInforme,
+  }));
+
+  // Aviso interno: mientras no haya CRM, este correo ES el CRM. Lleva los
+  // datos de contacto y las diez dimensiones, incluidas las seis que el
+  // médico no vio — que son el argumento de venta.
+  waitUntil(notificarLead(env, {
+    nombre: v.nombre,
+    especialidad: scan.especialidad,
+    ciudad: scan.ciudad,
+    lugarTrabajo: trabajo,
+    correo,
+    puntaje: scan.puntaje_total,
+    dimensiones: (completo.dimensiones || []).slice().sort((a, b) => a.id - b.id),
+    url: urlInforme,
+    fecha: new Date().toISOString().slice(0, 16).replace('T', ' '),
   }));
 
   return json({

@@ -103,50 +103,139 @@ function cuerpoHTML({ nombre, puntaje, url }) {
 </body></html>`;
 }
 
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g,
+  (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
 /**
- * Envía el informe. Devuelve true/false en lugar de lanzar: el correo es
- * secundario respecto a la respuesta que el médico ya está esperando en
+ * Aviso interno de lead nuevo. Sustituye al "BCC" que parecería la solución
+ * obvia: una copia oculta del correo al médico NO sirve, porque ese mensaje
+ * solo lleva su nombre, el puntaje y un enlace — no su correo, ni dónde
+ * atiende, ni los hallazgos. Aquí va todo lo que hace falta para llamarle.
+ *
+ * Incluye las DIEZ dimensiones, no solo las cuatro que ve el médico: las seis
+ * bloqueadas son precisamente el argumento de venta.
+ */
+function cuerpoNotificacion({ nombre, especialidad, ciudad, lugarTrabajo,
+  correo, puntaje, dimensiones, url, fecha }) {
+  const fila = (d) => `
+    <tr>
+      <td style="padding:8px 10px;border-bottom:1px solid #e2e8f0;vertical-align:top;width:26px">
+        <strong>${d.id}</strong></td>
+      <td style="padding:8px 10px;border-bottom:1px solid #e2e8f0;vertical-align:top">
+        <strong>${esc(d.nombre)}</strong> — ${d.puntos}/10
+        <span style="color:#8a99ab">(${esc(d.banda)}${d.confianza === 'baja' ? ', confianza baja' : ''})</span>
+        <div style="color:#475569;font-size:13px;margin-top:4px">${esc(d.evidencia)}</div>
+      </td>
+    </tr>`;
+
+  return `<!DOCTYPE html><html lang="es"><body style="margin:0;background:#f4f8fc">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px 12px">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+  style="max-width:640px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;
+         font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0b1f4a">
+
+ <tr><td style="padding:20px 26px;background:#0b1f4a;border-radius:14px 14px 0 0">
+   <div style="color:#fff;font-size:17px;font-weight:700">Nuevo lead — ${esc(nombre)}</div>
+   <div style="color:rgba(255,255,255,.75);font-size:13px;margin-top:3px">
+     ${esc(especialidad)} · ${esc(ciudad)} · ${fecha}</div>
+ </td></tr>
+
+ <tr><td style="padding:22px 26px">
+   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">
+     <tr><td style="padding:5px 0;color:#475569;width:120px">Puntaje</td>
+         <td style="padding:5px 0"><strong style="font-size:19px">${puntaje}/100</strong></td></tr>
+     <tr><td style="padding:5px 0;color:#475569">Correo</td>
+         <td style="padding:5px 0"><a href="mailto:${esc(correo)}">${esc(correo)}</a></td></tr>
+     <tr><td style="padding:5px 0;color:#475569">Trabaja en</td>
+         <td style="padding:5px 0">${esc(lugarTrabajo)}</td></tr>
+     <tr><td style="padding:5px 0;color:#475569">Informe</td>
+         <td style="padding:5px 0"><a href="${url}">${url}</a></td></tr>
+   </table>
+
+   <p style="margin:20px 0 8px;font-size:14px;color:#475569">
+     <strong>Las diez dimensiones</strong> — las 5–10 no las vio el médico.
+   </p>
+   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">
+     ${(dimensiones || []).map(fila).join('')}
+   </table>
+
+   <p style="margin:22px 0 0">
+     <a href="mailto:${esc(correo)}?subject=${encodeURIComponent('Sobre su diagnóstico de visibilidad')}"
+        style="display:inline-block;background:#0e6db5;color:#fff;text-decoration:none;
+               padding:11px 22px;border-radius:999px;font-weight:700;font-size:14px">
+       Responder al médico</a>
+   </p>
+ </td></tr>
+
+</table></td></tr></table></body></html>`;
+}
+
+/** Envío común. Centraliza token + llamada a Graph para los dos correos. */
+async function enviarMensaje(env, { para, asunto, html }) {
+  if (!env.GRAPH_CLIENT_SECRET) {
+    console.error('correo: GRAPH_CLIENT_SECRET no está definida');
+    return false;
+  }
+
+  const token = await obtenerToken(env.GRAPH_CLIENT_SECRET);
+  const remitente = env.GRAPH_SENDER || REMITENTE_POR_DEFECTO;
+
+  const r = await fetch(
+    `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(remitente)}/sendMail`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: {
+          subject: asunto,
+          body: { contentType: 'HTML', content: html },
+          toRecipients: [{ emailAddress: { address: para } }],
+        },
+        // Queda en Elementos enviados: así el seguimiento comercial vive en
+        // el mismo buzón donde llegarán las respuestas.
+        saveToSentItems: true,
+      }),
+    },
+  );
+
+  if (!r.ok) {
+    const t = await r.text().catch(() => '');
+    console.error('correo: sendMail', r.status, t.slice(0, 300));
+    return false;
+  }
+  return true;  // Graph responde 202 Accepted
+}
+
+/**
+ * Envía el informe al médico. Devuelve true/false en lugar de lanzar: el
+ * correo es secundario respecto a la respuesta que ya está esperando en
  * pantalla, y un fallo aquí no debe convertirse en un error para él.
  */
 export async function enviarInforme(env, { destinatario, nombre, puntaje, url }) {
   try {
-    if (!env.GRAPH_CLIENT_SECRET) {
-      console.error('correo: GRAPH_CLIENT_SECRET no está definida');
-      return false;
-    }
-
-    const token = await obtenerToken(env.GRAPH_CLIENT_SECRET);
-    const remitente = env.GRAPH_SENDER || REMITENTE_POR_DEFECTO;
-
-    const r = await fetch(
-      `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(remitente)}/sendMail`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: {
-            subject: `Su diagnóstico de visibilidad: ${puntaje}/100`,
-            body: { contentType: 'HTML', content: cuerpoHTML({ nombre, puntaje, url }) },
-            toRecipients: [{ emailAddress: { address: destinatario } }],
-          },
-          // Queda en Elementos enviados: así el seguimiento comercial vive en
-          // el mismo buzón donde llegarán las respuestas.
-          saveToSentItems: true,
-        }),
-      },
-    );
-
-    if (!r.ok) {
-      const t = await r.text().catch(() => '');
-      console.error('correo: sendMail', r.status, t.slice(0, 300));
-      return false;
-    }
-    return true;  // Graph responde 202 Accepted
+    return await enviarMensaje(env, {
+      para: destinatario,
+      asunto: `Su diagnóstico de visibilidad: ${puntaje}/100`,
+      html: cuerpoHTML({ nombre, puntaje, url }),
+    });
   } catch (e) {
-    console.error('correo:', e.message);
+    console.error('correo informe:', e.message);
+    return false;
+  }
+}
+
+/** Aviso interno. Falla en silencio por separado del correo al médico: que no
+ *  llegue el aviso no debe impedir que el médico reciba su informe. */
+export async function notificarLead(env, datos) {
+  try {
+    return await enviarMensaje(env, {
+      para: env.GRAPH_SENDER || REMITENTE_POR_DEFECTO,
+      asunto: `Nuevo lead: ${datos.nombre} — ${datos.puntaje}/100 — ${datos.especialidad}, ${datos.ciudad}`,
+      html: cuerpoNotificacion(datos),
+    });
+  } catch (e) {
+    console.error('correo aviso:', e.message);
     return false;
   }
 }
