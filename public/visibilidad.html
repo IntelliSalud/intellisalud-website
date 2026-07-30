@@ -280,10 +280,13 @@
           ? '<span class="dim-conf">⚠ Confianza baja — conviene verificar manualmente</span>' : '')
       + '</div>';
   }
-  function bloqueada(n, titulo) {
+  // Sin título: el nombre de la dimensión ya revela qué se evalúa (p.ej.
+  // "Perfil de Google Business"), y eso es exactamente lo que no queremos
+  // regalar antes de que el médico hable con nosotros.
+  function bloqueada(n) {
     return '<div class="dim bloqueada"><div class="dim-cab">'
       + '<span class="dim-num">' + n + '</span>'
-      + '<span class="dim-tit">' + titulo + '</span>'
+      + '<span class="dim-tit">Área bloqueada</span>'
       + '<span class="dim-lock">🔒 En el informe completo</span></div></div>';
   }
 
@@ -362,13 +365,11 @@
         + '<h2>Las siete áreas restantes</h2>'
         + '<p>Son las que no se resuelven solas: requieren cambios en tu sitio, '
         + 'en tus fichas y en cómo te encuentran los sistemas automatizados.</p>'
-        + bloqueada(4,'Consistencia de identidad') + bloqueada(5,'Sitio web propio')
-        + bloqueada(6,'Perfil de Google Business') + bloqueada(7,'Datos estructurados')
-        + bloqueada(8,'Acceso para rastreadores de IA') + bloqueada(9,'Directorios médicos')
-        + bloqueada(10,'Reseñas y contenido propio')
+        + bloqueada(4) + bloqueada(5) + bloqueada(6) + bloqueada(7)
+        + bloqueada(8) + bloqueada(9) + bloqueada(10)
         + '<div id="contacto-caja" style="margin-top:24px;text-align:center">'
         + '<button type="button" class="btn btn-primary" id="btn-contactar">'
-        + 'Quiero que me contacten para el resto del informe</button>'
+        + 'Estoy interesado en el reporte completo</button>'
         + '<p class="aviso-error" id="error-contacto" style="display:none"></p>'
         + '</div>';
       $('extra').style.display = 'block';
@@ -388,8 +389,8 @@
             if (!rc.ok) throw new Error(dc.error || 'No pudimos enviar tu solicitud.');
             $('contacto-caja').innerHTML = '<p style="color:var(--muted)">'
               + (dc.ya_solicitado
-                  ? 'Ya recibimos tu solicitud. Te contactaremos pronto.'
-                  : 'Recibido. Te contactaremos dentro de las próximas 48 horas.')
+                  ? 'Ya recibimos tu solicitud. Nos pondremos en contacto contigo.'
+                  : '¡Recibido! Nos pondremos en contacto contigo para mostrarte el reporte completo.')
               + '</p>';
           } catch (err) {
             $('error-contacto').textContent = err.message;

@@ -10,15 +10,7 @@
  * que en /api/scan.
  */
 
-const TITULOS_BLOQUEADAS = [
-  [4, 'Consistencia de identidad'],
-  [5, 'Sitio web propio'],
-  [6, 'Perfil de Google Business'],
-  [7, 'Datos estructurados'],
-  [8, 'Acceso para rastreadores de IA'],
-  [9, 'Directorios médicos'],
-  [10, 'Reseñas y contenido propio'],
-];
+const DIMENSIONES_BLOQUEADAS = [4, 5, 6, 7, 8, 9, 10];
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g,
   (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -52,10 +44,13 @@ function tarjeta(d) {
   </div>`;
 }
 
-const bloqueada = ([n, titulo]) => `<div class="dim bloqueada">
+// Sin título: el nombre de la dimensión ya revela qué se evalúa (p.ej.
+// "Perfil de Google Business"), y eso es exactamente lo que no queremos
+// regalar antes de que el médico hable con nosotros.
+const bloqueada = (n) => `<div class="dim bloqueada">
     <div class="dim-cab">
       <span class="dim-num">${n}</span>
-      <span class="dim-tit">${titulo}</span>
+      <span class="dim-tit">Área bloqueada</span>
       <span class="dim-lock">🔒 En el informe completo</span>
     </div>
   </div>`;
@@ -178,11 +173,11 @@ export async function onRequestGet(context) {
     Son las que no se resuelven solas: requieren cambios en tu sitio, en tus
     fichas y en cómo te encuentran los sistemas automatizados.
   </p>
-  ${TITULOS_BLOQUEADAS.map(bloqueada).join('')}
+  ${DIMENSIONES_BLOQUEADAS.map(bloqueada).join('')}
 
   <div class="no-print" style="text-align:center;margin-top:36px" id="contacto-caja">
     <button type="button" class="btn btn-primary" id="btn-contactar">
-      Quiero que me contacten para el resto del informe
+      Estoy interesado en el reporte completo
     </button>
     <p id="error-contacto" style="color:#c0392b;font-size:.9rem;margin-top:10px;display:none"></p>
   </div>
@@ -203,8 +198,8 @@ export async function onRequestGet(context) {
           if (!res.ok) throw new Error(res.d.error || 'No pudimos enviar tu solicitud.');
           document.getElementById('contacto-caja').innerHTML = '<p style="color:#475569">'
             + (res.d.ya_solicitado
-                ? 'Ya recibimos tu solicitud. Te contactaremos pronto.'
-                : 'Recibido. Te contactaremos dentro de las próximas 48 horas.')
+                ? 'Ya recibimos tu solicitud. Nos pondremos en contacto contigo.'
+                : '¡Recibido! Nos pondremos en contacto contigo para mostrarte el reporte completo.')
             + '</p>';
         })
         .catch(function (err) {
