@@ -94,3 +94,13 @@ CREATE TABLE IF NOT EXISTS limites_unlock (
 );
 
 CREATE INDEX IF NOT EXISTS idx_limites_unlock_dia ON limites_unlock (dia);
+
+-- Deduplica el botón "Quiero que me contacten" de /informe/<token>.
+--
+-- PRIMARY KEY en scan_id: un segundo clic (recarga, doble tap) no debe
+-- disparar un segundo correo urgente. El primer INSERT gana; los siguientes
+-- caen en el ON CONFLICT DO NOTHING de /api/contactar.
+CREATE TABLE IF NOT EXISTS solicitudes_contacto (
+  scan_id   INTEGER PRIMARY KEY REFERENCES scans (id),
+  creado_en TEXT NOT NULL
+);

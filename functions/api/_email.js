@@ -171,6 +171,52 @@ function cuerpoNotificacion({ nombre, especialidad, ciudad, lugarTrabajo,
 </table></td></tr></table></body></html>`;
 }
 
+/**
+ * Aviso de "quiero que me contacten". Lo dispara /api/contactar cuando el
+ * médico, en vez de escribir por WhatsApp y esperar horas, pide contacto
+ * directo desde su informe. Lleva la urgencia explícita en el asunto: es la
+ * ventana en la que el médico todavía recuerda por qué buscó esto.
+ */
+function cuerpoSolicitudContacto({ nombre, especialidad, ciudad, lugarTrabajo,
+  correo, puntaje, fecha }) {
+  return `<!DOCTYPE html><html lang="es"><body style="margin:0;background:#f4f8fc">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px 12px">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+  style="max-width:600px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;
+         font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0b1f4a">
+
+ <tr><td style="padding:20px 26px;background:#c0392b;border-radius:14px 14px 0 0">
+   <div style="color:#fff;font-size:17px;font-weight:700">⏱ Solicitud de contacto — responder en 48h</div>
+   <div style="color:rgba(255,255,255,.85);font-size:13px;margin-top:3px">
+     ${esc(nombre)} · ${esc(especialidad)} · ${esc(ciudad)} · ${fecha}</div>
+ </td></tr>
+
+ <tr><td style="padding:22px 26px">
+   <p style="margin:0 0 16px;font-size:15px;line-height:1.7">
+     El médico pidió explícitamente ser contactado para el resto del informe.
+     Agenda la llamada dentro de las próximas 48 horas — es la ventana en la
+     que todavía recuerda por qué buscó esto.
+   </p>
+   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">
+     <tr><td style="padding:5px 0;color:#475569;width:120px">Puntaje</td>
+         <td style="padding:5px 0"><strong style="font-size:19px">${puntaje}/100</strong></td></tr>
+     <tr><td style="padding:5px 0;color:#475569">Correo</td>
+         <td style="padding:5px 0"><a href="mailto:${esc(correo)}">${esc(correo)}</a></td></tr>
+     <tr><td style="padding:5px 0;color:#475569">Trabaja en</td>
+         <td style="padding:5px 0">${esc(lugarTrabajo)}</td></tr>
+   </table>
+   <p style="margin:22px 0 0">
+     <a href="mailto:${esc(correo)}?subject=${encodeURIComponent('Sobre tu diagnóstico de visibilidad')}"
+        style="display:inline-block;background:#c0392b;color:#fff;text-decoration:none;
+               padding:11px 22px;border-radius:999px;font-weight:700;font-size:14px">
+       Contactar ahora</a>
+   </p>
+ </td></tr>
+
+</table></td></tr></table></body></html>`;
+}
+
 /** Envío común. Centraliza token + llamada a Graph para los dos correos. */
 async function enviarMensaje(env, { para, asunto, html }) {
   if (!env.GRAPH_CLIENT_SECRET) {
@@ -236,6 +282,21 @@ export async function notificarLead(env, datos) {
     });
   } catch (e) {
     console.error('correo aviso:', e.message);
+    return false;
+  }
+}
+
+/** Aviso de solicitud de contacto directo. Falla en silencio, igual que
+ *  notificarLead: el botón ya le confirmó al médico que su solicitud entró. */
+export async function notificarSolicitudContacto(env, datos) {
+  try {
+    return await enviarMensaje(env, {
+      para: env.GRAPH_SENDER || REMITENTE_POR_DEFECTO,
+      asunto: `⏱ Contactar en 48h: ${datos.nombre} — ${datos.puntaje}/100`,
+      html: cuerpoSolicitudContacto(datos),
+    });
+  } catch (e) {
+    console.error('correo solicitud contacto:', e.message);
     return false;
   }
 }

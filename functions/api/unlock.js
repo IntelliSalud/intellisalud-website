@@ -2,7 +2,7 @@
  * POST /api/unlock
  *
  * Recibe los datos del profesional, guarda el lead y devuelve las
- * dimensiones 3 y 4. Las dimensiones 5–10 siguen sin salir del servidor.
+ * dimensiones 2 y 3. Las dimensiones 4–10 siguen sin salir del servidor.
  *
  * ► El escaneo que se desbloquea NO se identifica por el scan_id que manda
  *   el cliente: ese id es un entero autoincremental y adivinarlo permitiría
@@ -107,7 +107,7 @@ export async function onRequestPost(context) {
 
   const completo = JSON.parse(scan.resultado);
   const desbloqueadas = (completo.dimensiones || [])
-    .filter((d) => d.id === 3 || d.id === 4)
+    .filter((d) => d.id === 2 || d.id === 3)
     .map(({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }) =>
       ({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }));
 

@@ -348,6 +348,7 @@
       if (!r.ok) throw new Error(data.error || 'No pudimos completar el desbloqueo.');
 
       $('bloque-form').style.display = 'none';
+      const tokenInforme = data.informe_url ? data.informe_url.split('/').pop() : null;
       const enlace = data.informe_url
         ? '<div class="dim" style="background:var(--light)"><p style="margin:0"><strong>Tu informe permanente:</strong> '
           + '<a href="' + data.informe_url + '" target="_blank" rel="noopener">'
@@ -358,17 +359,45 @@
       $('extra').innerHTML = '<h2>Tus dos áreas adicionales</h2>'
         + data.dimensiones.map(tarjeta).join('')
         + enlace
-        + '<h2>Las seis áreas restantes</h2>'
+        + '<h2>Las siete áreas restantes</h2>'
         + '<p>Son las que no se resuelven solas: requieren cambios en tu sitio, '
         + 'en tus fichas y en cómo te encuentran los sistemas automatizados.</p>'
-        + bloqueada(5,'Sitio web propio') + bloqueada(6,'Perfil de Google Business')
-        + bloqueada(7,'Datos estructurados') + bloqueada(8,'Acceso para rastreadores de IA')
-        + bloqueada(9,'Directorios médicos') + bloqueada(10,'Reseñas y contenido propio')
-        + '<p style="margin-top:24px"><a class="btn btn-primary" target="_blank" rel="noopener" '
-        + 'href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20el%20informe%20completo%20de%20visibilidad.">'
-        + 'Hablar por WhatsApp</a></p>';
+        + bloqueada(4,'Consistencia de identidad') + bloqueada(5,'Sitio web propio')
+        + bloqueada(6,'Perfil de Google Business') + bloqueada(7,'Datos estructurados')
+        + bloqueada(8,'Acceso para rastreadores de IA') + bloqueada(9,'Directorios médicos')
+        + bloqueada(10,'Reseñas y contenido propio')
+        + '<div id="contacto-caja" style="margin-top:24px;text-align:center">'
+        + '<button type="button" class="btn btn-primary" id="btn-contactar">'
+        + 'Quiero que me contacten para el resto del informe</button>'
+        + '<p class="aviso-error" id="error-contacto" style="display:none"></p>'
+        + '</div>';
       $('extra').style.display = 'block';
       $('extra').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const btnContactar = $('btn-contactar');
+      if (btnContactar && tokenInforme) {
+        btnContactar.addEventListener('click', async () => {
+          btnContactar.disabled = true;
+          try {
+            const rc = await fetch('/api/contactar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token: tokenInforme }),
+            });
+            const dc = await rc.json();
+            if (!rc.ok) throw new Error(dc.error || 'No pudimos enviar tu solicitud.');
+            $('contacto-caja').innerHTML = '<p style="color:var(--muted)">'
+              + (dc.ya_solicitado
+                  ? 'Ya recibimos tu solicitud. Te contactaremos pronto.'
+                  : 'Recibido. Te contactaremos dentro de las próximas 48 horas.')
+              + '</p>';
+          } catch (err) {
+            $('error-contacto').textContent = err.message;
+            $('error-contacto').style.display = 'block';
+            btnContactar.disabled = false;
+          }
+        });
+      }
     } catch (err) {
       $('error2').textContent = err.message;
       $('error2').style.display = 'block';

@@ -5,12 +5,13 @@
  * el informe. Por eso la página va con noindex, /informe/ está bloqueado en
  * robots.txt y no se enlaza desde ninguna parte del sitio.
  *
- * Muestra las dimensiones 1–4 completas y las 6 restantes bloqueadas. El
+ * Muestra las dimensiones 1–3 completas y las 7 restantes bloqueadas. El
  * contenido de las bloqueadas NO se envía al navegador: se recorta aquí, igual
  * que en /api/scan.
  */
 
 const TITULOS_BLOQUEADAS = [
+  [4, 'Consistencia de identidad'],
   [5, 'Sitio web propio'],
   [6, 'Perfil de Google Business'],
   [7, 'Datos estructurados'],
@@ -105,7 +106,7 @@ export async function onRequestGet(context) {
 
   const completo = JSON.parse(fila.resultado);
   const abiertas = (completo.dimensiones || [])
-    .filter((d) => d.id >= 1 && d.id <= 4)
+    .filter((d) => d.id >= 1 && d.id <= 3)
     .sort((a, b) => a.id - b.id);
 
   const fecha = String(fila.creado_en).slice(0, 10);
@@ -169,22 +170,52 @@ export async function onRequestGet(context) {
     <p style="margin-top:18px">${lectura(p)}</p>
   </div>
 
-  <h2>Tus cuatro áreas</h2>
+  <h2>Tus tres áreas</h2>
   ${abiertas.map(tarjeta).join('')}
 
-  <h2>Las seis áreas restantes</h2>
+  <h2>Las siete áreas restantes</h2>
   <p>
     Son las que no se resuelven solas: requieren cambios en tu sitio, en tus
     fichas y en cómo te encuentran los sistemas automatizados.
   </p>
   ${TITULOS_BLOQUEADAS.map(bloqueada).join('')}
 
-  <div class="no-print" style="text-align:center;margin-top:36px">
-    <a class="btn btn-primary" target="_blank" rel="noopener"
-       href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20el%20informe%20completo%20de%20visibilidad.">
-      Hablar por WhatsApp
-    </a>
+  <div class="no-print" style="text-align:center;margin-top:36px" id="contacto-caja">
+    <button type="button" class="btn btn-primary" id="btn-contactar">
+      Quiero que me contacten para el resto del informe
+    </button>
+    <p id="error-contacto" style="color:#c0392b;font-size:.9rem;margin-top:10px;display:none"></p>
   </div>
+
+  <script>
+  (function () {
+    var btn = document.getElementById('btn-contactar');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      fetch('/api/contactar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: ${JSON.stringify(token)} }),
+      })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.d.error || 'No pudimos enviar tu solicitud.');
+          document.getElementById('contacto-caja').innerHTML = '<p style="color:#475569">'
+            + (res.d.ya_solicitado
+                ? 'Ya recibimos tu solicitud. Te contactaremos pronto.'
+                : 'Recibido. Te contactaremos dentro de las próximas 48 horas.')
+            + '</p>';
+        })
+        .catch(function (err) {
+          var e = document.getElementById('error-contacto');
+          e.textContent = err.message;
+          e.style.display = 'block';
+          btn.disabled = false;
+        });
+    });
+  })();
+  </script>
 
   <p class="pie">
     Informe generado por IntelliSalud el ${fecha} · Índice de Visibilidad Médica v1.0.

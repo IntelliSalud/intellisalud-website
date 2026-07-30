@@ -2,9 +2,9 @@
  * POST /api/scan
  *
  * Recibe nombre + especialidad + ciudad, busca en la web, puntúa con la
- * rúbrica v1.0 y devuelve ÚNICAMENTE las dimensiones 1 y 2.
+ * rúbrica v1.0 y devuelve ÚNICAMENTE la dimensión 1.
  *
- * ► Las dimensiones 3–10 se calculan aquí y se guardan en D1, pero NUNCA
+ * ► Las dimensiones 2–10 se calculan aquí y se guardan en D1, pero NUNCA
  *   salen en esta respuesta. Recortar del lado del servidor es lo único que
  *   sostiene los niveles del embudo: si viajan al navegador y solo se ocultan
  *   con CSS, cualquiera las lee abriendo las herramientas de desarrollo.
@@ -287,9 +287,9 @@ export async function onRequestPost(context) {
     ).bind(scanId).first()).token;
   }
 
-  // ── Recorte del lado del servidor: solo dimensiones 1 y 2. ──
+  // ── Recorte del lado del servidor: solo dimensión 1. ──
   const libres = (completo.dimensiones || [])
-    .filter((d) => d.id === 1 || d.id === 2)
+    .filter((d) => d.id === 1)
     .map(({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }) =>
       ({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }));
 
@@ -302,6 +302,6 @@ export async function onRequestPost(context) {
     puntaje_total: completo.puntaje_total,
     dimensiones_evaluadas: (completo.dimensiones || []).length,
     dimensiones: libres,
-    bloqueadas: 8,
+    bloqueadas: 9,
   });
 }
