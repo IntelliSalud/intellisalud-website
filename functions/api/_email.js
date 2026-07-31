@@ -85,19 +85,15 @@ function cuerpoHTML({ nombre, especialidad, ciudad, puntaje, url }) {
               font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
               color:#0b1f4a;border:1px solid #e2e8f0">
 
-  <tr><td style="background:linear-gradient(135deg,#1a3a8f,#00c2c7);padding:24px 32px">
-    <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-      <td style="padding-right:12px">
-        <img src="https://intellisalud.com/assets/logo.jpg" width="40" height="40" alt="IntelliSalud"
-             style="display:block;border-radius:10px;object-fit:cover;background:#fff">
-      </td>
-      <td>
-        <div style="color:#fff;font-size:19px;font-weight:700">IntelliSalud</div>
-        <div style="color:rgba(255,255,255,.85);font-size:13px;margin-top:2px">
-          Índice de Visibilidad Médica
-        </div>
-      </td>
-    </tr></table>
+  <tr><td align="center" bgcolor="#1a3a8f"
+          style="background-color:#1a3a8f;background:linear-gradient(135deg,#1a3a8f,#00c2c7);
+                 padding:28px 32px">
+    <img src="https://intellisalud.com/assets/logo.jpg" width="44" height="44" alt="IntelliSalud"
+         style="display:block;margin:0 auto 10px;border-radius:10px;object-fit:cover;background:#fff">
+    <div style="color:#fff;font-size:19px;font-weight:700">IntelliSalud</div>
+    <div style="color:rgba(255,255,255,.85);font-size:13px;margin-top:4px;line-height:1.5">
+      ¿Qué tan preparada está tu marca profesional para la era de la IA?
+    </div>
   </td></tr>
 
   <tr><td style="padding:32px">
@@ -113,8 +109,8 @@ function cuerpoHTML({ nombre, especialidad, ciudad, puntaje, url }) {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
            style="background:#f4f8fc;border-radius:12px;margin:0 0 18px">
       <tr><td align="center" style="padding:22px">
-        <div style="font-size:44px;font-weight:800;line-height:1;color:#0e6db5">${puntaje}</div>
-        <div style="font-size:13px;color:#475569;margin-top:6px">de 100 puntos</div>
+        <div style="font-size:44px;font-weight:800;line-height:1;color:#0e6db5">${puntaje}<span
+          style="font-size:20px;font-weight:700;color:#94a3b8">/100</span></div>
         <div style="display:inline-block;margin-top:12px;padding:5px 14px;border-radius:999px;
                     background:${etapa.color};color:#fff;font-size:12px;font-weight:700;
                     letter-spacing:.02em">${etapa.nombre.toUpperCase()}</div>
