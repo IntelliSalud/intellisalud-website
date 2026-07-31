@@ -120,6 +120,8 @@ export async function onRequestPost(context) {
   waitUntil(enviarInforme(env, {
     destinatario: correo,
     nombre: v.nombre,
+    especialidad: scan.especialidad,
+    ciudad: scan.ciudad,
     puntaje: scan.puntaje_total,
     url: urlInforme,
   }));

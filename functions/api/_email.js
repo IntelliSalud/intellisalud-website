@@ -34,7 +34,49 @@ async function obtenerToken(clientSecret) {
   return (await r.json()).access_token;
 }
 
-function cuerpoHTML({ nombre, puntaje, url }) {
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g,
+  (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/**
+ * Las 4 etapas del modelo de bandas (0–40 / 40–60 / 60–80 / 80+), no las
+ * bandas de 0–3/4–6/7–10 por dimensión que usa el escáner. Cortes y textos
+ * tomados de "Modelo de Bandas de Visibilidad Digital" (IntelliSalud,
+ * 2026-07-30) para que el correo hable el mismo idioma que ese documento.
+ */
+function etapaDePuntaje(p) {
+  if (p < 40) {
+    return {
+      nombre: 'Fundamentos', color: '#c0392b', plazo: 'hasta 3 meses',
+      foco: 'construir la base que buscadores e IA puedan leer y citar: sitio propio, '
+        + 'datos estructurados, Google Business Profile y consistencia de identidad.',
+    };
+  }
+  if (p < 60) {
+    return {
+      nombre: 'Autoridad y prueba social', color: '#e08a1e', plazo: '2–3 meses adicionales',
+      foco: 'construir confianza donde lo buscan sus pacientes: reseñas, directorios '
+        + 'médicos y redes profesionales activas.',
+    };
+  }
+  if (p < 80) {
+    return {
+      nombre: 'Contenido y GEO', color: '#0e6db5', plazo: '3–6 meses adicionales',
+      foco: 'convertirse en la fuente que los asistentes de IA citan: contenido de '
+        + 'autoridad, schema profundo y medición de visibilidad en IA.',
+    };
+  }
+  return {
+    nombre: 'Dominio y mantenimiento', color: '#1c9e6b', plazo: 'continuo',
+    foco: 'defender y ampliar el liderazgo: cadencia de contenido, monitoreo mensual y '
+      + 'actualización constante.',
+  };
+}
+
+const WHATSAPP_URL = 'https://wa.me/593998286930?text='
+  + encodeURIComponent('Hola IntelliSalud, tengo una pregunta sobre mi diagnóstico de visibilidad.');
+
+function cuerpoHTML({ nombre, especialidad, ciudad, puntaje, url }) {
+  const etapa = etapaDePuntaje(puntaje);
   return `<!DOCTYPE html><html lang="es"><body style="margin:0;padding:0;background:#f4f8fc">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f8fc;padding:28px 12px">
 <tr><td align="center">
@@ -43,44 +85,82 @@ function cuerpoHTML({ nombre, puntaje, url }) {
               font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
               color:#0b1f4a;border:1px solid #e2e8f0">
 
-  <tr><td style="background:linear-gradient(135deg,#1a3a8f,#00c2c7);padding:28px 32px">
-    <div style="color:#fff;font-size:19px;font-weight:700">IntelliSalud</div>
-    <div style="color:rgba(255,255,255,.85);font-size:13px;margin-top:4px">
-      Índice de Visibilidad Médica
-    </div>
+  <tr><td style="background:linear-gradient(135deg,#1a3a8f,#00c2c7);padding:24px 32px">
+    <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+      <td style="padding-right:12px">
+        <img src="https://intellisalud.com/assets/logo.jpg" width="40" height="40" alt="IntelliSalud"
+             style="display:block;border-radius:10px;object-fit:cover;background:#fff">
+      </td>
+      <td>
+        <div style="color:#fff;font-size:19px;font-weight:700">IntelliSalud</div>
+        <div style="color:rgba(255,255,255,.85);font-size:13px;margin-top:2px">
+          Índice de Visibilidad Médica
+        </div>
+      </td>
+    </tr></table>
   </td></tr>
 
   <tr><td style="padding:32px">
-    <p style="margin:0 0 16px;font-size:16px">Estimado/a ${nombre},</p>
+    <p style="margin:0 0 16px;font-size:16px">Estimado/a ${esc(nombre)},</p>
 
     <p style="margin:0 0 20px;line-height:1.7;font-size:15px">
-      Su diagnóstico de visibilidad digital está listo. Este es el resultado
-      del análisis de diez áreas que determinan si un paciente puede
-      encontrarle en buscadores y en asistentes de inteligencia artificial.
+      Su diagnóstico de visibilidad digital está listo. Analizamos su presencia
+      como <strong>${esc(especialidad)}</strong> en <strong>${esc(ciudad)}</strong>
+      sobre diez áreas que determinan si un paciente puede encontrarle en
+      buscadores y en asistentes de inteligencia artificial.
     </p>
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
-           style="background:#f4f8fc;border-radius:12px;margin:0 0 22px">
+           style="background:#f4f8fc;border-radius:12px;margin:0 0 18px">
       <tr><td align="center" style="padding:22px">
         <div style="font-size:44px;font-weight:800;line-height:1;color:#0e6db5">${puntaje}</div>
         <div style="font-size:13px;color:#475569;margin-top:6px">de 100 puntos</div>
+        <div style="display:inline-block;margin-top:12px;padding:5px 14px;border-radius:999px;
+                    background:${etapa.color};color:#fff;font-size:12px;font-weight:700;
+                    letter-spacing:.02em">${etapa.nombre.toUpperCase()}</div>
       </td></tr>
     </table>
 
-    <p style="margin:0 0 22px;line-height:1.7;font-size:15px">
-      En su informe encontrará cuatro áreas con el detalle de lo que hallamos
-      y qué hacer al respecto, en orden de impacto.
+    <p style="margin:0 0 8px;line-height:1.7;font-size:14px;color:#475569">
+      Medimos diez áreas organizadas en cuatro etapas acumulativas — cada una
+      construye sobre la anterior: <strong>Fundamentos</strong> (0–40),
+      <strong>Autoridad y prueba social</strong> (40–60),
+      <strong>Contenido y GEO</strong> (60–80) y
+      <strong>Dominio y mantenimiento</strong> (80+).
+    </p>
+    <p style="margin:0 0 22px;line-height:1.7;font-size:14px;color:#475569">
+      Su puntaje lo ubica en <strong>${etapa.nombre}</strong>: el trabajo aquí es
+      ${etapa.foco} Un plan típico en esta etapa toma ${etapa.plazo}
+      — los plazos son referenciales y dependen del punto de partida y la
+      ejecución; no garantizamos posiciones específicas en buscadores ni en IA.
     </p>
 
-    <p style="margin:0 0 26px">
+    <p style="margin:0 0 22px;line-height:1.7;font-size:15px">
+      En su informe encontrará tres áreas con el detalle de lo que hallamos y
+      qué hacer al respecto, en orden de impacto.
+    </p>
+
+    <p style="margin:0 0 30px">
       <a href="${url}" style="display:inline-block;background:#0e6db5;color:#fff;
          text-decoration:none;padding:13px 26px;border-radius:999px;
          font-weight:700;font-size:15px">Ver mi informe</a>
     </p>
 
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+           style="background:#f4f8fc;border-radius:12px;margin:0 0 26px">
+      <tr><td style="padding:18px 20px">
+        <p style="margin:0;line-height:1.7;font-size:13.5px;color:#334155">
+          IntelliSalud ayuda a médicos y clínicas en Ecuador a ser encontrados
+          por sus pacientes — en Google y en los asistentes de inteligencia
+          artificial que cada vez más pacientes usan para elegir un
+          especialista. Somos pioneros en Ecuador y Latinoamérica en preparar
+          perfiles médicos para esta nueva forma de búsqueda.
+        </p>
+      </td></tr>
+    </table>
+
     <p style="margin:0;line-height:1.7;font-size:14px;color:#475569">
-      Guarde este enlace: puede volver a consultarlo cuando quiera. Si tiene
-      dudas sobre algún punto, responda a este correo — lo leo yo.
+      Guarde este enlace: puede volver a consultarlo cuando quiera.
     </p>
 
     <p style="margin:22px 0 0;line-height:1.6;font-size:15px">
@@ -89,22 +169,29 @@ function cuerpoHTML({ nombre, puntaje, url }) {
     </p>
   </td></tr>
 
-  <tr><td style="padding:20px 32px;border-top:1px solid #e2e8f0;
-                 font-size:12px;line-height:1.6;color:#8a99ab">
-    Recibe este correo porque solicitó un diagnóstico de visibilidad en
-    intellisalud.com. Sus datos se conservan mientras dure la relación
-    comercial y hasta 24 meses después del último contacto. Puede solicitar
-    acceso, rectificación o eliminación respondiendo a este mensaje, conforme
-    a la Ley Orgánica de Protección de Datos Personales del Ecuador.
+  <tr><td style="padding:22px 32px;border-top:1px solid #e2e8f0">
+    <p style="margin:0 0 14px;font-size:13px;color:#475569;line-height:1.6">
+      ¿Preguntas sobre su diagnóstico? Responda a este correo — lo leo yo — o
+      escríbanos por WhatsApp.
+    </p>
+    <p style="margin:0 0 18px">
+      <a href="${WHATSAPP_URL}" style="display:inline-block;background:#1ea952;color:#fff;
+         text-decoration:none;padding:9px 18px;border-radius:999px;
+         font-weight:700;font-size:13px">Hablar por WhatsApp</a>
+    </p>
+    <p style="margin:0;font-size:12px;line-height:1.6;color:#8a99ab">
+      Recibe este correo porque solicitó un diagnóstico de visibilidad en
+      intellisalud.com. Sus datos se conservan mientras dure la relación
+      comercial y hasta 24 meses después del último contacto. Puede solicitar
+      acceso, rectificación o eliminación respondiendo a este mensaje, conforme
+      a la Ley Orgánica de Protección de Datos Personales del Ecuador.
+    </p>
   </td></tr>
 
 </table>
 </td></tr></table>
 </body></html>`;
 }
-
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g,
-  (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /**
  * Aviso interno de lead nuevo. Sustituye al "BCC" que parecería la solución
@@ -258,12 +345,12 @@ async function enviarMensaje(env, { para, asunto, html }) {
  * correo es secundario respecto a la respuesta que ya está esperando en
  * pantalla, y un fallo aquí no debe convertirse en un error para él.
  */
-export async function enviarInforme(env, { destinatario, nombre, puntaje, url }) {
+export async function enviarInforme(env, { destinatario, nombre, especialidad, ciudad, puntaje, url }) {
   try {
     return await enviarMensaje(env, {
       para: destinatario,
       asunto: `Su diagnóstico de visibilidad: ${puntaje}/100`,
-      html: cuerpoHTML({ nombre, puntaje, url }),
+      html: cuerpoHTML({ nombre, especialidad, ciudad, puntaje, url }),
     });
   } catch (e) {
     console.error('correo informe:', e.message);
