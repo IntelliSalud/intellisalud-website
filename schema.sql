@@ -104,3 +104,19 @@ CREATE TABLE IF NOT EXISTS solicitudes_contacto (
   scan_id   INTEGER PRIMARY KEY REFERENCES scans (id),
   creado_en TEXT NOT NULL
 );
+
+-- Caché de la "búsqueda de campo": especialidad+ciudad SIN nombre, usada para
+-- contar cuántos perfiles profesionales distintos son visibles en ese campo.
+--
+-- Clave por especialidad+ciudad, no por médico: el costo de la búsqueda en
+-- Brave se paga una vez por cohorte y se amortiza entre todos los médicos que
+-- compartan esa especialidad+ciudad durante la ventana de caché (7 días —
+-- más larga que la de "scans" porque la composición de un campo cambia más
+-- lento que el perfil de una sola persona).
+CREATE TABLE IF NOT EXISTS campo_cache (
+  clave             TEXT PRIMARY KEY,   -- especialidad|ciudad normalizado
+  especialidad      TEXT NOT NULL,
+  ciudad            TEXT NOT NULL,
+  perfiles_visibles INTEGER NOT NULL,
+  creado_en         TEXT NOT NULL
+);

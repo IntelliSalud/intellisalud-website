@@ -11,8 +11,13 @@
  *   resultado — igual de inadivinable que el token de /informe/<token>.
  */
 
-import { validarNombre, json, hashIP, generarToken } from './_shared.js';
+import {
+  validarNombre, json, hashIP, generarToken,
+  claveCampo, resumenDimensiones, mensajeDiagnostico,
+} from './_shared.js';
 import { enviarInforme, notificarLead } from './_email.js';
+
+const CAMPO_CACHE_DIAS = 7;  // debe coincidir con scan.js
 
 const LIMITE_DIARIO = 10; // desbloqueos por IP y día — no cuestan API, pero sí frenan enumeración y correo abusivo
 
@@ -111,6 +116,26 @@ export async function onRequestPost(context) {
     .map(({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }) =>
       ({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }));
 
+  // ── Diagnóstico agregado (nivel 2): usa las diez dimensiones que ya están
+  //    en D1 desde /api/scan — cero llamadas nuevas a Brave/Anthropic. No
+  //    nombra rivales ni les asigna un puntaje (ver _shared.js). ──
+  const { solidas, oportunidades } = resumenDimensiones(completo.dimensiones);
+  const diagnostico = {
+    solidas, oportunidades,
+    mensaje: mensajeDiagnostico({
+      especialidad: scan.especialidad, ciudad: scan.ciudad, solidas, oportunidades,
+    }),
+  };
+  try {
+    const filaCampo = await env.DB.prepare(
+      `SELECT perfiles_visibles FROM campo_cache
+        WHERE clave = ? AND creado_en > datetime('now', ?)`,
+    ).bind(claveCampo(scan.especialidad, scan.ciudad), `-${CAMPO_CACHE_DIAS} days`).first();
+    if (filaCampo) diagnostico.perfiles_visibles_campo = filaCampo.perfiles_visibles;
+  } catch (e) {
+    console.error('diagnostico: no se pudo leer campo_cache', e.message);
+  }
+
   const urlInforme = `${new URL(request.url).origin}/informe/${token}`;
 
   // Los dos correos salen en segundo plano con waitUntil: el médico ya está
@@ -146,5 +171,6 @@ export async function onRequestPost(context) {
     dimensiones: desbloqueadas,
     informe_url: `/informe/${token}`,
     mensaje: `Tus dos áreas adicionales están abajo. También te enviamos el informe a ${correo}.`,
+    diagnostico,
   });
 }

@@ -189,6 +189,10 @@
           <p style="margin-top:18px" id="lectura"></p>
         </div>
 
+        <!-- ── Comparativa de campo: agregada, sin nombrar a nadie ── -->
+        <div id="campo-caja" style="display:none;background:var(--light);border:1px solid var(--border);
+             border-radius:14px;padding:16px 20px;margin-top:14px;font-size:.92rem;color:var(--muted)"></div>
+
         <h2>Tus primeras áreas</h2>
         <div id="dims"></div>
 
@@ -316,6 +320,12 @@
       $('barra').style.width = data.puntaje_total + '%';
       $('lectura').textContent = lecturaP(data.puntaje_total);
       $('dims').innerHTML = data.dimensiones.map(tarjeta).join('');
+      if (data.campo && data.campo.mensaje) {
+        $('campo-caja').textContent = data.campo.mensaje;
+        $('campo-caja').style.display = 'block';
+      } else {
+        $('campo-caja').style.display = 'none';
+      }
       $('bloque-form').style.display = 'block';
       $('resultado').style.display = 'block';
       $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -359,12 +369,21 @@
           + '<span style="color:var(--muted);font-size:.9rem">Guarda este enlace. '
           + 'Puedes volver a consultarlo cuando quieras.</span></p></div>'
         : '';
+      var mensajeDiag = (data.diagnostico && data.diagnostico.mensaje)
+        ? data.diagnostico.mensaje
+        : 'Son las que no se resuelven solas: requieren cambios en tu sitio, '
+          + 'en tus fichas y en cómo te encuentran los sistemas automatizados.';
+      var lineaCampo = (data.diagnostico && data.diagnostico.perfiles_visibles_campo != null)
+        ? '<p style="color:var(--muted);font-size:.92rem">Dato de campo: identificamos al menos '
+          + data.diagnostico.perfiles_visibles_campo + ' perfiles profesionales visibles en tu '
+          + 'especialidad y ciudad en los resultados de búsqueda.</p>'
+        : '';
       $('extra').innerHTML = '<h2>Tus dos áreas adicionales</h2>'
         + data.dimensiones.map(tarjeta).join('')
         + enlace
         + '<h2>Las siete áreas restantes</h2>'
-        + '<p>Son las que no se resuelven solas: requieren cambios en tu sitio, '
-        + 'en tus fichas y en cómo te encuentran los sistemas automatizados.</p>'
+        + '<p>' + esc(mensajeDiag) + '</p>'
+        + lineaCampo
         + bloqueada(4) + bloqueada(5) + bloqueada(6) + bloqueada(7)
         + bloqueada(8) + bloqueada(9) + bloqueada(10)
         + '<div id="contacto-caja" style="margin-top:24px;text-align:center">'

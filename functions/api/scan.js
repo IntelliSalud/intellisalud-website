@@ -13,10 +13,12 @@
 import {
   validarNombre, validarEspecialidad, validarCiudad,
   claveCache, json, hashIP, generarToken,
+  claveCampo, contarPerfilesCampo, mensajeCampo,
 } from './_shared.js';
 
 const MODELO = 'claude-haiku-4-5';
 const CACHE_DIAS = 30;
+const CAMPO_CACHE_DIAS = 7;  // un campo cambia más lento que un solo médico
 const LIMITE_DIARIO = 5;   // escaneos con coste, por IP y día
 
 /** La rúbrica v1.0, condensada para el modelo. */
@@ -94,6 +96,44 @@ async function buscar(consulta, apiKey) {
     url: x.url,
     extracto: x.description,
   }));
+}
+
+/**
+ * Cuenta cuántos perfiles profesionales distintos son visibles hoy para
+ * "especialidad en ciudad", SIN el nombre del médico — es la vara de
+ * comparación de campo, no el escaneo de una persona. Cacheada aparte de
+ * "scans" (ver CAMPO_CACHE_DIAS) para amortizar el costo entre todos los
+ * médicos de esa especialidad+ciudad. Si Brave falla aquí, no se rompe el
+ * escaneo principal: se devuelve null y el llamador simplemente omite el
+ * dato de campo para esta respuesta.
+ */
+async function obtenerCampo(env, especialidad, ciudad) {
+  const clave = claveCampo(especialidad, ciudad);
+
+  const cache = await env.DB.prepare(
+    `SELECT perfiles_visibles FROM campo_cache
+      WHERE clave = ? AND creado_en > datetime('now', ?)`,
+  ).bind(clave, `-${CAMPO_CACHE_DIAS} days`).first();
+
+  if (cache) return cache.perfiles_visibles;
+
+  let perfilesVisibles;
+  try {
+    const resultados = await buscar(`${especialidad} en ${ciudad} Ecuador`, env.BRAVE_API_KEY);
+    perfilesVisibles = contarPerfilesCampo(resultados);
+  } catch (e) {
+    console.error('campo: búsqueda falló', e.codigo || e.message);
+    return null;
+  }
+
+  await env.DB.prepare(
+    `INSERT INTO campo_cache (clave, especialidad, ciudad, perfiles_visibles, creado_en)
+     VALUES (?, ?, ?, ?, datetime('now'))
+     ON CONFLICT (clave) DO UPDATE SET perfiles_visibles = excluded.perfiles_visibles,
+       creado_en = excluded.creado_en`,
+  ).bind(clave, especialidad, ciudad, perfilesVisibles).run();
+
+  return perfilesVisibles;
 }
 
 const ESQUEMA = {
@@ -293,6 +333,27 @@ export async function onRequestPost(context) {
     .map(({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }) =>
       ({ id, nombre: n, puntos, banda, evidencia, recomendacion, confianza }));
 
+  // ── Comparativa de campo: agregada, sin nombrar a nadie (ver _shared.js).
+  //    Un fallo aquí no debe tumbar el escaneo — el médico ya pagó el costo
+  //    de Brave+Haiku y está esperando su puntaje; el campo es un adicional. ──
+  let campo = null;
+  try {
+    const dim1 = (completo.dimensiones || []).find((d) => d.id === 1);
+    const perfilesVisibles = await obtenerCampo(env, especialidad, ciudad);
+    if (perfilesVisibles !== null) {
+      const apareceEnCampo = dim1 ? dim1.banda !== 'ausente' : false;
+      campo = {
+        perfiles_visibles: perfilesVisibles,
+        apareces: apareceEnCampo,
+        mensaje: mensajeCampo({
+          especialidad, ciudad, perfilesVisibles, apareceEnCampo,
+        }),
+      };
+    }
+  } catch (e) {
+    console.error('campo: no se pudo anexar', e.message);
+  }
+
   return json({
     scan_id: scanId,
     scan_token: scanToken,
@@ -303,5 +364,6 @@ export async function onRequestPost(context) {
     dimensiones_evaluadas: (completo.dimensiones || []).length,
     dimensiones: libres,
     bloqueadas: 9,
+    campo,
   });
 }

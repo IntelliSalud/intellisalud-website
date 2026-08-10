@@ -10,7 +10,10 @@
  * que en /api/scan.
  */
 
+import { claveCampo, resumenDimensiones, mensajeDiagnostico } from '../api/_shared.js';
+
 const DIMENSIONES_BLOQUEADAS = [4, 5, 6, 7, 8, 9, 10];
+const CAMPO_CACHE_DIAS = 7;  // debe coincidir con scan.js / unlock.js
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g,
   (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -104,6 +107,24 @@ export async function onRequestGet(context) {
     .filter((d) => d.id >= 1 && d.id <= 3)
     .sort((a, b) => a.id - b.id);
 
+  // ── Mismo diagnóstico agregado que /api/unlock, recalculado aquí porque
+  //    esta página no pasa por ese endpoint (se abre directo desde el correo
+  //    o el enlace guardado). Cero llamadas nuevas: mismos datos de D1. ──
+  const { solidas, oportunidades } = resumenDimensiones(completo.dimensiones);
+  const mensajeDiag = mensajeDiagnostico({
+    especialidad: fila.especialidad, ciudad: fila.ciudad, solidas, oportunidades,
+  });
+  let perfilesCampo = null;
+  try {
+    const filaCampo = await env.DB.prepare(
+      `SELECT perfiles_visibles FROM campo_cache
+        WHERE clave = ? AND creado_en > datetime('now', ?)`,
+    ).bind(claveCampo(fila.especialidad, fila.ciudad), `-${CAMPO_CACHE_DIAS} days`).first();
+    if (filaCampo) perfilesCampo = filaCampo.perfiles_visibles;
+  } catch (e) {
+    console.error('informe: no se pudo leer campo_cache', e.message);
+  }
+
   const fecha = String(fila.creado_en).slice(0, 10);
   const p = fila.puntaje_total;
 
@@ -169,10 +190,11 @@ export async function onRequestGet(context) {
   ${abiertas.map(tarjeta).join('')}
 
   <h2>Las siete áreas restantes</h2>
-  <p>
-    Son las que no se resuelven solas: requieren cambios en tu sitio, en tus
-    fichas y en cómo te encuentran los sistemas automatizados.
-  </p>
+  <p>${esc(mensajeDiag)}</p>
+  ${perfilesCampo !== null ? `<p style="color:var(--muted);font-size:.92rem">
+    Dato de campo: identificamos al menos ${perfilesCampo} perfiles profesionales
+    visibles para «${esc(fila.especialidad)} en ${esc(fila.ciudad)}» en los
+    resultados de búsqueda.</p>` : ''}
   ${DIMENSIONES_BLOQUEADAS.map(bloqueada).join('')}
 
   <div class="no-print" style="text-align:center;margin-top:36px" id="contacto-caja">
