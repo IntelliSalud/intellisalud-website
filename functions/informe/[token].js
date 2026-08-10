@@ -192,9 +192,9 @@ export async function onRequestGet(context) {
   <h2>Las siete áreas restantes</h2>
   <p>${esc(mensajeDiag)}</p>
   ${perfilesCampo !== null ? `<p style="color:var(--muted);font-size:.92rem">
-    Dato de campo: identificamos al menos ${perfilesCampo} perfiles profesionales
-    visibles para «${esc(fila.especialidad)} en ${esc(fila.ciudad)}» en los
-    resultados de búsqueda.</p>` : ''}
+    Dato de campo: identificamos al menos <strong>${perfilesCampo} perfiles
+    profesionales</strong> visibles para ${esc(fila.especialidad)} en
+    ${esc(fila.ciudad)} en los resultados de búsqueda.</p>` : ''}
   ${DIMENSIONES_BLOQUEADAS.map(bloqueada).join('')}
 
   <div class="no-print" style="text-align:center;margin-top:36px" id="contacto-caja">

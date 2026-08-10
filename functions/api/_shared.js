@@ -196,20 +196,24 @@ export function contarPerfilesCampo(resultados) {
   return dominios.size;
 }
 
-/** Mensaje de campo para el escaneo gratuito (nivel 1). Cifra real, sin
- *  nombrar a nadie, sin prometer una posición exacta — "al menos N". */
+/** Mensaje de campo para el escaneo gratuito (nivel 1), en texto plano — sin
+ *  comillas alrededor de especialidad/ciudad (no aportan nada y rompen la
+ *  lectura), cifra real, sin nombrar a nadie, sin prometer una posición
+ *  exacta ("al menos N"). Es el texto que viaja en el JSON de /api/scan;
+ *  la página web lo re-renderiza con negrita (ver visibilidad.html) porque
+ *  este valor es texto plano, no HTML. */
 export function mensajeCampo({ especialidad, ciudad, perfilesVisibles, apareceEnCampo }) {
   if (perfilesVisibles <= 0) {
-    return `Para «${especialidad} en ${ciudad}» no identificamos otros perfiles `
+    return `Para ${especialidad} en ${ciudad} no identificamos otros perfiles `
       + 'profesionales claramente visibles en esta búsqueda — es un campo con poca '
       + 'competencia digital todavía.';
   }
   if (apareceEnCampo) {
-    return `Para «${especialidad} en ${ciudad}» identificamos al menos `
+    return `Para ${especialidad} en ${ciudad} identificamos al menos `
       + `${perfilesVisibles} perfiles profesionales visibles en los resultados de `
       + 'búsqueda. El suyo es uno de ellos, pero no el único.';
   }
-  return `Para «${especialidad} en ${ciudad}» identificamos al menos `
+  return `Para ${especialidad} en ${ciudad} identificamos al menos `
     + `${perfilesVisibles} perfiles profesionales visibles en los resultados de `
     + 'búsqueda. Hoy, el suyo no está entre ellos.';
 }

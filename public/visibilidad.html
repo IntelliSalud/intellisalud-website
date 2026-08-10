@@ -191,7 +191,8 @@
 
         <!-- ── Comparativa de campo: agregada, sin nombrar a nadie ── -->
         <div id="campo-caja" style="display:none;background:var(--light);border:1px solid var(--border);
-             border-radius:14px;padding:16px 20px;margin-top:14px;font-size:.92rem;color:var(--muted)"></div>
+             border-radius:14px;padding:18px 22px;margin-top:14px;font-size:1.02rem;line-height:1.6;
+             color:var(--dark)"></div>
 
         <h2>Tus primeras áreas</h2>
         <div id="dims"></div>
@@ -273,6 +274,27 @@
   }
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+  // Misma redacción que mensajeCampo() en _shared.js, pero en HTML: negrita en
+  // la cifra y en la frase de "no está entre ellos" / "uno de ellos" — sin
+  // comillas alrededor de especialidad/ciudad. Reconstruida aquí (no parseando
+  // el texto plano del servidor) porque el campo.mensaje del API es texto
+  // llano a propósito, para quien lo consuma fuera de esta página.
+  function campoHTML(especialidad, ciudad, campo) {
+    const esp = esc(especialidad), ciu = esc(ciudad), n = campo.perfiles_visibles;
+    if (n <= 0) {
+      return 'Para ' + esp + ' en ' + ciu + ' no identificamos otros perfiles profesionales '
+        + 'claramente visibles en esta búsqueda — es un campo con poca competencia digital todavía.';
+    }
+    if (campo.apareces) {
+      return 'Para ' + esp + ' en ' + ciu + ' identificamos <strong>al menos ' + n
+        + ' perfiles profesionales</strong> visibles en los resultados de búsqueda. '
+        + '<strong>El suyo es uno de ellos, pero no el único.</strong>';
+    }
+    return 'Para ' + esp + ' en ' + ciu + ' identificamos <strong>al menos ' + n
+      + ' perfiles profesionales</strong> visibles en los resultados de búsqueda. '
+      + '<strong>Hoy, el suyo no está entre ellos.</strong>';
+  }
+
   function tarjeta(d) {
     return '<div class="dim"><div class="dim-cab">'
       + '<span class="dim-num">' + d.id + '</span>'
@@ -321,7 +343,7 @@
       $('lectura').textContent = lecturaP(data.puntaje_total);
       $('dims').innerHTML = data.dimensiones.map(tarjeta).join('');
       if (data.campo && data.campo.mensaje) {
-        $('campo-caja').textContent = data.campo.mensaje;
+        $('campo-caja').innerHTML = campoHTML(data.especialidad, data.ciudad, data.campo);
         $('campo-caja').style.display = 'block';
       } else {
         $('campo-caja').style.display = 'none';
