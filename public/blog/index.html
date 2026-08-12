@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Blog — SEO, GEO e IA para profesionales de la salud | IntelliSalud</title>
+
+  <meta
+    name="description"
+    content="Artículos de IntelliSalud sobre SEO, GEO (optimización para motores generativos), avances en inteligencia artificial y cómo los profesionales de la salud pueden ser encontrados por nuevos pacientes en Ecuador y América Latina."
+  />
+  <link rel="canonical" href="https://intellisalud.com/blog" />
+
+  <meta property="og:title" content="Blog — SEO, GEO e IA para profesionales de la salud | IntelliSalud" />
+  <meta property="og:description" content="Artículos sobre SEO, GEO y visibilidad digital para médicos y clínicas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://intellisalud.com/blog" />
+  <meta property="og:locale" content="es_EC" />
+  <meta property="og:site_name" content="IntelliSalud" />
+
+  <!-- GEO — Schema.org: Blog + ItemList referenciando cada BlogPosting por
+       @id. Cada post define su propio BlogPosting completo en su página;
+       aquí solo se enumeran para que un rastreador entienda la colección
+       sin tener que inferirla del HTML. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://intellisalud.com/blog#collectionpage",
+        "url": "https://intellisalud.com/blog",
+        "name": "Blog — SEO, GEO e IA para profesionales de la salud",
+        "isPartOf": { "@id": "https://intellisalud.com/#website" },
+        "about": { "@id": "https://intellisalud.com/#organization" },
+        "inLanguage": "es"
+      },
+      {
+        "@type": "Blog",
+        "@id": "https://intellisalud.com/blog#blog",
+        "name": "Blog de IntelliSalud",
+        "publisher": { "@id": "https://intellisalud.com/#organization" },
+        "blogPost": [
+          { "@id": "https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia#post" },
+          { "@id": "https://intellisalud.com/blog/seo-geo-marcas-digitales-nuevos-clientes#post" },
+          { "@id": "https://intellisalud.com/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados#post" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    .blog-hero { background: var(--grad-hero-bg); padding: 110px 24px 64px; text-align: center; }
+    .blog-hero .eyebrow { color: #7deaef; }
+    .blog-hero h1 { color: #fff; max-width: 760px; margin: 0 auto 16px; }
+    .blog-hero p { color: rgba(255,255,255,.85); max-width: 620px; margin: 0 auto; line-height: 1.7; }
+
+    .blog-page { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .blog-list { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+    .blog-card {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 30px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease;
+    }
+    .blog-card:hover { transform: translateY(-2px); }
+    .blog-meta {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .blog-card h2 { font-size: 1.35rem; margin-bottom: 10px; }
+    .blog-card p { color: var(--muted); margin: 0; line-height: 1.65; }
+    .blog-card .read-more {
+      display: inline-block;
+      margin-top: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <img src="/assets/logo.jpg" alt="Logo de IntelliSalud" class="logo-image" />
+        <span>IntelliSalud</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+      <!-- Nav idéntico en todas las páginas del sitio — ver nota en planes.html. -->
+      <div class="nav-links" id="navLinks">
+        <a href="/#servicios">Servicios</a>
+        <a href="/planes">Planes</a>
+        <a href="/#beneficios">Beneficios</a>
+        <a href="/#como-funciona">Cómo funciona</a>
+        <a href="/blog" style="font-weight:700;">Blog</a>
+        <a href="/nosotros">Nosotros</a>
+        <a href="/equipo/jonathan-aviles">Equipo</a>
+        <a
+          href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
+          class="nav-wa"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          WhatsApp
+        </a>
+        <a href="/visibilidad" class="nav-cta">Consultar visibilidad</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="blog-hero">
+      <p class="eyebrow">Blog</p>
+      <h1>SEO, GEO e inteligencia artificial para profesionales de la salud</h1>
+      <p>
+        Artículos escritos por IntelliSalud sobre visibilidad digital, optimización
+        para asistentes de inteligencia artificial y cómo los médicos y clínicas
+        llegan a nuevos pacientes en Ecuador y América Latina.
+      </p>
+    </section>
+
+    <div class="blog-page">
+      <div class="blog-list">
+
+        <a class="blog-card" href="/blog/que-es-geo-optimizacion-para-ia">
+          <p class="blog-meta">GEO · 1 de agosto de 2026</p>
+          <h2>¿Qué es GEO (optimización para motores generativos) y por qué tu marca lo necesita en 2026?</h2>
+          <p>
+            El SEO posiciona páginas. El GEO busca que un asistente de inteligencia
+            artificial pueda encontrar, entender y citar correctamente a una persona
+            u organización. Qué significa esa diferencia en la práctica, y por qué
+            cada vez más pacientes preguntan directo a ChatGPT o Claude en lugar de
+            buscar en Google.
+          </p>
+          <span class="read-more">Leer artículo →</span>
+        </a>
+
+        <a class="blog-card" href="/blog/seo-geo-marcas-digitales-nuevos-clientes">
+          <p class="blog-meta">SEO + GEO · 6 de agosto de 2026</p>
+          <h2>SEO y GEO: cómo las marcas y los profesionales encuentran nuevos clientes en la era de la IA</h2>
+          <p>
+            Aparecer en Google ya no es suficiente. Un repaso de por qué la
+            consistencia de identidad, los datos estructurados y la corroboración
+            en fuentes externas son hoy la diferencia entre ser citado por una IA
+            o ser invisible para ella — aplicable a cualquier marca o entidad
+            digital, no solo a la salud.
+          </p>
+          <span class="read-more">Leer artículo →</span>
+        </a>
+
+        <a class="blog-card" href="/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados">
+          <p class="blog-meta">IntelliSalud · 12 de agosto de 2026</p>
+          <h2>Cómo IntelliSalud ayuda a médicos y clínicas a llegar a nuevos pacientes y nuevos mercados</h2>
+          <p>
+            De un diagnóstico gratuito a un plan por banda de madurez digital:
+            así es el camino que sigue un profesional de la salud con IntelliSalud,
+            y por qué está pensado para escalar de Ecuador al resto de América
+            Latina.
+          </p>
+          <span class="read-more">Leer artículo →</span>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 IntelliSalud S.A.S. Todos los derechos reservados.</p>
+    <p>Inteligencia Artificial para consultorios médicos en Ecuador.</p>
+    <p>
+      <a href="/privacidad">Política de Privacidad</a>
+      &nbsp;·&nbsp;
+      Contacto: <a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a>
+    </p>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

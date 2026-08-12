@@ -43,6 +43,33 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- Blog: contenido nuevo y recurrente — changefreq weekly en el índice
+       porque ahí es donde se agregan entradas; los posts individuales
+       quedan fijos una vez publicados (monthly es suficiente). -->
+  <url>
+    <loc>https://intellisalud.com/blog</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://intellisalud.com/blog/seo-geo-marcas-digitales-nuevos-clientes</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://intellisalud.com/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://intellisalud.com/privacidad</loc>
     <lastmod>2026-08-11</lastmod>

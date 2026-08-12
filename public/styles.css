@@ -1305,7 +1305,14 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
   position: relative;
 }
 
+/* Ocultar el triángulo nativo de <summary> en todos los motores: Chrome/Edge
+   ignoran "list-style" en algunas versiones y solo obedecen el pseudo-elemento
+   -webkit; Firefox y Safari recientes usan el estándar ::marker. Sin las tres
+   reglas, el triángulo del navegador queda visible junto al "+" propio —
+   que es exactamente lo que se veía en producción antes de este cambio. */
 .faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::marker { content: ""; }
+.faq-item summary::-moz-list-bullet { list-style-type: none; }
 
 .faq-item summary::after {
   content: "+";

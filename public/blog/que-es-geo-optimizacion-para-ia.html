@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>¿Qué es GEO (optimización para motores generativos)? — Blog IntelliSalud</title>
+
+  <meta
+    name="description"
+    content="GEO es la optimización para que un asistente de inteligencia artificial pueda encontrar, entender y citar correctamente a una persona u organización. Qué significa, en qué se diferencia del SEO, y por qué un médico lo necesita en 2026."
+  />
+  <link rel="canonical" href="https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia" />
+
+  <meta property="og:title" content="¿Qué es GEO (optimización para motores generativos) y por qué tu marca lo necesita en 2026?" />
+  <meta property="og:description" content="El SEO posiciona páginas. El GEO busca que una IA pueda encontrar, entender y citar correctamente a una persona u organización." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia" />
+  <meta property="og:locale" content="es_EC" />
+  <meta property="og:site_name" content="IntelliSalud" />
+  <meta property="article:published_time" content="2026-08-01" />
+
+  <!-- GEO — Schema.org: BlogPosting con author/publisher referenciados por
+       @id a la Organization ya definida en la home (no duplicar). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia#webpage",
+        "url": "https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia",
+        "name": "¿Qué es GEO (optimización para motores generativos)? — Blog IntelliSalud",
+        "isPartOf": { "@id": "https://intellisalud.com/#website" },
+        "about": { "@id": "https://intellisalud.com/#organization" },
+        "inLanguage": "es"
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": "https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia#post",
+        "headline": "¿Qué es GEO (optimización para motores generativos) y por qué tu marca lo necesita en 2026?",
+        "description": "El SEO posiciona páginas. El GEO busca que un asistente de inteligencia artificial pueda encontrar, entender y citar correctamente a una persona u organización.",
+        "url": "https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia",
+        "datePublished": "2026-08-01",
+        "dateModified": "2026-08-01",
+        "inLanguage": "es",
+        "author": { "@id": "https://intellisalud.com/#organization" },
+        "publisher": { "@id": "https://intellisalud.com/#organization" },
+        "mainEntityOfPage": { "@id": "https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia#webpage" },
+        "articleSection": "GEO",
+        "keywords": "GEO, optimización para motores generativos, AEO, SEO para médicos, visibilidad en inteligencia artificial"
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    .post-hero { background: var(--grad-hero-bg); padding: 100px 24px 56px; text-align: center; }
+    .post-hero .eyebrow { color: #7deaef; }
+    .post-hero h1 { color: #fff; max-width: 780px; margin: 0 auto 14px; font-size: clamp(1.7rem, 3.6vw, 2.4rem); }
+    .post-meta-bar { color: rgba(255,255,255,.75); font-size: 0.85rem; }
+
+    .post-page { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+    .post-page h2 { margin-top: 40px; margin-bottom: 14px; font-size: 1.4rem; }
+    .post-page h3 { margin-top: 26px; margin-bottom: 10px; font-size: 1.1rem; }
+    .post-page p { line-height: 1.8; margin-bottom: 18px; color: var(--dark); }
+    .post-page ul { margin: 0 0 18px 20px; line-height: 1.8; }
+    .post-page li { margin-bottom: 8px; }
+    .post-lede { font-size: 1.1rem; color: var(--muted); margin-bottom: 8px; }
+
+    .post-cite {
+      border-left: 3px solid var(--accent);
+      padding: 12px 18px;
+      margin: 22px 0;
+      background: var(--light);
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .post-cta {
+      margin-top: 40px;
+      padding: 28px 26px;
+      border-radius: 20px;
+      background: var(--light);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .post-cta p { margin-bottom: 16px; }
+
+    .post-footer-nav {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <img src="/assets/logo.jpg" alt="Logo de IntelliSalud" class="logo-image" />
+        <span>IntelliSalud</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="/#servicios">Servicios</a>
+        <a href="/planes">Planes</a>
+        <a href="/#beneficios">Beneficios</a>
+        <a href="/#como-funciona">Cómo funciona</a>
+        <a href="/blog" style="font-weight:700;">Blog</a>
+        <a href="/nosotros">Nosotros</a>
+        <a href="/equipo/jonathan-aviles">Equipo</a>
+        <a
+          href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
+          class="nav-wa"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          WhatsApp
+        </a>
+        <a href="/visibilidad" class="nav-cta">Consultar visibilidad</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <header class="post-hero">
+        <p class="eyebrow">GEO</p>
+        <h1>¿Qué es GEO (optimización para motores generativos) y por qué tu marca lo necesita en 2026?</h1>
+        <p class="post-meta-bar">Por IntelliSalud · 1 de agosto de 2026 · 4 min de lectura</p>
+      </header>
+
+      <div class="post-page">
+        <p class="post-lede">
+          Durante años, "aparecer en internet" significó una sola cosa: posicionar bien en
+          Google. Hoy significa dos cosas distintas, y confundirlas es el error más común
+          que vemos en profesionales de la salud que ya invirtieron en su presencia digital
+          y aun así son invisibles para la inteligencia artificial.
+        </p>
+
+        <h2>SEO ordena páginas. GEO recupera entidades.</h2>
+        <p>
+          El SEO (optimización para motores de búsqueda) trabaja sobre un principio simple:
+          un buscador como Google ordena páginas web por relevancia frente a una consulta.
+          Si tu página está bien construida, aparece más arriba.
+        </p>
+        <p>
+          El GEO (optimización para motores generativos, también llamado AEO — Answer Engine
+          Optimization) trabaja sobre un principio distinto. Un asistente de inteligencia
+          artificial como ChatGPT, Claude, Gemini o Perplexity no ordena páginas: recupera
+          <strong>entidades</strong> — nombres, personas u organizaciones cuya información
+          aparece corroborada en varias fuentes independientes, con datos consistentes y
+          verificables. Si esa corroboración no existe, el asistente simplemente no te
+          menciona, sin importar cuánto hayas invertido en SEO tradicional.
+        </p>
+
+        <div class="post-cite">
+          Un estudio de Pew Research Center sobre 68.879 búsquedas (marzo 2025) encontró que,
+          cuando aparece un resumen generado por IA en los resultados, solo el 8% de las
+          búsquedas termina en un clic a un resultado tradicional — frente al 15% cuando no
+          aparece un resumen. El comportamiento del usuario ya cambió; la pregunta es si tu
+          información está donde ese resumen la puede encontrar.
+        </div>
+
+        <h2>Por qué un profesional puede tener buen SEO y seguir siendo invisible para la IA</h2>
+        <p>
+          Es más común de lo que parece: un médico con un sitio web decente, buen
+          posicionamiento local y varias reseñas positivas, pero cuyo nombre, títulos o
+          consultorios aparecen escritos de forma distinta en cada directorio. Para un
+          buscador tradicional, esas pequeñas inconsistencias apenas importan. Para un
+          asistente de IA que intenta verificar si "el Dr. X que aparece en el sitio web" y
+          "el Dr. X que aparece en el directorio médico" son la misma persona, esa
+          inconsistencia es exactamente lo que impide la corroboración.
+        </p>
+        <p>Las señales que sí ayudan a que una IA identifique correctamente a una persona u organización incluyen:</p>
+        <ul>
+          <li>Nombre, títulos y datos de contacto escritos exactamente igual en todas las plataformas donde aparecen</li>
+          <li>Datos estructurados (schema.org) que declaran explícitamente quién es la persona, su especialidad y su organización</li>
+          <li>Presencia en fuentes independientes que se corroboran entre sí — no solo el propio sitio web</li>
+          <li>Contenido que responde preguntas reales, en el formato de pregunta y respuesta que una IA puede citar directamente</li>
+        </ul>
+
+        <h2>El crecimiento no es un caso hipotético</h2>
+        <p>
+          Según datos de Semrush, el tráfico referido por modelos de lenguaje creció 527% en
+          un año, y los sitios de negocios y servicios ya representan el 50% de lo que cita
+          ChatGPT. No es una tendencia futura — es un canal de descubrimiento que ya está
+          activo, y que crece más rápido que el propio SEO tradicional.
+        </p>
+
+        <h2>GEO no reemplaza al SEO — lo complementa</h2>
+        <p>
+          Ninguno de los dos sustituye al otro. Un profesional necesita aparecer cuando un
+          paciente escribe su especialidad y su ciudad en Google (SEO), y necesita que un
+          asistente de IA pueda nombrarlo y describir su formación correctamente cuando un
+          paciente le pregunta directamente (GEO). Son dos capas de la misma pregunta: ¿me
+          encuentran cuando me buscan?
+        </p>
+
+        <div class="post-cta">
+          <p><strong>¿Quieres saber si tu presencia digital ya cumple las condiciones que un asistente de IA necesita para citarte?</strong></p>
+          <a href="/visibilidad" class="btn btn-primary">Diagnóstico gratuito de visibilidad</a>
+        </div>
+
+        <p class="post-footer-nav">
+          <a href="/blog">← Volver al blog</a>
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 IntelliSalud S.A.S. Todos los derechos reservados.</p>
+    <p>Inteligencia Artificial para consultorios médicos en Ecuador.</p>
+    <p>
+      <a href="/privacidad">Política de Privacidad</a>
+      &nbsp;·&nbsp;
+      Contacto: <a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a>
+    </p>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
