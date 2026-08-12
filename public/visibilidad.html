@@ -125,11 +125,24 @@
         <span>IntelliSalud</span>
       </a>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+      <!-- Nav idéntico en todas las páginas del sitio — ver nota en planes.html. -->
       <div class="nav-links" id="navLinks">
-        <a href="/">Inicio</a>
+        <a href="/#servicios">Servicios</a>
+        <a href="/planes">Planes</a>
+        <a href="/#beneficios">Beneficios</a>
+        <a href="/#como-funciona">Cómo funciona</a>
         <a href="/nosotros">Nosotros</a>
         <a href="/equipo/jonathan-aviles">Equipo</a>
-        <a href="/casos">Casos</a>
+        <a
+          href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
+          class="nav-wa"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          WhatsApp
+        </a>
+        <a href="/visibilidad" class="nav-cta">Consultar visibilidad</a>
       </div>
     </nav>
   </header>
@@ -187,6 +200,8 @@
           <div class="puntaje-de">de 100 puntos</div>
           <div class="barra"><span id="barra" style="width:0"></span></div>
           <p style="margin-top:18px" id="lectura"></p>
+          <!-- Se completa en JS según el puntaje: nombre de banda + botón a /planes#banda-N -->
+          <div id="banda-cta" style="margin-top:20px"></div>
         </div>
 
         <!-- ── Comparativa de campo: agregada, sin nombrar a nadie ── -->
@@ -266,6 +281,21 @@
     if (p >= 25) return 'fair';
     return 'poor';
   }
+  // Bandas del roadmap de madurez (mismas 4 que /planes y que
+  // ai-readiness-healthcare/SKILL.md): 0–40 Fundamentos, 40–60 Autoridad,
+  // 60–80 Contenido e IA, 80+ Dominio. Evaluar de mayor a menor.
+  function bandaDe(p) {
+    if (p >= 80) return { id: 'banda-4', nombre: 'Dominio' };
+    if (p >= 60) return { id: 'banda-3', nombre: 'Contenido e IA' };
+    if (p >= 40) return { id: 'banda-2', nombre: 'Autoridad' };
+    return { id: 'banda-1', nombre: 'Fundamentos' };
+  }
+  function bandaCtaHTML(p) {
+    const b = bandaDe(p);
+    return '<p style="color:var(--muted);font-size:.92rem;margin-bottom:12px">'
+      + 'Con este puntaje, tu banda hoy es <strong>' + esc(b.nombre) + '</strong>.</p>'
+      + '<a href="/planes#' + b.id + '" class="btn btn-primary">Ver el plan de mi banda</a>';
+  }
   function lecturaP(p) {
     if (p >= 75) return 'Tu presencia digital es sólida. Las oportunidades que quedan son de afinamiento.';
     if (p >= 50) return 'Tienes una base construida, con áreas concretas donde ganarías visibilidad rápido.';
@@ -341,6 +371,7 @@
       $('puntaje').className = 'puntaje-num ' + claseP(data.puntaje_total);
       $('barra').style.width = data.puntaje_total + '%';
       $('lectura').textContent = lecturaP(data.puntaje_total);
+      $('banda-cta').innerHTML = bandaCtaHTML(data.puntaje_total);
       $('dims').innerHTML = data.dimensiones.map(tarjeta).join('');
       if (data.campo && data.campo.mensaje) {
         $('campo-caja').innerHTML = campoHTML(data.especialidad, data.ciudad, data.campo);
