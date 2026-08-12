@@ -1270,3 +1270,62 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
   .sa-after  { display: flex; }
   .sa-apply  { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════ FAQ ══
+   Compartido entre todas las páginas con una sección de preguntas
+   frecuentes (index, planes, y las que se agreguen). Originalmente vivía
+   solo en el <style> local de planes.html; se promovió aquí para que el
+   texto visible y el bloque JSON-LD FAQPage de cada página no se dupliquen
+   en CSS aparte — una sola definición, todas las páginas la heredan.
+   <details> nativo a propósito: el contenido queda en el DOM aunque esté
+   colapsado, así un rastreador (buscador o asistente de IA) lo lee sin
+   ejecutar JS y sin que el usuario tenga que hacer clic. ══ */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+  max-width: 780px;
+}
+
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 4px 22px;
+  box-shadow: var(--shadow);
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 30px 18px 0;
+  font-weight: 700;
+  font-size: 0.98rem;
+  position: relative;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 16px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after { content: "–"; }
+
+.faq-item p {
+  color: var(--muted);
+  line-height: 1.7;
+  padding-bottom: 20px;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.faq-item p a { color: var(--primary); font-weight: 600; }

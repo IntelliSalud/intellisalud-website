@@ -393,49 +393,8 @@
       font-size: 0.94rem;
     }
 
-    /* ── FAQ ── */
-    .faq-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 28px;
-      max-width: 780px;
-    }
-    .faq-item {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 4px 22px;
-      box-shadow: var(--shadow);
-    }
-    .faq-item summary {
-      list-style: none;
-      cursor: pointer;
-      padding: 18px 30px 18px 0;
-      font-weight: 700;
-      font-size: 0.98rem;
-      position: relative;
-    }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after {
-      content: "+";
-      position: absolute;
-      right: 0;
-      top: 16px;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--primary);
-      transition: transform 0.2s ease;
-    }
-    .faq-item[open] summary::after { content: "–"; }
-    .faq-item p {
-      color: var(--muted);
-      line-height: 1.7;
-      padding-bottom: 20px;
-      margin: 0;
-      max-width: 68ch;
-    }
-    .faq-item p a { color: var(--primary); font-weight: 600; }
+    /* .faq-list / .faq-item ahora viven en styles.css (compartidas con
+       index.html y cualquier página futura con FAQ) — no duplicar aquí. */
   </style>
 </head>
 
