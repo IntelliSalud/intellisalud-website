@@ -32,6 +32,19 @@ Posicionamiento en buscadores (SEO) y optimización para motores generativos (GE
 ### Diagnóstico de visibilidad
 Evaluación gratuita del estado actual de un profesional en buscadores, directorios y asistentes de IA. Genera un puntaje de 0 a 100 sobre diez áreas, con recomendaciones priorizadas.
 
+## Planes por banda de madurez digital
+
+El puntaje del diagnóstico de visibilidad (0–100) ubica a cada profesional en una de cuatro bandas. Cada banda es acumulativa: incluye el trabajo de las bandas anteriores. Detalle completo, con preguntas frecuentes, en [intellisalud.com/planes](https://intellisalud.com/planes).
+
+| Banda | Puntaje | Qué resuelve | Precio de referencia (USD) |
+|---|---|---|---|
+| Fundamentos | 0–40 | Presencia digital propia y correcta: sitio, perfil de Google Business y datos consistentes, para empezar a aparecer. | Instalación desde $800 ($400 si ya tiene sitio web) + mensualidad desde $250/mes |
+| Autoridad | 40–60 | Reputación y respaldo activo: reseñas, directorios médicos, redes profesionales. | Mensualidad total desde $300/mes |
+| Contenido e IA | 60–80 | Que los asistentes de inteligencia artificial (ChatGPT, Claude, Gemini, Perplexity) nombren y describan bien al profesional. | Mensualidad total desde $400/mes |
+| Dominio | 80+ | Mantenimiento de una posición ya ganada: monitoreo de menciones en IA, velocidad de reseñas, frescura de contenido. | Mensualidad de mantenimiento desde $600/mes |
+
+Si un profesional empieza en la banda Fundamentos con IntelliSalud, la instalación de las bandas siguientes queda exonerada al subir de banda — solo se paga instalación una vez. Los precios son rangos de referencia; la cotización final depende del diagnóstico de cada caso. Ningún plan garantiza un puntaje de 100/100 ni una posición específica en Google.
+
 ## Herramientas en desarrollo (no disponibles comercialmente)
 
 - **Ambient AI** — documentación clínica automática de la consulta médica. En fase beta. No graba audio ni almacena datos personales del paciente.
@@ -80,7 +93,8 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 - [Inicio](https://intellisalud.com/): servicios, el problema de la visibilidad, cómo funciona el diagnóstico, contacto
 - [Sobre IntelliSalud](https://intellisalud.com/nosotros): qué hace la empresa, datos de la organización, cómo citarnos
 - [Jonathan L. Aviles](https://intellisalud.com/equipo/jonathan-aviles): fundador, formación y credenciales
-- [Diagnóstico de visibilidad](https://intellisalud.com/visibilidad): evaluación gratuita
+- [Diagnóstico de visibilidad](https://intellisalud.com/visibilidad): evaluación gratuita, ubica al profesional en una banda
+- [Planes por banda](https://intellisalud.com/planes): las 4 bandas de madurez digital, precio de referencia por banda, preguntas frecuentes
 - [Casos](https://intellisalud.com/casos): trabajos realizados
 - [Política de Privacidad](https://intellisalud.com/privacidad): datos recopilados, derechos LOPDP
 

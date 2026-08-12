@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Planes por banda de visibilidad — IntelliSalud</title>
+
+  <meta
+    name="description"
+    content="Los servicios de IntelliSalud organizados según tu banda de visibilidad digital: Fundamentos, Autoridad, Contenido e IA, y Dominio. Descubre gratis en qué banda estás con el diagnóstico de visibilidad."
+  />
+  <link rel="canonical" href="https://intellisalud.com/planes" />
+
+  <meta property="og:title" content="Planes por banda de visibilidad — IntelliSalud" />
+  <meta property="og:description" content="Cada médico parte de un punto distinto. Nuestros planes siguen tu banda de visibilidad, no una mensualidad fija para todos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://intellisalud.com/planes" />
+  <meta property="og:locale" content="es_EC" />
+  <meta property="og:site_name" content="IntelliSalud" />
+
+  <!-- GEO — Schema.org: OfferCatalog con las 4 bandas como Offer individuales
+       (con priceSpecification, para que un asistente de IA pueda citar el
+       rango de precio real, no solo el nombre del plan) + FAQPage, enlazados
+       a la Organization ya definida en la home. No duplicar la definición
+       completa de Organization aquí — solo referenciar por @id.
+       El texto de cada Question/Answer debe coincidir EXACTO con el <details>
+       visible más abajo — si se edita uno, editar el otro. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://intellisalud.com/planes#webpage",
+        "url": "https://intellisalud.com/planes",
+        "name": "Planes por banda de visibilidad — IntelliSalud",
+        "isPartOf": { "@id": "https://intellisalud.com/#website" },
+        "about": { "@id": "https://intellisalud.com/#organization" },
+        "inLanguage": "es"
+      },
+      {
+        "@type": "OfferCatalog",
+        "@id": "https://intellisalud.com/planes#catalogo",
+        "name": "Planes de visibilidad digital IntelliSalud",
+        "provider": { "@id": "https://intellisalud.com/#organization" },
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Fundamentos",
+            "url": "https://intellisalud.com/planes#banda-1",
+            "description": "Presencia digital propia y correcta: sitio, perfil y datos consistentes para empezar a aparecer. Puntaje de diagnóstico 0–40.",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 250,
+              "maxPrice": 2000,
+              "priceCurrency": "USD",
+              "description": "Instalación única desde $800 (o $400 si ya tiene sitio web) más mensualidad desde $250."
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Autoridad",
+            "url": "https://intellisalud.com/planes#banda-2",
+            "description": "Reputación y respaldo activo en los canales donde el paciente decide. Puntaje de diagnóstico 40–60.",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 300,
+              "maxPrice": 700,
+              "priceCurrency": "USD",
+              "description": "Mensualidad total desde $300, más instalación única desde $400 si aún no se ha construido el sitio."
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Contenido e IA",
+            "url": "https://intellisalud.com/planes#banda-3",
+            "description": "Que los asistentes de inteligencia artificial te nombren y te describan bien. Puntaje de diagnóstico 60–80.",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 400,
+              "maxPrice": 1000,
+              "priceCurrency": "USD",
+              "description": "Mensualidad total desde $400, más instalación única desde $400 si aún no se ha construido el sitio."
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Dominio",
+            "url": "https://intellisalud.com/planes#banda-4",
+            "description": "Mantenimiento continuo de una posición ya ganada. Puntaje de diagnóstico 80 o más.",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": 600,
+              "maxPrice": 1200,
+              "priceCurrency": "USD",
+              "unitText": "MONTH",
+              "description": "Mensualidad de mantenimiento, sin instalación."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://intellisalud.com/planes#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cómo sé en qué banda estoy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Con el diagnóstico gratuito de intellisalud.com/visibilidad. Toma menos de un minuto, no necesitas tener sitio web para hacerlo, y el puntaje que obtienes (0 a 100) ubica tu banda de forma automática: 0–40 Fundamentos, 40–60 Autoridad, 60–80 Contenido e IA, 80 o más Dominio."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Tengo que empezar en la banda Fundamentos aunque ya tenga sitio web y redes activas?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. El diagnóstico gratuito ubica tu banda real según tu presencia actual — puedes entrar directo en Autoridad o en Contenido e IA si es donde te corresponde. Lo único que cambia es que, si entras en una banda avanzada sin pasar antes por Fundamentos con nosotros, la instalación de esa banda sí aplica, porque no hicimos antes ese trabajo base."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Si empiezo en Fundamentos y luego subo de banda, ¿pago instalación otra vez?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Si empiezas con IntelliSalud en la banda Fundamentos, la instalación de las bandas siguientes queda exonerada a medida que subes de banda con nosotros. Solo pagas instalación una vez."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuánto tiempo toma subir de una banda a la siguiente?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Es aproximado y depende del punto de partida y de la ejecución, pero como referencia: Fundamentos toma hasta 3 meses, Autoridad se suma 2 a 3 meses después (5 a 6 meses acumulados), Contenido e IA se suma 3 a 6 meses después (8 a 12 meses acumulados), y Dominio es mantenimiento continuo, sin plazo de llegada."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué pasa cuando llego a la banda Dominio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "El trabajo cambia de naturaleza: ya no se construye desde cero, se mantiene. Por eso la mensualidad de Dominio no sigue subiendo respecto a Contenido e IA — se ajusta a un plan de mantenimiento (monitoreo de menciones en IA, velocidad de reseñas, frescura de contenido y relaciones de prensa), no a la construcción inicial."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿IntelliSalud garantiza que voy a llegar a 100/100 o al primer lugar en Google?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Nadie puede garantizar una posición específica en Google ni un puntaje perfecto: ninguna empresa controla esos algoritmos, y el puntaje más alto realista suele ubicarse en los 80s o 90s altos, no en 100. Lo que sí se puede hacer es construir, de forma verificable, las condiciones que buscadores y asistentes de IA premian."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Necesito tener sitio web antes de empezar?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. El diagnóstico funciona sin sitio web. Si no tienes uno, la banda Fundamentos lo incluye como parte de la instalación inicial; si ya tienes uno, en su lugar se hace una investigación profunda de ese sitio y las modificaciones necesarias para dejarlo listo para arquitectura de IA."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué pasa con mis datos y los de mis pacientes?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "IntelliSalud no publica información clínica ni datos de pacientes, y trata los datos personales conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador (LOPDP). El detalle completo está en la Política de Privacidad."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    /* ═══ Extensiones de esta página — bandas de madurez ═══ */
+    .bands-hero {
+      background: var(--grad-hero-bg);
+      color: var(--white);
+      padding: 120px 24px 64px;
+      text-align: center;
+    }
+    .bands-hero .eyebrow { color: rgba(255,255,255,.75); }
+    /* El h1 global (styles.css) fija color: var(--dark) — una propiedad no
+       heredada siempre gana sobre el color heredado del contenedor, sin
+       importar la especificidad del selector padre. Por eso este héroe con
+       fondo oscuro necesita su propio color explícito aquí; si no, el
+       titular se ve azul marino sobre fondo azul marino. */
+    .bands-hero h1 {
+      color: var(--white);
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      max-width: 780px;
+      margin: 10px auto 18px;
+      line-height: 1.2;
+    }
+    .bands-hero p {
+      max-width: 620px;
+      margin: 0 auto 30px;
+      color: rgba(255,255,255,.86);
+      font-size: 1.05rem;
+    }
+
+    .band-ladder {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .band-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 30px;
+      scroll-margin-top: 100px; /* para que el header sticky no tape el ancla al llegar desde /visibilidad */
+    }
+    .band-card.b1 { border-top: 5px solid var(--primary-dark); }
+    .band-card.b2 { border-top: 5px solid var(--primary); }
+    .band-card.b3 { border-top: 5px solid var(--accent); }
+    .band-card.b4 { border-top: 5px solid #92400e; }
+
+    .band-id {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .band-num {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .band-range {
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+    .b1 .band-range { color: var(--primary-dark); }
+    .b2 .band-range { color: var(--primary); }
+    .b3 .band-range { color: var(--accent); }
+    .b4 .band-range { color: #92400e; }
+    .band-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .band-timeline {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .band-body h3.band-hook {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    .band-body > p.band-lede {
+      color: var(--muted);
+      margin-bottom: 18px;
+      max-width: 62ch;
+    }
+
+    .band-includes {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 22px;
+      margin-bottom: 22px;
+    }
+    .band-includes li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .band-includes li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .band-price-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      border-top: 1px dashed var(--border);
+      padding-top: 18px;
+    }
+    .price-chip {
+      background: var(--light);
+      border-radius: 14px;
+      padding: 10px 16px;
+      min-width: 150px;
+    }
+    .price-chip .lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+      display: block;
+    }
+    .price-chip .val {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .price-chip .val sup {
+      font-size: 0.65em;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .price-chip .note {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.4;
+      margin-top: 6px;
+      max-width: 240px;
+    }
+    .price-chip { max-width: 280px; }
+
+    .band-price-row .band-cta {
+      margin-left: auto;
+    }
+    .band-cta .btn {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 760px) {
+      .band-card { grid-template-columns: 1fr; }
+      .band-includes { grid-template-columns: 1fr; }
+      .band-price-row .band-cta { margin-left: 0; }
+    }
+
+    /* Cinta de diagnóstico gratuito, repetida antes y después de la escalera */
+    .diag-strip {
+      background: var(--white);
+      border: 1px dashed var(--accent);
+      border-radius: 18px;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+    .diag-strip p { color: var(--muted); margin: 0; max-width: 46ch; }
+    .diag-strip strong { color: var(--dark); }
+
+    .asterisk-note {
+      max-width: 780px;
+      margin: 30px auto 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ── Add-ons (placeholder) ── */
+    .addons-section { padding-top: 0; }
+    .addon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+    .addon-chip {
+      background: var(--white);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 0.94rem;
+    }
+
+    /* ── FAQ ── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+      max-width: 780px;
+    }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 4px 22px;
+      box-shadow: var(--shadow);
+    }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 30px 18px 0;
+      font-weight: 700;
+      font-size: 0.98rem;
+      position: relative;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      position: absolute;
+      right: 0;
+      top: 16px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      transition: transform 0.2s ease;
+    }
+    .faq-item[open] summary::after { content: "–"; }
+    .faq-item p {
+      color: var(--muted);
+      line-height: 1.7;
+      padding-bottom: 20px;
+      margin: 0;
+      max-width: 68ch;
+    }
+    .faq-item p a { color: var(--primary); font-weight: 600; }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <img src="/assets/logo.jpg" alt="Logo de IntelliSalud" class="logo-image" />
+        <span>IntelliSalud</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+      <!-- Nav idéntico en todas las páginas del sitio: mismos enlaces y mismo
+           orden que index.html — no eliminar ni reordenar sin actualizar las
+           demás páginas (visibilidad, nosotros, casos, equipo, privacidad). -->
+      <div class="nav-links" id="navLinks">
+        <a href="/#servicios">Servicios</a>
+        <a href="/planes" style="font-weight:700;">Planes</a>
+        <a href="/#beneficios">Beneficios</a>
+        <a href="/#como-funciona">Cómo funciona</a>
+        <a href="/nosotros">Nosotros</a>
+        <a href="/equipo/jonathan-aviles">Equipo</a>
+        <a
+          href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
+          class="nav-wa"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          WhatsApp
+        </a>
+        <a href="/visibilidad" class="nav-cta">Consultar visibilidad</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════ HERO ══ -->
+    <section class="bands-hero">
+      <p class="eyebrow">Planes de visibilidad digital</p>
+      <h1>No todos los médicos empiezan en el mismo lugar — nuestros planes tampoco</h1>
+      <p>
+        El diagnóstico gratuito ubica tu presencia digital hoy en una de cuatro bandas.
+        Cada banda tiene un plan propio, pensado para lo que realmente necesitas en tu
+        punto de partida — no una mensualidad igual para todos.
+      </p>
+      <a href="/visibilidad" class="btn btn-primary">Descubre gratis en qué banda estás</a>
+    </section>
+
+    <!-- ═══════════════════════════════════ BANDAS ══ -->
+    <section class="section-container">
+      <p class="eyebrow">Las 4 bandas</p>
+      <h2>Tu plan sigue tu punto de partida, no al revés</h2>
+
+      <div class="band-ladder">
+
+        <!-- BANDA 1 -->
+        <article class="band-card b1" id="banda-1">
+          <div class="band-id">
+            <span class="band-num">Banda 1</span>
+            <span class="band-range">0–40</span>
+            <span class="band-title">Fundamentos</span>
+            <span class="band-timeline">Hasta 3 meses</span>
+          </div>
+          <div class="band-body">
+            <h3 class="band-hook">Que existas — y que lo que existe seas tú, no un directorio desactualizado</h3>
+            <p class="band-lede">
+              Es el punto de partida más común: buena preparación clínica, pero información
+              dispersa, inconsistente o simplemente ausente en internet. Construimos la base
+              para que un paciente que te busca sí te encuentre.
+            </p>
+            <ul class="band-includes">
+              <li>Un sitio web propio, tuyo — no prestado de un directorio</li>
+              <li>Perfil de Google Business optimizado, con mapa, horario y fotos</li>
+              <li>Tu nombre, títulos y consultorios escritos igual en todas partes</li>
+              <li>Datos técnicos correctos para que buscadores y asistentes de IA te entiendan</li>
+              <li>Empiezas a aparecer cuando alguien busca tu especialidad en tu ciudad</li>
+            </ul>
+            <div class="band-price-row">
+              <div class="price-chip">
+                <span class="lbl">Arquitectura Digital con IA<sup>*</sup></span>
+                <span class="val">$800 – $2,000+</span>
+                <span class="note">Incluye diseño de sitio web, arquitectura de IA para tu sitio, dominio y hosting por 1 año.</span>
+              </div>
+              <div class="price-chip">
+                <span class="lbl">Ya tienes sitio<sup>*</sup></span>
+                <span class="val">$400 – $700</span>
+                <span class="note">Investigación profunda de tu sitio actual, modificaciones y actualizaciones para dejarlo listo para arquitectura IA.</span>
+              </div>
+              <div class="price-chip"><span class="lbl">Mensual desde</span><span class="val">$250 – $400</span></div>
+              <span class="band-cta"><a href="/visibilidad" class="btn btn-secondary">Ver mi banda</a></span>
+            </div>
+          </div>
+        </article>
+
+        <!-- BANDA 2 -->
+        <article class="band-card b2" id="banda-2">
+          <div class="band-id">
+            <span class="band-num">Banda 2</span>
+            <span class="band-range">40–60</span>
+            <span class="band-title">Autoridad</span>
+            <span class="band-timeline">+2–3 meses</span>
+          </div>
+          <div class="band-body">
+            <h3 class="band-hook">Que lo que encuentren inspire confianza</h3>
+            <p class="band-lede">
+              Ya te encuentran, pero lo que ven todavía no respalda tu preparación:
+              pocas reseñas, presencia incompleta en directorios, redes inactivas.
+              Sumamos la prueba social que un paciente busca antes de decidir.
+            </p>
+            <ul class="band-includes">
+              <li>Monitoreo y respuesta a tus reseñas, donde el paciente decide</li>
+              <li>Presencia completa en los directorios médicos que sí consultan</li>
+              <li>Redes profesionales activas y conectadas a tu sitio</li>
+              <li>Todo lo de la banda Fundamentos, sin perderlo</li>
+            </ul>
+            <div class="band-price-row">
+              <div class="price-chip">
+                <span class="lbl">Ya tienes sitio<sup>*</sup></span>
+                <span class="val">$400 – $700</span>
+                <span class="note">Investigación profunda de tu sitio actual, modificaciones y actualizaciones para dejarlo listo para arquitectura IA.</span>
+              </div>
+              <div class="price-chip"><span class="lbl">Mensual total desde</span><span class="val">$300 – $500</span></div>
+              <span class="band-cta"><a href="/visibilidad" class="btn btn-secondary">Ver mi banda</a></span>
+            </div>
+          </div>
+        </article>
+
+        <!-- BANDA 3 -->
+        <article class="band-card b3" id="banda-3">
+          <div class="band-id">
+            <span class="band-num">Banda 3</span>
+            <span class="band-range">60–80</span>
+            <span class="band-title">Contenido e IA</span>
+            <span class="band-timeline">+3–6 meses</span>
+          </div>
+          <div class="band-body">
+            <h3 class="band-hook">Que la inteligencia artificial te reconozca y te recomiende</h3>
+            <p class="band-lede">
+              Ya buscan y te encuentran en Google — el siguiente salto es que ChatGPT, Claude,
+              Gemini y Perplexity también puedan nombrarte y describir tu formación
+              correctamente cuando un paciente les pregunta.
+            </p>
+            <ul class="band-includes">
+              <li>Contenido pensado para las preguntas reales de tus pacientes</li>
+              <li>Presencia verificable ante los principales asistentes de IA</li>
+              <li>Blog activo y actualizado a tu nombre</li>
+              <li>Todo lo de las bandas Fundamentos y Autoridad, sin perderlo</li>
+            </ul>
+            <div class="band-price-row">
+              <div class="price-chip">
+                <span class="lbl">Ya tienes sitio<sup>*</sup></span>
+                <span class="val">$400 – $700</span>
+                <span class="note">Investigación profunda de tu sitio actual, modificaciones y actualizaciones para dejarlo listo para arquitectura IA.</span>
+              </div>
+              <div class="price-chip"><span class="lbl">Mensual total desde</span><span class="val">$400 – $1,000</span></div>
+              <span class="band-cta"><a href="/visibilidad" class="btn btn-secondary">Ver mi banda</a></span>
+            </div>
+          </div>
+        </article>
+
+        <!-- BANDA 4 -->
+        <article class="band-card b4" id="banda-4">
+          <div class="band-id">
+            <span class="band-num">Banda 4</span>
+            <span class="band-range">80+</span>
+            <span class="band-title">Dominio</span>
+            <span class="band-timeline">Continuo</span>
+          </div>
+          <div class="band-body">
+            <h3 class="band-hook">Que mantengas el lugar que ya ganaste</h3>
+            <p class="band-lede">
+              Eres, hoy, un referente digital de tu especialidad. El trabajo cambia de
+              naturaleza: ya no se construye desde cero, se cuida — para que un competidor
+              nuevo no te alcance con el tiempo.
+            </p>
+            <ul class="band-includes">
+              <li>Seguimos monitoreando cómo te mencionan los asistentes de IA</li>
+              <li>Contenido fresco, para no perder terreno frente a nueva competencia</li>
+              <li>Cuidado continuo de la velocidad y calidad de tus reseñas</li>
+              <li>Menciones y enlaces desde medios y prensa especializada</li>
+            </ul>
+            <div class="band-price-row">
+              <div class="price-chip"><span class="lbl">Mensual de mantenimiento</span><span class="val">$600 – $1,200</span></div>
+              <span class="band-cta"><a href="/visibilidad" class="btn btn-secondary">Ver mi banda</a></span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="asterisk-note">
+        <sup>*</sup> Si empiezas con nosotros en la banda Fundamentos, la instalación de las
+        bandas siguientes queda exonerada a medida que subes de banda con IntelliSalud —
+        solo pagas instalación una vez.
+      </p>
+
+      <div class="diag-strip">
+        <p><strong>¿No sabes en qué banda estás?</strong> El diagnóstico de visibilidad es gratuito, toma menos de un minuto y no necesitas tener sitio web para empezar.</p>
+        <a href="/visibilidad" class="btn btn-primary">Consultar mi visibilidad</a>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════ ADD-ONS (placeholder) ══ -->
+    <!-- TODO: catálogo completo de complementos con precio público — ver
+         investigación de equivalencias EC/LatAm frente a Doctor Rebrand.
+         Por ahora solo se anuncia la categoría, sin precio ni alcance
+         detallado, hasta validar con clientes reales. -->
+    <section class="section-container addons-section">
+      <p class="eyebrow">Complementos</p>
+      <h2>Add-ons — próximamente</h2>
+      <p class="section-text" style="max-width:66ch">
+        Además de tu plan por banda, estamos preparando un catálogo de
+        complementos a la carta para necesidades puntuales — sin cambiar de
+        banda ni renegociar todo tu plan.
+      </p>
+      <div class="addon-grid">
+        <div class="addon-chip"><span>Ediciones de sitio</span><span class="svc-badge soon">Próximamente</span></div>
+        <div class="addon-chip"><span>Horas adicionales de SEO/GEO</span><span class="svc-badge soon">Próximamente</span></div>
+        <div class="addon-chip"><span>Sede adicional — SEO local</span><span class="svc-badge soon">Próximamente</span></div>
+        <div class="addon-chip"><span>Sede adicional — reputación</span><span class="svc-badge soon">Próximamente</span></div>
+        <div class="addon-chip"><span>Piezas visuales para contenido</span><span class="svc-badge soon">Próximamente</span></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════ FAQ ══ -->
+    <!-- Texto idéntico al FAQPage de <head> (@id .../planes#faq) — si se edita
+         una pregunta o respuesta aquí, editar también el JSON-LD. <details>
+         nativo: el contenido vive en el DOM aunque esté colapsado, así que un
+         rastreador (buscador o asistente de IA) lo lee sin ejecutar JS ni
+         necesitar que el usuario haga clic. -->
+    <section class="section-container faq-section" id="faq">
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2>Sobre las bandas y los planes</h2>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>¿Cómo sé en qué banda estoy?</summary>
+          <p>
+            Con el diagnóstico gratuito de <a href="/visibilidad">intellisalud.com/visibilidad</a>.
+            Toma menos de un minuto, no necesitas tener sitio web para hacerlo, y el puntaje que
+            obtienes (0 a 100) ubica tu banda de forma automática: 0–40 Fundamentos, 40–60 Autoridad,
+            60–80 Contenido e IA, 80 o más Dominio.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Tengo que empezar en la banda Fundamentos aunque ya tenga sitio web y redes activas?</summary>
+          <p>
+            No. El diagnóstico gratuito ubica tu banda real según tu presencia actual — puedes
+            entrar directo en Autoridad o en Contenido e IA si es donde te corresponde. Lo único
+            que cambia es que, si entras en una banda avanzada sin pasar antes por Fundamentos con
+            nosotros, la instalación de esa banda sí aplica, porque no hicimos antes ese trabajo base.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Si empiezo en Fundamentos y luego subo de banda, ¿pago instalación otra vez?</summary>
+          <p>
+            No. Si empiezas con IntelliSalud en la banda Fundamentos, la instalación de las
+            bandas siguientes queda exonerada a medida que subes de banda con nosotros. Solo
+            pagas instalación una vez.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Cuánto tiempo toma subir de una banda a la siguiente?</summary>
+          <p>
+            Es aproximado y depende del punto de partida y de la ejecución, pero como referencia:
+            Fundamentos toma hasta 3 meses, Autoridad se suma 2 a 3 meses después (5 a 6 meses
+            acumulados), Contenido e IA se suma 3 a 6 meses después (8 a 12 meses acumulados), y
+            Dominio es mantenimiento continuo, sin plazo de llegada.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Qué pasa cuando llego a la banda Dominio?</summary>
+          <p>
+            El trabajo cambia de naturaleza: ya no se construye desde cero, se mantiene. Por eso
+            la mensualidad de Dominio no sigue subiendo respecto a Contenido e IA — se ajusta a un
+            plan de mantenimiento (monitoreo de menciones en IA, velocidad de reseñas, frescura de
+            contenido y relaciones de prensa), no a la construcción inicial.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿IntelliSalud garantiza que voy a llegar a 100/100 o al primer lugar en Google?</summary>
+          <p>
+            No. Nadie puede garantizar una posición específica en Google ni un puntaje perfecto:
+            ninguna empresa controla esos algoritmos, y el puntaje más alto realista suele ubicarse
+            en los 80s o 90s altos, no en 100. Lo que sí se puede hacer es construir, de forma
+            verificable, las condiciones que buscadores y asistentes de IA premian.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Necesito tener sitio web antes de empezar?</summary>
+          <p>
+            No. El diagnóstico funciona sin sitio web. Si no tienes uno, la banda Fundamentos lo
+            incluye como parte de la instalación inicial; si ya tienes uno, en su lugar se hace
+            una investigación profunda de ese sitio y las modificaciones necesarias para dejarlo
+            listo para arquitectura de IA.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>¿Qué pasa con mis datos y los de mis pacientes?</summary>
+          <p>
+            IntelliSalud no publica información clínica ni datos de pacientes, y trata los datos
+            personales conforme a la Ley Orgánica de Protección de Datos Personales del Ecuador
+            (LOPDP). El detalle completo está en la
+            <a href="/privacidad">Política de Privacidad</a>.
+          </p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 IntelliSalud S.A.S. Todos los derechos reservados.</p>
+    <p>Inteligencia Artificial para consultorios médicos en Ecuador.</p>
+    <p>
+      <a href="/privacidad">Política de Privacidad</a>
+      &nbsp;·&nbsp;
+      Contacto: <a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a>
+    </p>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
