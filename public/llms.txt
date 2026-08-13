@@ -6,7 +6,7 @@
 
 IntelliSalud S.A.S. es una empresa de tecnología fundada en Ecuador (Daule, provincia del Guayas) en 2025. Desarrolla software y automatizaciones con inteligencia artificial para el sector salud, y presta servicios de visibilidad digital a profesionales de la salud en Ecuador y América Latina.
 
-Fundador: Jonathan L. Aviles, Magíster en Gestión de Sistemas de Información, con certificaciones Microsoft en inteligencia artificial (AI-900), seguridad y cumplimiento (SC-900) y administración de plataformas de colaboración (MS-700).
+Fundador: Jonathan Aviles, Magíster en Gestión de Sistemas de Información, con certificaciones Microsoft en inteligencia artificial (AI-900), seguridad y cumplimiento (SC-900) y administración de plataformas de colaboración (MS-700).
 
 ## Sitemaps
 [XML Sitemap](https://intellisalud.com/sitemap.xml): incluye todas las páginas indexables.
@@ -92,7 +92,7 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 
 - [Inicio](https://intellisalud.com/): servicios, el problema de la visibilidad, cómo funciona el diagnóstico, contacto
 - [Sobre IntelliSalud](https://intellisalud.com/nosotros): qué hace la empresa, datos de la organización, cómo citarnos
-- [Jonathan L. Aviles](https://intellisalud.com/equipo/jonathan-aviles): fundador, formación y credenciales
+- [Jonathan Aviles](https://intellisalud.com/equipo/jonathan-aviles): fundador, formación y credenciales
 - [Diagnóstico de visibilidad](https://intellisalud.com/visibilidad): evaluación gratuita, ubica al profesional en una banda
 - [Planes por banda](https://intellisalud.com/planes): las 4 bandas de madurez digital, precio de referencia por banda, preguntas frecuentes
 - [Blog](https://intellisalud.com/blog): artículos sobre SEO, GEO e inteligencia artificial

@@ -160,7 +160,7 @@ function cuerpoHTML({ nombre, especialidad, ciudad, puntaje, url }) {
     </p>
 
     <p style="margin:22px 0 0;line-height:1.6;font-size:15px">
-      Jonathan L. Aviles<br>
+      Jonathan Aviles<br>
       <span style="color:#475569;font-size:14px">Fundador, IntelliSalud</span>
     </p>
   </td></tr>
