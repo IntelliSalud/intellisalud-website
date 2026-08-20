@@ -4,33 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Casos — Trabajos realizados por IntelliSalud</title>
+  <title>Clientes — Casos de éxito de IntelliSalud</title>
 
   <meta
     name="description"
-    content="Proyectos de visibilidad digital realizados por IntelliSalud para profesionales de la salud en Ecuador: sitios web, posicionamiento en buscadores y optimización para asistentes de inteligencia artificial."
+    content="Casos de éxito de IntelliSalud: proyectos reales de visibilidad digital para profesionales de la salud en Ecuador, con resultados medidos en buscadores y asistentes de inteligencia artificial."
   />
-  <link rel="canonical" href="https://intellisalud.com/casos" />
+  <link rel="canonical" href="https://intellisalud.com/clientes" />
 
-  <meta property="og:title" content="Casos — Trabajos realizados por IntelliSalud" />
-  <meta property="og:description" content="Proyectos de visibilidad digital para profesionales de la salud en Ecuador." />
+  <meta property="og:title" content="Clientes — Casos de éxito de IntelliSalud" />
+  <meta property="og:description" content="Proyectos reales de visibilidad digital para profesionales de la salud en Ecuador, con resultados medidos." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://intellisalud.com/casos" />
+  <meta property="og:url" content="https://intellisalud.com/clientes" />
   <meta property="og:locale" content="es_EC" />
   <meta property="og:site_name" content="IntelliSalud" />
 
+  <!-- GEO — Schema.org: CollectionPage + ItemList referenciando cada caso por
+       @id, mismo patrón que /blog. Cada caso define su propio Article
+       completo en su página. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "CollectionPage",
-        "@id": "https://intellisalud.com/casos#collectionpage",
-        "url": "https://intellisalud.com/casos",
-        "name": "Casos — Trabajos realizados por IntelliSalud",
+        "@id": "https://intellisalud.com/clientes#collectionpage",
+        "url": "https://intellisalud.com/clientes",
+        "name": "Clientes — Casos de éxito de IntelliSalud",
         "isPartOf": { "@id": "https://intellisalud.com/#website" },
         "about": { "@id": "https://intellisalud.com/#organization" },
         "inLanguage": "es"
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://intellisalud.com/clientes#lista",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "url": "https://intellisalud.com/clientes/gastrend-manta"
+          }
+        ]
       }
     ]
   }
@@ -46,12 +60,16 @@
     .entity-page p  { line-height: 1.75; margin-bottom: 18px; }
 
     .caso-card {
+      display: block;
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 28px 30px;
       margin-bottom: 20px;
-      background: var(--light);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease;
     }
+    a.caso-card:hover { transform: translateY(-2px); }
     .caso-tag {
       display: inline-block;
       font-size: 0.7rem;
@@ -63,6 +81,13 @@
     }
     .caso-card h3 { margin-bottom: 10px; }
     .caso-card p  { margin-bottom: 0; color: var(--muted); }
+    .caso-card .read-more {
+      display: inline-block; margin-top: 14px; font-weight: 700;
+      color: var(--primary); font-size: 0.92rem;
+    }
+    .caso-stats { display: flex; gap: 18px; margin-top: 14px; flex-wrap: wrap; }
+    .caso-stats span { font-size: 0.85rem; color: var(--muted); }
+    .caso-stats strong { color: var(--primary); }
 
     .caso-soon {
       border-style: dashed;
@@ -89,6 +114,7 @@
         <a href="/#beneficios">Beneficios</a>
         <a href="/#como-funciona">Cómo funciona</a>
         <a href="/blog">Blog</a>
+        <a href="/clientes" style="font-weight:700;">Clientes</a>
         <a href="/nosotros">Nosotros</a>
         <a href="/equipo/jonathan-aviles">Equipo</a>
         <a
@@ -108,13 +134,29 @@
   <main>
     <article class="entity-page">
 
-      <h1>Casos</h1>
+      <h1>Clientes</h1>
       <p class="entity-lede">
-        Trabajos de visibilidad digital realizados por IntelliSalud para profesionales
-        de la salud en Ecuador.
+        Trabajos reales de visibilidad digital realizados por IntelliSalud para
+        profesionales de la salud en Ecuador — con resultados medidos, no promesas.
       </p>
 
-      <!-- TODO (D-01): reemplazar por el caso completo del primer proyecto.
+      <a class="caso-card" href="/clientes/gastrend-manta">
+        <span class="caso-tag">Gastroenterología · Manta</span>
+        <h3>GASTREND: de invisible en buscadores a la segunda banda de madurez digital en tres semanas</h3>
+        <p>
+          Una clínica con más de 500 reseñas perfectas pero sin sitio web propio, y cómo
+          se convirtió en el consultorio mejor preparado de su ciudad para ser encontrado
+          — en Google y por los nuevos asistentes de inteligencia artificial.
+        </p>
+        <div class="caso-stats">
+          <span><strong>+35</strong> puntos en 3 semanas</span>
+          <span><strong>535</strong> reseñas de 5 estrellas</span>
+          <span><strong>Banda 2 de 4</strong> alcanzada</span>
+        </div>
+        <span class="read-more">Ver caso completo →</span>
+      </a>
+
+      <!-- TODO (D-01): reemplazar por el caso completo del segundo proyecto.
            Los comentarios HTML SÍ se envían al navegador: no poner aquí el
            nombre de un cliente mientras no haya autorización escrita.
            Publicar anonimizado ("ginecóloga en Guayaquil") hasta contar con
@@ -149,6 +191,16 @@
 
     </article>
   </main>
+
+  <footer class="site-footer">
+    <p>© 2026 IntelliSalud S.A.S. Todos los derechos reservados.</p>
+    <p>Inteligencia Artificial para consultorios médicos en Ecuador.</p>
+    <p>
+      <a href="/privacidad">Política de Privacidad</a>
+      &nbsp;·&nbsp;
+      Contacto: <a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a>
+    </p>
+  </footer>
 
   <script src="/script.js"></script>
 </body>

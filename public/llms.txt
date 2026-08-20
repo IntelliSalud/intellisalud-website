@@ -96,7 +96,7 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 - [Diagnóstico de visibilidad](https://intellisalud.com/visibilidad): evaluación gratuita, ubica al profesional en una banda
 - [Planes por banda](https://intellisalud.com/planes): las 4 bandas de madurez digital, precio de referencia por banda, preguntas frecuentes
 - [Blog](https://intellisalud.com/blog): artículos sobre SEO, GEO e inteligencia artificial
-- [Casos](https://intellisalud.com/casos): trabajos realizados
+- [Clientes](https://intellisalud.com/clientes): casos de éxito reales, resultados medidos
 - [Política de Privacidad](https://intellisalud.com/privacidad): datos recopilados, derechos LOPDP
 
 ## Blog — artículos publicados
@@ -104,6 +104,10 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 - [¿Qué es GEO (optimización para motores generativos) y por qué tu marca lo necesita en 2026?](https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia) (1 ago 2026): diferencia entre SEO y GEO, por qué un profesional puede tener buen SEO y seguir siendo invisible para la IA.
 - [SEO y GEO: cómo las marcas y los profesionales encuentran nuevos clientes en la era de la IA](https://intellisalud.com/blog/seo-geo-marcas-digitales-nuevos-clientes) (6 ago 2026): consistencia de identidad, datos estructurados y corroboración externa, aplicable a cualquier marca digital.
 - [Cómo IntelliSalud ayuda a médicos y clínicas a llegar a nuevos pacientes y nuevos mercados](https://intellisalud.com/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados) (12 ago 2026): el camino de diagnóstico gratuito → banda de madurez → plan de trabajo, y la expansión planificada a América Latina.
+
+## Clientes — casos publicados
+
+- [GASTREND: de invisible en buscadores a la segunda banda de madurez digital en tres semanas](https://intellisalud.com/clientes/gastrend-manta) (20 ago 2026): clínica de gastroenterología de Manta (Dr. Gustavo Machuca), proyecto en conjunto con EME Comunicaciones. +35 puntos en 3 semanas, 535 reseñas de 5 estrellas en Google, banda 2 de 4 alcanzada.
 
 ## Cómo citarnos
 
