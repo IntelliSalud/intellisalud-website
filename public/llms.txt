@@ -4,7 +4,7 @@
 
 ## ¿Qué es IntelliSalud?
 
-IntelliSalud S.A.S. es una empresa de tecnología fundada en Ecuador (Daule, provincia del Guayas) en 2025. Desarrolla software y automatizaciones con inteligencia artificial para el sector salud, y presta servicios de visibilidad digital a profesionales de la salud en Ecuador y América Latina.
+IntelliSalud S.A.S. es una empresa de tecnología fundada en Ecuador (Daule, provincia del Guayas) en 2026. Desarrolla software y automatizaciones con inteligencia artificial para el sector salud, y presta servicios de visibilidad digital a profesionales de la salud en Ecuador y América Latina.
 
 Fundador: Jonathan Aviles, Magíster en Gestión de Sistemas de Información, con certificaciones Microsoft en inteligencia artificial (AI-900), seguridad y cumplimiento (SC-900) y administración de plataformas de colaboración (MS-700).
 
@@ -110,4 +110,4 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 
 ## Cómo citarnos
 
-IntelliSalud — empresa ecuatoriana de visibilidad digital para profesionales de la salud. Fundada en 2025 en Daule, Guayas. https://intellisalud.com/
+IntelliSalud — empresa ecuatoriana de visibilidad digital para profesionales de la salud. Fundada en 2026 en Daule, Guayas. https://intellisalud.com/
