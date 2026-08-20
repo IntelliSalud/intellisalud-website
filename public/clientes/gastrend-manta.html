@@ -138,6 +138,14 @@
                   border-radius: 18px; box-shadow: var(--shadow); }
     .team-caption { text-align: center; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
 
+    .evidencia-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 22px 0 28px; }
+    @media (max-width: 620px) { .evidencia-row { grid-template-columns: 1fr; } }
+    .evidencia-row figure { margin: 0; }
+    .evidencia-row img { width: 100%; display: block; border: 1px solid var(--border);
+                          border-radius: 14px; box-shadow: var(--shadow); }
+    .evidencia-row figcaption { text-align: center; font-size: 0.82rem; color: var(--muted);
+                                 margin-top: 8px; }
+
     .expectativa-box {
       border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
       background: var(--light); margin: 22px 0;
@@ -283,6 +291,25 @@
               que ya transmitían las reseñas.
             </p>
           </div>
+        </div>
+
+        <h2>Evidencia de la auditoría</h2>
+        <p>
+          Cada medición de este caso viene de una auditoría de marca y preparación para IA
+          fechada y verificada — no de una estimación. Estas son las portadas de la primera y
+          la tercera medición:
+        </p>
+        <div class="evidencia-row">
+          <figure>
+            <img src="/assets/clientes/gastrend-auditoria-semana1.png"
+                 alt="Auditoría de marca GASTREND, 7 de agosto de 2026: preparación para IA 3.4 de 10" />
+            <figcaption>7 de agosto — punto de partida: 3.4 / 10</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/clientes/gastrend-auditoria-semana3.png"
+                 alt="Auditoría de marca GASTREND, 19-20 de agosto de 2026: preparación para IA 6.9 de 10, tercera medición" />
+            <figcaption>19-20 de agosto — tercera medición: 6.9 / 10</figcaption>
+          </figure>
         </div>
 
         <img src="/assets/clientes/gastrend-equipo.jpg" alt="Equipo de GASTREND en su consultorio, Manta" class="team-photo" />
