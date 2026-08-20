@@ -1336,3 +1336,22 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
 }
 
 .faq-item p a { color: var(--primary); font-weight: 600; }
+
+/* Listas dentro de artículos y páginas de entidad (.post-page, .entity-page).
+   Sin esto, el <ul> hereda el padding-left por defecto del navegador, que no
+   coincide con el padding del contenedor — en pantallas angostas el resultado
+   es una viñeta pegada al borde, desalineada del texto de los párrafos que la
+   rodean. Centralizado aquí porque varias páginas (posts del blog, casos de
+   clientes, privacidad) definen .post-page/.entity-page cada una por su
+   cuenta, y todas comparten este mismo defecto si no se corrige una vez. */
+.post-page ul, .entity-page ul {
+  margin: 0 0 18px;
+  padding-left: 1.3em;
+  list-style-position: outside;
+}
+.post-page li, .entity-page li {
+  margin-bottom: 10px;
+  padding-left: 4px;
+  line-height: 1.7;
+}
+.post-page li:last-child, .entity-page li:last-child { margin-bottom: 0; }
