@@ -26,10 +26,11 @@
   <meta property="og:site_name" content="IntelliSalud" />
 
   <!-- ═══ GEO — Schema.org Structured Data ═══ -->
-  <!-- El @id de Organization debe coincidir exactamente con el de /nosotros y con
-       el worksFor de /equipo/jonathan-aviles. Ese enlace por @id es lo que permite
-       que un modelo resuelva "¿quién fundó IntelliSalud?". No cambiar sin actualizar
-       las tres páginas a la vez. -->
+  <!-- El @id de Organization debe coincidir exactamente con el de /nosotros
+       (que también define el Person completo de Jonathan Aviles, fusionado ahí
+       desde la extinta /equipo/jonathan-aviles). Ese enlace por @id es lo que
+       permite que un modelo resuelva "¿quién fundó IntelliSalud?". No cambiar
+       sin actualizar ambas páginas a la vez. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -187,11 +188,12 @@
         <a href="/#beneficios">Beneficios</a>
         <a href="/blog">Blog</a>
         <a href="/clientes">Clientes</a>
-        <!-- Enlaces a las páginas de entidad. Sin estos enlaces internos, /nosotros
-             y /equipo/jonathan-aviles quedaban huérfanas: solo se llegaba por el
-             sitemap, lo que debilita mucho su peso para buscadores y modelos. -->
+        <!-- Enlace a la página de entidad. Sin este enlace interno, /nosotros
+             quedaba huérfana: solo se llegaba por el sitemap, lo que debilita
+             mucho su peso para buscadores y modelos. (/equipo/jonathan-aviles
+             existió como página aparte hasta que su contenido se fusionó aquí;
+             ahora redirige 301 a /nosotros#fundador.) -->
         <a href="/nosotros">Nosotros</a>
-        <a href="/equipo/jonathan-aviles">Equipo</a>
         <!-- WhatsApp link visible in nav -->
         <a
           href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."

@@ -91,8 +91,7 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 ## Páginas del sitio
 
 - [Inicio](https://intellisalud.com/): servicios, el problema de la visibilidad, cómo funciona el diagnóstico, contacto
-- [Sobre IntelliSalud](https://intellisalud.com/nosotros): qué hace la empresa, datos de la organización, cómo citarnos
-- [Jonathan Aviles](https://intellisalud.com/equipo/jonathan-aviles): fundador, formación y credenciales
+- [Sobre IntelliSalud](https://intellisalud.com/nosotros): qué hace la empresa, datos de la organización, el fundador (Jonathan Aviles — formación y credenciales), cómo citarnos
 - [Diagnóstico de visibilidad](https://intellisalud.com/visibilidad): evaluación gratuita, ubica al profesional en una banda
 - [Planes por banda](https://intellisalud.com/planes): las 4 bandas de madurez digital, precio de referencia por banda, preguntas frecuentes
 - [Blog](https://intellisalud.com/blog): artículos sobre SEO, GEO e inteligencia artificial
