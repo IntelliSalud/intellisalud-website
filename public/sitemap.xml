@@ -51,13 +51,19 @@
        quedan fijos una vez publicados (monthly es suficiente). -->
   <url>
     <loc>https://intellisalud.com/blog</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-08-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia</loc>
-    <lastmod>2026-08-01</lastmod>
+    <loc>https://intellisalud.com/blog/will-smith-espaguetis-ia-medicos</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://intellisalud.com/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados</loc>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -68,8 +74,8 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://intellisalud.com/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados</loc>
-    <lastmod>2026-08-12</lastmod>
+    <loc>https://intellisalud.com/blog/que-es-geo-optimizacion-para-ia</loc>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
