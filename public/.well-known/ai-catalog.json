@@ -1,0 +1,34 @@
+{
+  "specVersion": "0.1",
+  "host": {
+    "name": "IntelliSalud",
+    "url": "https://intellisalud.com"
+  },
+  "entries": [
+    {
+      "id": "urn:air:intellisalud.com:diagnostico:visibilidad-medica",
+      "displayName": "Diagnóstico de visibilidad médica",
+      "description": "Evalúa la visibilidad digital de un profesional de la salud en Ecuador en diez áreas (buscadores, asistentes de IA, redes profesionales, datos estructurados, reseñas, entre otras) y devuelve un puntaje de 0 a 100 con recomendaciones priorizadas. Gratuito, sin registro para el primer nivel de resultado.",
+      "type": "text/html",
+      "url": "https://intellisalud.com/visibilidad",
+      "representativeQueries": [
+        "¿Qué tan visible soy en Google como médico en Guayaquil?",
+        "Diagnóstico gratuito de visibilidad digital para médicos en Ecuador",
+        "¿Aparezco en ChatGPT o en asistentes de IA si un paciente busca mi especialidad?",
+        "Evaluar la presencia digital de un consultorio o clínica"
+      ]
+    },
+    {
+      "id": "urn:air:intellisalud.com:doc:entity-description",
+      "displayName": "Descripción de la entidad IntelliSalud (llms.txt)",
+      "description": "Documento en formato markdown pensado para agentes de IA: qué es IntelliSalud, servicios disponibles, fundador y cómo citar a la empresa correctamente.",
+      "type": "text/markdown",
+      "url": "https://intellisalud.com/llms.txt",
+      "representativeQueries": [
+        "¿Qué es IntelliSalud?",
+        "¿Quién fundó IntelliSalud?",
+        "Empresas de SEO y GEO para médicos en Ecuador"
+      ]
+    }
+  ]
+}
