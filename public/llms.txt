@@ -11,6 +11,11 @@ Fundador: Jonathan Aviles, Magíster en Gestión de Sistemas de Información, co
 ## Sitemaps
 [XML Sitemap](https://intellisalud.com/sitemap.xml): incluye todas las páginas indexables.
 
+## Recursos para agentes
+- [Catálogo de API](https://intellisalud.com/.well-known/api-catalog) (RFC 9727, `application/linkset+json`): enlaza a este mismo archivo como documentación. No expone `/api/scan` ni `/api/unlock` — son internas del embudo del diagnóstico, limitadas por IP/día y no pensadas para invocación de terceros.
+- [Manifiesto ARD](https://intellisalud.com/.well-known/ai-catalog.json): describe el diagnóstico de visibilidad y este documento como capacidades detectables por agentes, con consultas representativas.
+- La página [/visibilidad](https://intellisalud.com/visibilidad) expone una herramienta WebMCP (`diagnosticar_visibilidad_medica`) para agentes que navegan el sitio con esa API activada — completa el mismo formulario que vería una persona.
+
 ## Servicios disponibles hoy
 
 ### SEO y GEO para profesionales de la salud

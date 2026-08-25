@@ -1,0 +1,21 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://intellisalud.com/",
+      "service-doc": [
+        {
+          "href": "https://intellisalud.com/llms.txt",
+          "type": "text/markdown",
+          "title": "IntelliSalud para agentes de IA — qué es, servicios, fundador y cómo citarnos"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://intellisalud.com/sitemap.xml",
+          "type": "application/xml",
+          "title": "Mapa del sitio — páginas indexables"
+        }
+      ]
+    }
+  ]
+}

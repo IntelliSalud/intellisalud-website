@@ -22,3 +22,29 @@
 /*
   X-Frame-Options: SAMEORIGIN
   Content-Security-Policy: frame-ancestors 'self'
+
+# ── Descubrimiento para agentes (RFC 8288 + RFC 9727) ──
+# Solo en la portada, que es la página que evalúan las herramientas de
+# "agent readiness". rel="api-catalog" no es una relación IANA registrada
+# todavía (es la que usa RFC 9727 en su propio ejemplo); rel="service-doc"
+# sí lo es. Quien no reconozca una relación simplemente la ignora — no
+# rompe nada para un cliente que no la entienda.
+/
+  Link: </.well-known/api-catalog>; rel="api-catalog", </llms.txt>; rel="service-doc"; type="text/markdown"
+
+# ── Catálogo de API (RFC 9727) y manifiesto ARD ──
+# Servidos como archivo estático sin extensión / .json: Cloudflare Pages no
+# adivina el tipo correcto para "api-catalog" (sin extensión), así que se
+# fija a mano. No se publica "service-desc" (OpenAPI): /api/scan y
+# /api/unlock no son una API pública para terceros — están limitadas por
+# IP/día, cuestan una llamada a un modelo pagado por invocación, y su CORS
+# ya está fijado solo a https://intellisalud.com en el código (ver
+# functions/api/_shared.js). Anunciarlas en un catálogo público invitaría a
+# que un agente las llame directamente y agote la cuota o el presupuesto.
+/.well-known/api-catalog
+  Content-Type: application/linkset+json
+  Access-Control-Allow-Origin: *
+
+/.well-known/ai-catalog.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
