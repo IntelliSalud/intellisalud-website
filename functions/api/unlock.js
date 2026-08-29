@@ -12,7 +12,7 @@
  */
 
 import {
-  validarNombre, json, hashIP, generarToken,
+  validarNombre, normalizarTipo, json, hashIP, generarToken,
   claveCampo, resumenDimensiones, mensajeDiagnostico,
 } from './_shared.js';
 import { enviarInforme, notificarLead } from './_email.js';
@@ -29,7 +29,8 @@ export async function onRequestPost(context) {
   catch { return json({ error: 'Solicitud inválida.' }, 400); }
 
   const { scan_token, nombre, especialidad, lugar_trabajo, email,
-    consentimiento_lopdp, es_titular } = cuerpo;
+    consentimiento_lopdp, es_titular, tipo: tipoBruto } = cuerpo;
+  const tipo = normalizarTipo(tipoBruto);
 
   // ── LOPDP: sin base legal no se guarda nada. ──
   if (consentimiento_lopdp !== true) {
@@ -39,7 +40,10 @@ export async function onRequestPost(context) {
     return json({ error: 'Confirma que eres este profesional o que cuentas con su autorización.' }, 400);
   }
 
-  const v = validarNombre(nombre);
+  // Debe aceptar el mismo `tipo` con el que /api/scan generó este escaneo —
+  // si no, un nombre de una sola palabra (válido como entidad) rebotaría
+  // aquí con "necesitamos nombre y apellido" aunque ya hubiera pasado /scan.
+  const v = validarNombre(nombre, tipo);
   if (!v.ok) return json({ error: v.motivo }, 400);
 
   const correo = String(email || '').trim();

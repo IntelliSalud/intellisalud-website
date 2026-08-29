@@ -163,7 +163,19 @@
       <!-- ── Buscador ── -->
       <form class="buscador" id="buscador" autocomplete="off">
         <label>
-          Nombre profesional completo
+          ¿A quién quieres evaluar?
+          <!-- Antes el formulario solo sabía pedir "nombre y apellido", así que
+               una entidad (ej. "Gastrend") rebotaba en el servidor con ese
+               mismo mensaje aunque su presencia digital sí era evaluable.
+               Este selector es lo que le dice a /api/scan qué rúbrica aplicar
+               (ver functions/api/_shared.js → normalizarTipo). -->
+          <select id="tipo-sujeto">
+            <option value="profesional" selected>Un profesional (médico/a)</option>
+            <option value="entidad">Una entidad de salud (clínica, centro médico)</option>
+          </select>
+        </label>
+        <label>
+          <span id="nombre-label">Nombre profesional completo</span>
           <!-- Nunca usar el nombre de una persona real como ejemplo: es un dato
                personal publicado sin su autorización. -->
           <input type="text" id="nombre" required placeholder="Inserte su nombre aquí" maxlength="80" />
@@ -230,7 +242,7 @@
             </label>
             <label class="consent">
               <input type="checkbox" id="titular" required />
-              <span>Confirmo que soy este profesional o que cuento con su autorización.</span>
+              <span>Confirmo que soy este profesional (o represento a esta entidad) o que cuento con su autorización.</span>
             </label>
             <label class="consent">
               <input type="checkbox" id="lopdp" required />
@@ -274,6 +286,21 @@
 
   const $ = id => document.getElementById(id);
   let scanToken = null;
+  let tipoActual = 'profesional'; // el que confirmó /api/scan, no el del <select> — /api/unlock debe re-validar con el mismo
+
+  // Ver nota junto al <select id="tipo-sujeto">: cambia el rótulo y el
+  // placeholder del campo de nombre según a quién se está evaluando.
+  const ETIQUETAS_NOMBRE = {
+    profesional: { label: 'Nombre profesional completo', placeholder: 'Inserte su nombre aquí' },
+    entidad: { label: 'Nombre de la entidad de salud', placeholder: 'Inserte el nombre de la clínica o centro médico' },
+  };
+  function aplicarTipoSujeto() {
+    const cfg = ETIQUETAS_NOMBRE[$('tipo-sujeto').value] || ETIQUETAS_NOMBRE.profesional;
+    $('nombre-label').textContent = cfg.label;
+    $('nombre').placeholder = cfg.placeholder;
+  }
+  $('tipo-sujeto').addEventListener('change', aplicarTipoSujeto);
+  aplicarTipoSujeto();
 
   function claseP(p) {
     if (p >= 75) return 'excellent';
@@ -359,6 +386,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nombre: $('nombre').value,
+          tipo: $('tipo-sujeto').value,
           especialidad: $('especialidad').value,
           ciudad: $('ciudad').value,
         }),
@@ -367,6 +395,7 @@
       if (!r.ok) throw new Error(data.error || 'No pudimos completar el análisis.');
 
       scanToken = data.scan_token;
+      tipoActual = data.tipo || $('tipo-sujeto').value;
       $('puntaje').textContent = data.puntaje_total;
       $('puntaje').className = 'puntaje-num ' + claseP(data.puntaje_total);
       $('barra').style.width = data.puntaje_total + '%';
@@ -403,6 +432,7 @@
         body: JSON.stringify({
           scan_token: scanToken,
           nombre: $('nombre').value,
+          tipo: tipoActual,
           especialidad: $('especialidad').value,
           lugar_trabajo: $('lugar').value,
           email: $('email').value,
@@ -492,25 +522,34 @@
     navigator.modelContext.provideContext({
       tools: [{
         name: 'diagnosticar_visibilidad_medica',
-        description: 'Analiza la visibilidad digital de un profesional de la salud '
-          + 'en Ecuador (buscadores, asistentes de IA, redes, datos estructurados, '
-          + 'reseñas, entre otras diez áreas) y devuelve un puntaje de 0 a 100 con '
-          + 'recomendaciones. Rellena y envía el formulario de diagnóstico visible '
-          + 'en esta página; el resultado se muestra en pantalla, no se retorna '
-          + 'como texto aparte.',
+        description: 'Analiza la visibilidad digital de un profesional de la salud o '
+          + 'de una entidad de salud (clínica, centro médico) en Ecuador (buscadores, '
+          + 'asistentes de IA, redes, datos estructurados, reseñas, entre otras diez '
+          + 'áreas) y devuelve un puntaje de 0 a 100 con recomendaciones. Rellena y '
+          + 'envía el formulario de diagnóstico visible en esta página; el resultado '
+          + 'se muestra en pantalla, no se retorna como texto aparte.',
         inputSchema: {
           type: 'object',
           properties: {
+            tipo: {
+              type: 'string',
+              enum: ['profesional', 'entidad'],
+              description: 'profesional = un médico/a individual (requiere nombre y '
+                + 'apellido). entidad = una clínica, centro médico o consultorio '
+                + 'grupal (un nombre de una sola palabra es válido, ej. "Gastrend"). '
+                + 'Por defecto, profesional.',
+            },
             nombre: {
               type: 'string',
-              description: 'Nombre y apellido del profesional de la salud a evaluar.',
+              description: 'Si tipo es "profesional": nombre y apellido del médico/a. '
+                + 'Si tipo es "entidad": nombre de la clínica o centro médico.',
             },
             especialidad: { type: 'string', enum: ESPECIALIDADES },
             ciudad: { type: 'string', enum: CIUDADES },
           },
           required: ['nombre', 'especialidad', 'ciudad'],
         },
-        async execute({ nombre, especialidad, ciudad }) {
+        async execute({ tipo, nombre, especialidad, ciudad }) {
           if (!ESPECIALIDADES.includes(especialidad)) {
             return { content: [{ type: 'text', text: 'Especialidad no reconocida. '
               + 'Usa uno de los valores del enum del esquema.' }] };
@@ -519,6 +558,8 @@
             return { content: [{ type: 'text', text: 'Ciudad no reconocida. Usa uno '
               + 'de los valores del enum del esquema.' }] };
           }
+          $('tipo-sujeto').value = (tipo === 'entidad') ? 'entidad' : 'profesional';
+          aplicarTipoSujeto();
           $('nombre').value = nombre;
           $('especialidad').value = especialidad;
           $('ciudad').value = ciudad;

@@ -42,19 +42,41 @@ export function limpiarNombre(entrada) {
   return n.trim();
 }
 
+/** Los dos sujetos que el diagnóstico sabe evaluar. Cualquier otro valor
+ *  recibido del cliente se normaliza a 'profesional' — nunca se confía en
+ *  que el frontend mande exactamente uno de estos dos strings. */
+export const TIPOS_SUJETO = ['profesional', 'entidad'];
+
+export function normalizarTipo(v) {
+  return TIPOS_SUJETO.includes(String(v || '').trim()) ? String(v).trim() : 'profesional';
+}
+
 /**
- * Valida el nombre SIN juzgar la huella digital del profesional.
+ * Valida el nombre SIN juzgar la huella digital del profesional o entidad.
  *
- * Esta distinción es la que sostiene el negocio: un médico con presencia
- * casi nula es exactamente el cliente que buscamos — su puntaje bajo es el
- * producto. Aquí solo se rechaza una entrada que no parece un nombre de
- * persona. Nunca se rechaza a alguien por tener poca visibilidad.
+ * Esta distinción es la que sostiene el negocio: un médico (o una clínica)
+ * con presencia casi nula es exactamente el cliente que buscamos — su
+ * puntaje bajo es el producto. Aquí solo se rechaza una entrada que no
+ * parece un nombre real. Nunca se rechaza a alguien por tener poca
+ * visibilidad.
+ *
+ * `tipo` distingue a un profesional individual de una entidad de salud
+ * (clínica, centro médico, consultorio grupal): un profesional necesita
+ * nombre y apellido para que la búsqueda tenga sentido, pero exigir eso a
+ * una entidad rechazaba nombres de una sola palabra completamente válidos
+ * ("Gastrend") — ese fue el bug original.
  */
-export function validarNombre(entrada) {
+export function validarNombre(entrada, tipo = 'profesional') {
   const nombre = limpiarNombre(entrada);
+  const esEntidad = normalizarTipo(tipo) === 'entidad';
 
   if (nombre.length < 4 || nombre.length > 80) {
-    return { ok: false, motivo: 'Escribe tu nombre profesional completo.' };
+    return {
+      ok: false,
+      motivo: esEntidad
+        ? 'Escribe el nombre completo de la entidad.'
+        : 'Escribe tu nombre profesional completo.',
+    };
   }
   if (/\d/.test(nombre)) {
     return { ok: false, motivo: 'El nombre no puede contener números.' };
@@ -64,21 +86,29 @@ export function validarNombre(entrada) {
     return { ok: false, motivo: 'El nombre solo puede contener letras.' };
   }
 
-  const partes = nombre.split(' ').filter((p) => p.length > 1);
-  if (partes.length < 2) {
-    return {
-      ok: false,
-      motivo: 'Necesitamos nombre y apellido para poder buscarte.',
-    };
+  if (!esEntidad) {
+    const partes = nombre.split(' ').filter((p) => p.length > 1);
+    if (partes.length < 2) {
+      return {
+        ok: false,
+        motivo: 'Necesitamos nombre y apellido para poder buscarte.',
+      };
+    }
   }
 
   const minus = nombre.toLowerCase();
   if (BASURA.some((b) => minus.includes(b))) {
-    return { ok: false, motivo: 'Escribe tu nombre profesional real.' };
+    return {
+      ok: false,
+      motivo: esEntidad ? 'Escribe el nombre real de la entidad.' : 'Escribe tu nombre profesional real.',
+    };
   }
   // "aaa", "bbbb": la misma letra repetida cuatro o más veces.
   if (/(.)\1{3,}/.test(minus)) {
-    return { ok: false, motivo: 'Escribe tu nombre profesional real.' };
+    return {
+      ok: false,
+      motivo: esEntidad ? 'Escribe el nombre real de la entidad.' : 'Escribe tu nombre profesional real.',
+    };
   }
 
   return { ok: true, nombre };
@@ -92,8 +122,13 @@ export function validarCiudad(v) {
   return CIUDADES.includes(String(v || '').trim());
 }
 
-/** Clave de caché: misma persona = mismo escaneo, sin volver a pagar. */
-export function claveCache(nombre, especialidad, ciudad) {
+/** Clave de caché: mismo sujeto = mismo escaneo, sin volver a pagar.
+ *  Incluye `tipo` porque el mismo nombre podría existir como profesional y
+ *  como entidad (o, más simple: para que un cambio de tipo nunca devuelva
+ *  desde caché un puntaje calculado con el prompt equivocado). Escaneos ya
+ *  guardados con la clave anterior (sin tipo) simplemente dejan de coincidir
+ *  y se recalculan una vez — no rompe nada, solo expira esa entrada. */
+export function claveCache(nombre, especialidad, ciudad, tipo = 'profesional') {
   const norm = (s) =>
     String(s)
       .toLowerCase()
@@ -102,7 +137,7 @@ export function claveCache(nombre, especialidad, ciudad) {
       .replace(/[^a-z ]/g, '')
       .replace(/\s+/g, ' ')
       .trim();
-  return `${norm(nombre)}|${norm(especialidad)}|${norm(ciudad)}`;
+  return `${normalizarTipo(tipo)}|${norm(nombre)}|${norm(especialidad)}|${norm(ciudad)}`;
 }
 
 /** El _headers del proyecto NO se aplica a las respuestas de Pages
