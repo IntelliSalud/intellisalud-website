@@ -11,7 +11,7 @@
  */
 
 import {
-  validarNombre, validarEspecialidad, validarCiudad,
+  validarNombre, validarEspecialidad, validarCiudad, normalizarTipo,
   claveCache, json, hashIP, generarToken,
   claveCampo, contarPerfilesCampo, mensajeCampo,
 } from './_shared.js';
@@ -21,17 +21,48 @@ const CACHE_DIAS = 30;
 const CAMPO_CACHE_DIAS = 7;  // un campo cambia más lento que un solo médico
 const LIMITE_DIARIO = 5;   // escaneos con coste, por IP y día
 
-/** La rúbrica v1.0, condensada para el modelo. */
-const SISTEMA = `Eres el motor de puntuación del Índice de Visibilidad Médica de IntelliSalud.
+/**
+ * La rúbrica v1.0, condensada para el modelo — parametrizada por `tipo`.
+ *
+ * Dos dimensiones cambian de fondo, no solo de redacción, entre un
+ * profesional individual y una entidad de salud (clínica, centro médico,
+ * consultorio grupal):
+ * - Dim. 4 (consistencia de identidad) no tiene "credenciales" que
+ *   consistir en una entidad — eso es propiedad de cada profesional que
+ *   trabaja ahí, no de la entidad misma.
+ * - Dim. 5 (sitio web propio) preguntaba "¿es suyo o de una clínica?", que
+ *   no tiene sentido cuando el sujeto evaluado ES la clínica.
+ * El resto de la rúbrica (buscadores, IA, redes, GBP, schema, rastreadores,
+ * directorios, reseñas) generaliza igual de bien a ambos casos sin cambios.
+ */
+function sistemaPrompt(tipo) {
+  const esEntidad = normalizarTipo(tipo) === 'entidad';
+  const sujeto = esEntidad
+    ? 'una entidad de salud (clínica, centro médico o consultorio grupal)'
+    : 'un profesional de la salud';
+  const dim4 = esEntidad
+    ? '4. Consistencia de identidad — ¿nombre, dirección y teléfono de la entidad coinciden entre fuentes?'
+    : '4. Consistencia de identidad — ¿nombre, credenciales, dirección y teléfono coinciden entre fuentes?';
+  const dim5 = esEntidad
+    ? '5. Sitio web propio — ¿la entidad tiene un sitio web propio, y no solo un perfil en un directorio?'
+    : '5. Sitio web propio — ¿existe? ¿es suyo o de una clínica?';
+  const trato = esEntidad
+    ? 'Refiérete a la entidad por su nombre, en tercera persona.'
+    : 'Dirígete al profesional de usted.';
+  const honestidad = esEntidad
+    ? 'Muchas entidades de salud excelentes tienen puntajes bajos.'
+    : 'Muchos profesionales excelentes tienen puntajes bajos.';
 
-Evalúas la VISIBILIDAD DIGITAL de un profesional de la salud a partir de resultados de búsqueda web. Nunca evalúas su calidad clínica ni su competencia profesional.
+  return `Eres el motor de puntuación del Índice de Visibilidad Médica de IntelliSalud.
+
+Evalúas la VISIBILIDAD DIGITAL de ${sujeto} a partir de resultados de búsqueda web. Nunca evalúas su calidad clínica ni su competencia profesional.
 
 Diez dimensiones, 10 puntos cada una, todas con el mismo peso:
 1. Visibilidad en buscadores — ¿aparece al buscar su especialidad y ciudad?
 2. Visibilidad en asistentes de IA — ¿hay información corroborada que un asistente pueda citar?
 3. Presencia en redes profesionales — LinkedIn, Instagram, Facebook: existencia, completitud, actividad.
-4. Consistencia de identidad — ¿nombre, credenciales, dirección y teléfono coinciden entre fuentes?
-5. Sitio web propio — ¿existe? ¿es suyo o de una clínica?
+${dim4}
+${dim5}
 6. Perfil de Google Business — ficha, verificación, datos.
 7. Datos estructurados — schema.org en su sitio.
 8. Acceso para rastreadores de IA — robots.txt, contenido servido.
@@ -48,15 +79,16 @@ REGLAS DE REDACCIÓN — obligatorias:
 - Nunca prometas posiciones ni resultados.
 - Nunca sugieras generar reseñas: es contrario a las políticas de las plataformas.
 - Nunca infieras calidad médica a partir del puntaje.
-- Escribe en español, dirigiéndote al profesional de usted.
+- Escribe en español. ${trato}
 - Cada "evidencia" cita qué se encontró concretamente. Si no hallaste nada para una
   dimensión, dilo así y baja la confianza — no inventes.
 
 IMPORTANTE: la ausencia de huella digital es un resultado válido y esperado.
-Muchos profesionales excelentes tienen puntajes bajos. Puntúa con honestidad;
+${honestidad} Puntúa con honestidad;
 un puntaje bajo es información útil, no un error.
 
 "puntaje_total" es la suma de los diez valores de "puntos".`;
+}
 
 /** Error con código corto para diagnóstico. El código sí se devuelve al
  *  cliente; el detalle solo se registra. Ningún secreto entra en ninguno. */
@@ -162,8 +194,11 @@ const ESQUEMA = {
   additionalProperties: false,
 };
 
-async function puntuar(nombre, especialidad, ciudad, resultados, apiKey) {
+async function puntuar(nombre, especialidad, ciudad, resultados, apiKey, tipo) {
   if (!apiKey) throw new FalloEtapa('puntuacion_sin_clave', 'ANTHROPIC_API_KEY no está definida');
+
+  const esEntidad = normalizarTipo(tipo) === 'entidad';
+  const etiquetaSujeto = esEntidad ? 'Entidad de salud' : 'Profesional';
 
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -175,11 +210,11 @@ async function puntuar(nombre, especialidad, ciudad, resultados, apiKey) {
     body: JSON.stringify({
       model: MODELO,
       max_tokens: 4000,
-      system: SISTEMA,
+      system: sistemaPrompt(tipo),
       output_config: { format: { type: 'json_schema', schema: ESQUEMA } },
       messages: [{
         role: 'user',
-        content: `Profesional: ${nombre}\nEspecialidad: ${especialidad}\nCiudad: ${ciudad}\n`
+        content: `${etiquetaSujeto}: ${nombre}\nEspecialidad: ${especialidad}\nCiudad: ${ciudad}\n`
           + `Fecha: ${new Date().toISOString().slice(0, 10)}\n\n`
           + `Resultados de búsqueda (${resultados.length}):\n`
           + JSON.stringify(resultados, null, 1)
@@ -220,7 +255,8 @@ export async function onRequestPost(context) {
   catch { return json({ error: 'Solicitud inválida.' }, 400); }
 
   // ── Capa 0/1: validación de formato. Coste de un rechazo: cero. ──
-  const v = validarNombre(cuerpo.nombre);
+  const tipo = normalizarTipo(cuerpo.tipo);
+  const v = validarNombre(cuerpo.nombre, tipo);
   if (!v.ok) return json({ error: v.motivo }, 400);
   if (!validarEspecialidad(cuerpo.especialidad)) {
     return json({ error: 'Selecciona una especialidad de la lista.' }, 400);
@@ -232,7 +268,7 @@ export async function onRequestPost(context) {
   const { nombre } = v;
   const especialidad = cuerpo.especialidad.trim();
   const ciudad = cuerpo.ciudad.trim();
-  const clave = claveCache(nombre, especialidad, ciudad);
+  const clave = claveCache(nombre, especialidad, ciudad, tipo);
 
   // ── Capa 2: caché. Un reescaneo no vuelve a pagar. ──
   const cache = await env.DB.prepare(
@@ -285,16 +321,25 @@ export async function onRequestPost(context) {
       }, 502);
     }
 
-    // Cero resultados NO significa "no es médico": significa que es invisible,
-    // que es justamente nuestro cliente. Se continúa y se puntúa bajo.
+    // Cero resultados NO significa "no es médico ni entidad válida": significa
+    // que es invisible, que es justamente nuestro cliente. Se continúa y se
+    // puntúa bajo.
     try {
-      completo = await puntuar(nombre, especialidad, ciudad, resultados, env.ANTHROPIC_API_KEY);
+      completo = await puntuar(nombre, especialidad, ciudad, resultados, env.ANTHROPIC_API_KEY, tipo);
     } catch (e) {
       return json({
         error: 'No pudimos completar el análisis. Intenta de nuevo en unos minutos.',
         codigo: e.codigo || 'puntuacion_desconocido',
       }, 502);
     }
+
+    // `tipo` no tiene columna propia en D1 (ver schema.sql: este archivo se
+    // reejecuta completo en cada cambio de esquema y no admite ALTER TABLE
+    // ADD COLUMN IF NOT EXISTS, así que un campo nuevo va a una tabla nueva,
+    // no a una columna nueva). Viaja dentro de "resultado" — no hace falta
+    // más para que el propio JSON guardado documente con qué prompt se
+    // generó, y /informe/<token> lo hereda gratis si algún día lo usa.
+    completo.tipo = tipo;
 
     const ins = await env.DB.prepare(
       `INSERT INTO scans (clave, nombre, especialidad, ciudad, puntaje_total, resultado, creado_en)
@@ -358,6 +403,7 @@ export async function onRequestPost(context) {
     scan_id: scanId,
     scan_token: scanToken,
     nombre,
+    tipo,
     especialidad,
     ciudad,
     puntaje_total: completo.puntaje_total,
