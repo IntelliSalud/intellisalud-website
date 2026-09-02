@@ -125,18 +125,6 @@
     .banda-actual { display: inline-block; margin-top: 6px; padding: 5px 14px; border-radius: 999px;
                     background: #e0f0fb; color: #0e6db5; font-size: 0.8rem; font-weight: 700; }
 
-    /* ── Tabla de dimensiones — datos reales del informe de progreso,
-         no una captura de pantalla: más accesible y más creíble. ── */
-    .dim-table { width: 100%; border-collapse: collapse; margin: 22px 0 28px; font-size: 0.9rem; }
-    .dim-table th, .dim-table td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
-    .dim-table th { font-weight: 700; color: var(--muted); font-size: 0.78rem; text-transform: uppercase;
-                     letter-spacing: 0.04em; }
-    .dim-table td.num { text-align: center; font-variant-numeric: tabular-nums; }
-    .dim-table td.delta { text-align: center; font-weight: 700; color: #157c53; font-variant-numeric: tabular-nums; }
-    .dim-table td.delta.flat { color: var(--muted); font-weight: 400; }
-    .dim-table tr.total td { border-top: 2px solid var(--dark); border-bottom: none; font-weight: 800; }
-    .dim-table tr.total td.delta { color: #157c53; }
-
     .team-photo { width: 100%; max-width: 380px; display: block; margin: 24px auto 8px;
                   border-radius: 18px; box-shadow: var(--shadow); }
     .team-caption { text-align: center; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
@@ -161,14 +149,15 @@
     /* Enlaces dentro del cuerpo del artículo: el "a { color: inherit }" global
        del sitio los deja invisibles como enlaces si no se marcan aparte. */
     .post-hero h1 a, .post-page p a, .post-page li a, .post-page h2 a,
-    .post-cite a, .team-caption a {
+    .post-cite a, .team-caption a, .post-meta-bar a {
       text-decoration: underline;
       text-decoration-color: currentColor;
       text-underline-offset: 3px;
       opacity: 0.92;
     }
     .post-hero h1 a:hover, .post-page p a:hover, .post-page li a:hover,
-    .post-page h2 a:hover, .post-cite a:hover, .team-caption a:hover { opacity: 1; }
+    .post-page h2 a:hover, .post-cite a:hover, .team-caption a:hover,
+    .post-meta-bar a:hover { opacity: 1; }
   </style>
 </head>
 
@@ -206,8 +195,8 @@
     <article>
       <header class="post-hero">
         <p class="eyebrow">Caso de éxito · Ginecología y Obstetricia · Guayaquil, Ecuador</p>
-        <h1>Dra. Fanny Sañay: de 15 a 61 puntos de visibilidad digital en seis semanas</h1>
-        <p class="post-meta-bar">Con Dra. Fanny Sañay · IntelliSalud · Agosto 2026</p>
+        <h1><a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Fanny Sañay</a>: de 15 a 61 puntos de visibilidad digital en seis semanas</h1>
+        <p class="post-meta-bar">Con <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Fanny Sañay</a> · IntelliSalud · Agosto 2026</p>
       </header>
 
       <div class="post-page">
@@ -245,12 +234,13 @@
 
         <h2>El punto de partida</h2>
         <p>
-          La Dra. Sañay es Médica Cirujana por la Universidad Católica de Santiago de
+          La <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Sañay</a> es Médica Cirujana por la Universidad Católica de Santiago de
           Guayaquil y Especialista en Ginecología y Obstetricia por la Universidad de
           Buenos Aires, con formación adicional en colposcopía, sexología clínica y
           ginecología estética — una combinación que casi ningún otro consultorio ofrece
-          junta. Es además Presidenta de la Sociedad de Patología del Tracto Genital
-          Inferior y Colposcopía del Guayas, fundadora del Instituto de Ginecología y
+          junta. Es además Presidenta de la
+          <a href="https://www.instagram.com/septgicg/" target="_blank" rel="noopener">Sociedad de Patología del Tracto Genital
+          Inferior y Colposcopía del Guayas</a>, fundadora del Instituto de Ginecología y
           Sexología del Ecuador, y docente universitaria.
         </p>
         <p>
@@ -291,32 +281,10 @@
           </div>
         </div>
 
-        <h2>Mejora por dimensión</h2>
-        <p>
-          No es una cifra sola: es una mejora medida en las diez dimensiones que evaluamos,
-          entre la línea base del 30 de julio y la medición del 31 de agosto.
-        </p>
-        <table class="dim-table">
-          <thead>
-            <tr><th>Dimensión</th><th class="num">30 jul</th><th class="num">31 ago</th><th class="num">Δ</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Sitio web propio</td><td class="num">1</td><td class="num">9</td><td class="delta">+8</td></tr>
-            <tr><td>Datos estructurados</td><td class="num">0</td><td class="num">9</td><td class="delta">+9</td></tr>
-            <tr><td>Acceso para rastreadores de IA</td><td class="num">0</td><td class="num">9</td><td class="delta">+9</td></tr>
-            <tr><td>Google Business Profile</td><td class="num">2</td><td class="num">5</td><td class="delta">+3</td></tr>
-            <tr><td>Reseñas y contenido propio</td><td class="num">2</td><td class="num">5</td><td class="delta">+3</td></tr>
-            <tr><td>Visibilidad en buscadores</td><td class="num">3</td><td class="num">5</td><td class="delta">+2</td></tr>
-            <tr><td>Visibilidad en asistentes de IA</td><td class="num">2</td><td class="num">4</td><td class="delta">+2</td></tr>
-            <tr><td>Consistencia de identidad (NAP)</td><td class="num">3</td><td class="num">5</td><td class="delta">+2</td></tr>
-            <tr><td>Redes profesionales</td><td class="num">5</td><td class="num">6</td><td class="delta">+1</td></tr>
-            <tr><td>Directorios médicos</td><td class="num">4</td><td class="num">4</td><td class="delta flat">0</td></tr>
-            <tr class="total"><td>Total</td><td class="num">22</td><td class="num">61</td><td class="delta">+39</td></tr>
-          </tbody>
-        </table>
-
+        <!-- No publicar aquí el desglose por dimensión (rúbrica interna de
+             puntaje) — regla permanente para todo caso de éxito publicado. -->
         <img src="/assets/clientes/fanny-sanay-consultorio.jpg" alt="Dra. Fanny Sañay en su consultorio, Guayaquil" class="team-photo" />
-        <p class="team-caption">La Dra. Fanny Sañay en su consultorio en Guayaquil.</p>
+        <p class="team-caption">La <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Fanny Sañay</a> en su consultorio en Guayaquil.</p>
 
         <h2>Qué se implementó</h2>
         <p>
@@ -337,7 +305,7 @@
           </li>
         </ul>
 
-        <h2>Dónde está la Dra. Sañay hoy</h2>
+        <h2>Dónde está la <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Sañay</a> hoy</h2>
         <p>
           Se ubica hoy en la tercera de cuatro etapas de madurez digital que utilizamos
           para medir la preparación de un profesional frente a buscadores y asistentes de
@@ -348,33 +316,36 @@
         <ul>
           <li>Su sitio propio, sus datos estructurados y su acceso para rastreadores de IA ya están en nivel sólido (9 sobre 10 cada uno).</li>
           <li>Su Google Business Profile y su base de reseñas ya existen y están en desarrollo activo.</li>
-          <li>Las herramientas de búsqueda ya pueden leer y verificar quién es la Dra. Sañay, dónde atiende y qué la distingue.</li>
+          <li>Las herramientas de búsqueda ya pueden leer y verificar quién es la <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Sañay</a>, dónde atiende y qué la distingue.</li>
         </ul>
 
         <h2>Lo que sigue</h2>
         <p>
-          La base técnica ya está construida. Los próximos pasos, en orden de impacto,
-          para consolidar la Banda 60–80 y avanzar hacia 80+:
+          El siguiente tramo del camino no depende de más trabajo de fondo, sino de tiempo de
+          procesamiento (la indexación de un sitio nuevo en buscadores no es instantánea) y de
+          un puñado de ajustes puntuales — consolidar reseñas, sumar directorios médicos, y
+          construir presencia de contenido de forma constante en los próximos meses.
         </p>
-        <ul>
-          <li><strong>Unificar la dirección</strong> en todos los directorios a Torre Médica Xima 612 — algunos aún muestran la dirección anterior.</li>
-          <li><strong>Activar reseñas de Google</strong>: enviar el enlace por WhatsApp tras cada consulta, con una meta de 30 o más.</li>
-          <li><strong>Sumar directorios</strong>: reclamar Doctoralia y actualizar los listados existentes.</li>
-          <li><strong>Indexación y autoridad</strong>: registrar el sitio en Google Search Console y sumar enlaces desde la sociedad médica y el hospital.</li>
-          <li><strong>Mantener el blog y las redes</strong>: uno o dos artículos al mes con preguntas reales de pacientes.</li>
-          <li><strong>Video educativo corto</strong> por tema, transcrito en el sitio, para reforzar la confianza y la cita por IA.</li>
-        </ul>
+        <p>
+          Lo que ya se está reflejando: las búsquedas de marca (cuando alguien busca
+          directamente "<a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Fanny Sañay</a>") ya devuelven información correcta y
+          actualizada. El objetivo de los próximos meses es lograr ese mismo reconocimiento
+          también en búsquedas más generales, como "mejor ginecóloga en Guayaquil".
+        </p>
 
         <div class="expectativa-box">
           <p>
-            <strong>Meta siguiente:</strong> consolidar de 61 a 80 puntos cerrando reseñas,
-            directorios y consistencia de datos, y sumando contenido para que la IA la
-            cite. Horizonte aproximado: 3 a 6 meses, dependiendo del ritmo de ejecución.
+            <strong>Lo que esperamos en los próximos meses:</strong> consolidar de 61 a 80
+            puntos cerrando reseñas, directorios y consistencia de datos, y sumando contenido
+            para que la IA la cite — en la medida en que sigamos construyendo y alimentando la
+            arquitectura de datos que estos sistemas necesitan para reconocer y citar a la
+            <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Fanny Sañay</a> correctamente.
           </p>
           <p>
-            El objetivo es mejorar la visibilidad de forma sostenida; no garantizamos
-            posiciones específicas en buscadores ni en asistentes de IA — el trabajo aquí
-            es de base medible, no de promesas de resultado.
+            Estos plazos son referenciales y dependen de factores fuera de nuestro control
+            directo (tiempos de indexación de cada plataforma, cambios en sus algoritmos). No
+            garantizamos posiciones específicas en buscadores ni en asistentes de IA — el
+            trabajo aquí es de base medible, no de promesas de resultado.
           </p>
         </div>
 
