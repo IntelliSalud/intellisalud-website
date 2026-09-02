@@ -129,6 +129,14 @@
                   border-radius: 18px; box-shadow: var(--shadow); }
     .team-caption { text-align: center; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
 
+    .evidencia-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 22px 0 28px; }
+    @media (max-width: 620px) { .evidencia-row { grid-template-columns: 1fr; } }
+    .evidencia-row figure { margin: 0; }
+    .evidencia-row img { width: 100%; display: block; border: 1px solid var(--border);
+                          border-radius: 14px; box-shadow: var(--shadow); }
+    .evidencia-row figcaption { text-align: center; font-size: 0.82rem; color: var(--muted);
+                                 margin-top: 8px; }
+
     .expectativa-box {
       border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
       background: var(--light); margin: 22px 0;
@@ -283,6 +291,26 @@
 
         <!-- No publicar aquí el desglose por dimensión (rúbrica interna de
              puntaje) — regla permanente para todo caso de éxito publicado. -->
+
+        <h2>Evidencia de la auditoría</h2>
+        <p>
+          Cada medición de este caso viene de una auditoría de marca y preparación para IA
+          fechada y verificada — no de una estimación. Estas son las portadas de la primera y
+          la segunda medición:
+        </p>
+        <div class="evidencia-row">
+          <figure>
+            <img src="/assets/clientes/fanny-sanay-auditoria-julio15.png"
+                 alt="Auditoría de marca y visibilidad de la Dra. Fanny Sañay, 15 de julio de 2026: preparación para IA 1.5 de 10" />
+            <figcaption>15 de julio — punto de partida: 1.5 / 10</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/clientes/fanny-sanay-auditoria-agosto31.png"
+                 alt="Re-auditoría verificada de visibilidad SEO/GEO/IA de la Dra. Fanny Sañay, 31 de agosto de 2026: puntaje 61 de 100" />
+            <figcaption>31 de agosto — segunda medición: 61 / 100</figcaption>
+          </figure>
+        </div>
+
         <img src="/assets/clientes/fanny-sanay-consultorio.jpg" alt="Dra. Fanny Sañay en su consultorio, Guayaquil" class="team-photo" />
         <p class="team-caption">La <a href="https://drafannysanay.com/" target="_blank" rel="noopener">Dra. Fanny Sañay</a> en su consultorio en Guayaquil.</p>
 
