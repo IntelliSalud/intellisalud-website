@@ -115,20 +115,30 @@
           {
             "@type": "EducationalOccupationalCredential",
             "credentialCategory": "certification",
+            "name": "Microsoft Certified: AI Business Professional",
+            "recognizedBy": { "@type": "Organization", "name": "Microsoft" },
+            "dateCreated": "2026-07"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "certification",
             "name": "Microsoft Certified: Azure AI Fundamentals (AI-900)",
-            "recognizedBy": { "@type": "Organization", "name": "Microsoft" }
+            "recognizedBy": { "@type": "Organization", "name": "Microsoft" },
+            "dateCreated": "2026-03"
           },
           {
             "@type": "EducationalOccupationalCredential",
             "credentialCategory": "certification",
             "name": "Microsoft Certified: Security, Compliance, and Identity Fundamentals (SC-900)",
-            "recognizedBy": { "@type": "Organization", "name": "Microsoft" }
+            "recognizedBy": { "@type": "Organization", "name": "Microsoft" },
+            "dateCreated": "2022-03"
           },
           {
             "@type": "EducationalOccupationalCredential",
             "credentialCategory": "certification",
             "name": "Microsoft 365 Certified: Teams Administrator Associate (MS-700)",
-            "recognizedBy": { "@type": "Organization", "name": "Microsoft" }
+            "recognizedBy": { "@type": "Organization", "name": "Microsoft" },
+            "dateCreated": "2020-11"
           }
         ],
         "knowsAbout": [
@@ -138,13 +148,15 @@
           "Datos estructurados y schema.org",
           "Desarrollo web para consultorios médicos",
           "Gestión de sistemas de información",
-          "Protección de datos personales (LOPDP Ecuador)"
+          "Protección de datos personales (LOPDP Ecuador)",
+          "Soporte técnico empresarial de Microsoft Teams y Microsoft 365"
         ],
         "knowsLanguage": ["es", "en"],
         "sameAs": [
+          "https://www.linkedin.com/in/jonathanlaviles/",
           "https://github.com/IntelliSalud"
         ],
-        "description": "Jonathan Aviles es fundador de IntelliSalud, empresa ecuatoriana dedicada a la visibilidad digital de profesionales de la salud. Es Magíster en Gestión de Sistemas de Información y cuenta con certificaciones Microsoft en inteligencia artificial, seguridad y cumplimiento."
+        "description": "Jonathan Aviles es fundador de IntelliSalud, empresa ecuatoriana dedicada a la visibilidad digital de profesionales de la salud. Es Magíster en Gestión de Sistemas de Información, con más de 12 años de experiencia en Microsoft como ingeniero de soporte técnico senior para Microsoft Teams y Microsoft 365, y experiencia previa en soporte técnico en Sony. Cuenta con certificaciones Microsoft en inteligencia artificial, seguridad y cumplimiento."
       }
     ]
   }
@@ -178,6 +190,25 @@
     .cred-list li:last-child { border-bottom: none; }
     .cred-list strong { display: block; }
     .cred-meta        { font-size: .9rem; opacity: .7; }
+
+    .job-list         { list-style: none; padding: 0; }
+    .job-list li      { padding: 16px 0; border-bottom: 1px solid rgba(128,128,128,.2); }
+    .job-list li:last-child { border-bottom: none; }
+    .job-list strong  { display: block; font-size: 1rem; }
+    .job-meta         { display: block; font-size: .9rem; opacity: .7; margin: 2px 0 6px; }
+    .job-list p        { margin: 0; font-size: .95rem; line-height: 1.65; opacity: .9; }
+
+    /* Enlaces dentro del cuerpo: el "a { color: inherit }" global del sitio
+       los deja invisibles como enlaces si no se marcan aparte. */
+    .entity-page .fact-table a, .entity-page .cite-block a,
+    .entity-role a, .entity-page p a {
+      text-decoration: underline;
+      text-decoration-color: currentColor;
+      text-underline-offset: 3px;
+      opacity: 0.92;
+    }
+    .entity-page .fact-table a:hover, .entity-page .cite-block a:hover,
+    .entity-role a:hover, .entity-page p a:hover { opacity: 1; }
 
     .entity-cta {
       margin-top: 40px; padding: 32px 26px; border-radius: 20px;
@@ -299,16 +330,28 @@
         <tr><th>Fundador</th><td><a href="#fundador">Jonathan Aviles</a></td></tr>
         <tr><th>Idioma de atención</th><td>Español e Inglés</td></tr>
         <tr><th>Correo</th><td><a href="mailto:jonathan@intellisalud.com">jonathan@intellisalud.com</a></td></tr>
+        <tr><th>LinkedIn del fundador</th><td><a href="https://www.linkedin.com/in/jonathanlaviles/" target="_blank" rel="noopener">linkedin.com/in/jonathanlaviles</a></td></tr>
       </table>
 
       <h2 id="fundador">El fundador</h2>
-      <p class="entity-role">Jonathan Aviles · Fundador de IntelliSalud · Ecuador</p>
+      <p class="entity-role">
+        <a href="https://www.linkedin.com/in/jonathanlaviles/" target="_blank" rel="noopener">Jonathan Aviles</a>
+        · Fundador de IntelliSalud · Ecuador
+      </p>
 
       <p>
         Jonathan Aviles es fundador de IntelliSalud. Su trabajo se centra en un problema
         concreto y poco atendido en América Latina: los médicos con mayor preparación clínica
         suelen ser los menos visibles cuando un paciente los busca — primero en Google, y cada
         vez más en asistentes de inteligencia artificial como ChatGPT, Claude o Gemini.
+      </p>
+      <p>
+        Antes de fundar IntelliSalud, Jonathan acumuló más de 12 años en Microsoft como
+        ingeniero de soporte técnico — actualmente Sr. Teams Support Engineer, resolviendo los
+        escalamientos más complejos de Microsoft Teams y Microsoft 365 para clientes
+        empresariales y de gobierno — con un paso previo por soporte técnico en Sony. Esa
+        experiencia en soporte técnico empresarial a gran escala es la base técnica detrás de
+        IntelliSalud.
       </p>
       <p>
         Su formación combina gestión de sistemas de información con certificaciones en
@@ -319,29 +362,89 @@
         correctamente.
       </p>
 
+      <h3>Trayectoria profesional</h3>
+      <ul class="job-list">
+        <li>
+          <strong>Sr. Teams Support Engineer — Microsoft</strong>
+          <span class="job-meta">Marzo 2025 – actualidad · Dallas, Texas, EE. UU. (remoto)</span>
+          <p>
+            Autoridad técnica de referencia en escalamientos complejos de Microsoft Teams —
+            incluyendo casos relacionados con Exchange Online, SharePoint Online y Microsoft
+            Entra (Azure AD) — para clientes empresariales y de gobierno.
+          </p>
+        </li>
+        <li>
+          <strong>Teams Support Engineer — Microsoft</strong>
+          <span class="job-meta">Marzo 2020 – marzo 2025 (5 años 1 mes) · Dallas, Texas, EE. UU. (remoto)</span>
+          <p>
+            Soporte de nivel 2/3 de Microsoft Teams para clientes empresariales de los sectores
+            salud, legal, financiero y gobierno.
+          </p>
+        </li>
+        <li>
+          <strong>Cloud Technical Expert — Microsoft</strong>
+          <span class="job-meta">Septiembre 2019 – febrero 2020 · Nueva York, EE. UU.</span>
+          <p>
+            Soporte pre y post-venta para clientes de Microsoft 365 y Office 365, enfocado en
+            adopción y resolución de casos complejos.
+          </p>
+        </li>
+        <li>
+          <strong>Service Advisor, Retail Support IT — Microsoft</strong>
+          <span class="job-meta">Marzo 2014 – septiembre 2019 (5 años 7 meses) · Nueva York, EE. UU.</span>
+          <p>
+            Soporte técnico directo a clientes en tiendas Microsoft, diagnosticando y
+            reparando hardware y software.
+          </p>
+        </li>
+        <li>
+          <strong>Mentor de Service Advisors — Microsoft</strong>
+          <span class="job-meta">Mayo 2019 – julio 2019 · Londres, Reino Unido</span>
+          <p>
+            Capacitó y guio a un equipo de 27 Service Advisors y un Cloud Technical Expert en
+            la tienda insignia de Londres.
+          </p>
+        </li>
+        <li>
+          <strong>Premium Service Tech Support — Sony</strong>
+          <span class="job-meta">Junio 2012 – marzo 2014 (1 año 10 meses) · Garden City, Nueva York, EE. UU.</span>
+          <p>
+            Soporte técnico y asesoría de producto para clientes de Sony.
+          </p>
+        </li>
+      </ul>
+
       <h3>Formación y credenciales</h3>
       <ul class="cred-list">
         <li>
           <strong>Ingeniería en Seguridad de Redes y Administración de Sistemas</strong>
-          <span class="cred-meta">CUNY - New York City College of Technology · Junio de 2016</span>
+          <span class="cred-meta">CUNY - New York City College of Technology · 2014 – 2016</span>
         </li>
         <li>
-          <strong>Maestría en Gestión de Sistemas de Información</strong>
-          <span class="cred-meta">University of Arizona Global Campus · Junio de 2025</span>
+          <strong>Maestría en Gestión de Sistemas de Información (MISM)</strong>
+          <span class="cred-meta">University of Arizona Global Campus · Julio 2023 – Junio 2025</span>
+        </li>
+        <li>
+          <strong>Microsoft Certified: AI Business Professional</strong>
+          <span class="cred-meta">Microsoft · Julio 2026</span>
         </li>
         <li>
           <strong>Microsoft Certified: Azure AI Fundamentals (AI-900)</strong>
-          <span class="cred-meta">Fundamentos de inteligencia artificial y aprendizaje automático</span>
+          <span class="cred-meta">Microsoft · Marzo 2026</span>
         </li>
         <li>
           <strong>Microsoft Certified: Security, Compliance, and Identity Fundamentals (SC-900)</strong>
-          <span class="cred-meta">Seguridad de la información, cumplimiento y gestión de identidad</span>
+          <span class="cred-meta">Microsoft · Marzo 2022</span>
         </li>
         <li>
           <strong>Microsoft 365 Certified: Teams Administrator Associate (MS-700)</strong>
-          <span class="cred-meta">Administración de plataformas de colaboración empresarial</span>
+          <span class="cred-meta">Microsoft · Noviembre 2020</span>
         </li>
       </ul>
+      <p class="cred-meta" style="margin-top:-8px">
+        Más 10 certificaciones adicionales de Microsoft (Power Platform, redes, seguridad y
+        nube), acumuladas desde 2017.
+      </p>
 
       <h3>Áreas de especialidad</h3>
       <p>
