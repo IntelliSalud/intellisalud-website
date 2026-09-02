@@ -58,7 +58,12 @@
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    .entity-page    { max-width: 780px; margin: 0 auto; padding: 120px 24px 80px; }
+    .entity-hero { background: var(--grad-hero-bg); padding: 110px 24px 64px; text-align: center; }
+    .entity-hero .eyebrow { color: #7deaef; }
+    .entity-hero h1 { color: #fff; max-width: 760px; margin: 0 auto 16px; }
+    .entity-hero .entity-lede { color: rgba(255,255,255,.85); max-width: 620px; margin: 0 auto; opacity: 1; }
+
+    .entity-page    { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
     .entity-page h1 { margin-bottom: 8px; }
     .entity-lede    { font-size: 1.15rem; line-height: 1.7; opacity: .85; margin-bottom: 40px; }
     .entity-page h2 { margin-top: 48px; margin-bottom: 16px; }
@@ -135,13 +140,16 @@
   </header>
 
   <main>
-    <article class="entity-page">
-
-      <h1>Clientes</h1>
+    <section class="entity-hero">
+      <p class="eyebrow">Clientes</p>
+      <h1>Casos de éxito reales, resultados medidos</h1>
       <p class="entity-lede">
         Trabajos reales de visibilidad digital realizados por IntelliSalud para
         profesionales de la salud en Ecuador — con resultados medidos, no promesas.
       </p>
+    </section>
+
+    <article class="entity-page">
 
       <a class="caso-card" href="/clientes/gastrend-manta">
         <span class="caso-tag">Gastroenterología · Manta</span>

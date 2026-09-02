@@ -153,7 +153,12 @@
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    .entity-page      { max-width: 780px; margin: 0 auto; padding: 120px 24px 80px; }
+    .entity-hero { background: var(--grad-hero-bg); padding: 110px 24px 64px; text-align: center; }
+    .entity-hero .eyebrow { color: #7deaef; }
+    .entity-hero h1 { color: #fff; max-width: 760px; margin: 0 auto 16px; }
+    .entity-hero .entity-lede { color: rgba(255,255,255,.85); max-width: 620px; margin: 0 auto; opacity: 1; }
+
+    .entity-page      { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
     .entity-page h1   { margin-bottom: 8px; }
     .entity-lede      { font-size: 1.15rem; line-height: 1.7; opacity: .85; margin-bottom: 40px; }
     .entity-page h2   { margin-top: 48px; margin-bottom: 16px; }
@@ -208,14 +213,17 @@
   </header>
 
   <main>
-    <article class="entity-page">
-
-      <h1>Sobre IntelliSalud</h1>
+    <section class="entity-hero">
+      <p class="eyebrow">Sobre IntelliSalud</p>
+      <h1>Visibilidad digital para profesionales de la salud</h1>
       <p class="entity-lede">
         IntelliSalud ayuda a médicos, especialistas y clínicas en Ecuador a ser encontrados por sus
         pacientes — en buscadores, en directorios profesionales y en asistentes de inteligencia
         artificial.
       </p>
+    </section>
+
+    <article class="entity-page">
 
       <h2>Qué hace IntelliSalud</h2>
 
