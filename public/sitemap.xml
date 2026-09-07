@@ -35,8 +35,8 @@
        ahí es donde se agregan casos nuevos; cada caso queda fijo una vez
        publicado (monthly es suficiente), salvo actualizaciones puntuales. -->
   <url>
-    <loc>https://intellisalud.com/clientes</loc>
-    <lastmod>2026-09-01</lastmod>
+    <loc>https://intellisalud.com/clientes/</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -56,8 +56,8 @@
        porque ahí es donde se agregan entradas; los posts individuales
        quedan fijos una vez publicados (monthly es suficiente). -->
   <url>
-    <loc>https://intellisalud.com/blog</loc>
-    <lastmod>2026-08-22</lastmod>
+    <loc>https://intellisalud.com/blog/</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
