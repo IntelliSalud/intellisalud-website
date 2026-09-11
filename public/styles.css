@@ -1056,21 +1056,27 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
   padding-bottom: 40px;
 }
 
-.footer-logo {
+/* Marca (columna .footer-brand): reglas con doble clase a propósito —
+   .footer-col a/span de abajo tiene la misma o mayor especificidad que
+   un selector de una sola clase como .footer-logo-badge, y sin este
+   prefijo esas reglas genéricas ganaban la cascada y rompían el logo
+   (display:block a pantalla completa en vez de inline-flex). */
+.footer-brand .footer-logo {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
 }
-.footer-logo-badge {
+.footer-brand .footer-logo-badge {
   background: var(--white);
   border-radius: 10px;
   padding: 6px;
   display: inline-flex;
   line-height: 0;
+  flex-shrink: 0;
 }
-.footer-logo-badge img { width: 26px; height: 26px; display: block; }
-.footer-logo span { font-weight: 800; font-size: 1.1rem; color: var(--white); }
+.footer-brand .footer-logo-badge img { width: 26px; height: 26px; display: block; }
+.footer-brand .footer-logo span { font-weight: 800; font-size: 1.1rem; color: var(--white); }
 
 .footer-tagline {
   font-size: 0.9rem;
@@ -1080,8 +1086,8 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
   margin-bottom: 18px;
 }
 
-.footer-social { display: flex; gap: 10px; }
-.footer-social a {
+.footer-brand .footer-social { display: flex; gap: 10px; }
+.footer-brand .footer-social a {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -1090,9 +1096,10 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.footer-social a:hover { background: var(--accent); color: var(--dark); }
+.footer-brand .footer-social a:hover { background: var(--accent); color: var(--dark); }
 
 .footer-col h4 {
   font-size: 0.78rem;
