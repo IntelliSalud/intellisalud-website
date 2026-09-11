@@ -65,6 +65,16 @@
     .entity-page h3 { margin-top: 28px; margin-bottom: 8px; font-size: 1.05rem; }
     .entity-page p  { line-height: 1.75; margin-bottom: 18px; }
 
+    /* Enlaces dentro del cuerpo: el "a { color: inherit }" global del sitio
+       los deja invisibles como enlaces si no se marcan aparte. */
+    .entity-page p a, .entity-page h2 a, .status-note a {
+      text-decoration: underline;
+      text-decoration-color: currentColor;
+      text-underline-offset: 3px;
+      opacity: 0.92;
+    }
+    .entity-page p a:hover, .entity-page h2 a:hover, .status-note a:hover { opacity: 1; }
+
     .mrm-brand-row {
       display: flex; align-items: center; gap: 14px; justify-content: center;
       margin-bottom: 22px;
@@ -123,7 +133,7 @@
         <a href="/blog/">Blog</a>
         <a href="/clientes/">Clientes</a>
         <a href="/nosotros">Nosotros</a>
-        <a href="/miredmedica" style="font-weight:700;">MiRedMédica</a>
+        <a href="https://miredmedica.com" target="_blank" rel="noopener" style="font-weight:700;">MiRedMédica</a>
         <a
           href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
           class="nav-wa"
@@ -140,10 +150,10 @@
 
   <main>
     <section class="entity-hero">
-      <div class="mrm-brand-row">
+      <a href="https://miredmedica.com" target="_blank" rel="noopener" class="mrm-brand-row">
         <img src="/assets/miredmedica/logo.png" alt="Logo de MiRedMédica" />
         <span>MiRedMédica</span>
-      </div>
+      </a>
       <p class="eyebrow">Un proyecto de IntelliSalud</p>
       <h1>Encuentra un médico cerca de ti, por especialidad y seguro</h1>
       <p class="entity-lede">
@@ -165,9 +175,9 @@
         pestañas y llamando a consultorios uno por uno para confirmar.
       </p>
       <p>
-        MiRedMédica junta esa información en una sola búsqueda: especialidad, ubicación y
-        seguro médico, con horarios de atención, formas de pago y dirección de cada
-        consultorio.
+        <a href="https://miredmedica.com" target="_blank" rel="noopener">MiRedMédica</a> junta
+        esa información en una sola búsqueda: especialidad, ubicación y seguro médico, con
+        horarios de atención, formas de pago y dirección de cada consultorio.
       </p>
 
       <h2>Gratis para médicos, gratis para pacientes</h2>
@@ -217,24 +227,26 @@
 
       <h2>Por qué lo construimos</h2>
       <p>
-        MiRedMédica nació dentro de IntelliSalud por el mismo motivo que el resto de nuestro
-        trabajo: cerrar la distancia entre un profesional de la salud bien preparado y el
-        paciente que lo está buscando. Ya ayudamos a médicos a ser encontrados en Google y en
-        asistentes de inteligencia artificial — MiRedMédica ataca el mismo problema desde otro
-        ángulo, directamente en el momento en que un paciente necesita un especialista que
-        cubra su seguro.
+        <a href="https://miredmedica.com" target="_blank" rel="noopener">MiRedMédica</a> nació
+        dentro de IntelliSalud por el mismo motivo que el resto de nuestro trabajo: cerrar la
+        distancia entre un profesional de la salud bien preparado y el paciente que lo está
+        buscando. Ya ayudamos a médicos a ser encontrados en Google y en asistentes de
+        inteligencia artificial —
+        <a href="https://miredmedica.com" target="_blank" rel="noopener">MiRedMédica</a> ataca
+        el mismo problema desde otro ángulo, directamente en el momento en que un paciente
+        necesita un especialista que cubra su seguro.
       </p>
 
       <div class="status-note">
         <p>
-          <strong>MiRedMédica está en una etapa temprana.</strong> El directorio está creciendo
+          <strong><a href="https://miredmedica.com" target="_blank" rel="noopener">MiRedMédica</a> está en una etapa temprana.</strong> El directorio está creciendo
           activamente y los primeros perfiles se están sumando ahora. Si eres médico, registrar
           tu consultorio hoy significa ser de los primeros visibles en tu especialidad y ciudad.
         </p>
       </div>
 
       <div class="entity-cta">
-        <h2>Visita MiRedMédica</h2>
+        <h2>Visita <a href="https://miredmedica.com" target="_blank" rel="noopener">MiRedMédica</a></h2>
         <p>
           Busca un médico o crea tu perfil profesional gratis en miredmedica.com.
         </p>
@@ -290,7 +302,7 @@
         <div class="footer-col">
           <h4>Recursos</h4>
           <a href="/visibilidad">Diagnóstico de visibilidad</a>
-          <a href="/miredmedica">MiRedMédica</a>
+          <a href="https://miredmedica.com" target="_blank" rel="noopener">MiRedMédica</a>
           <a href="/privacidad">Política de Privacidad</a>
         </div>
 

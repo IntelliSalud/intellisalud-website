@@ -938,6 +938,14 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
 }
 .svc-card-link:hover { opacity: 0.85; }
 
+.service-card h3 a {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 3px;
+  opacity: 0.92;
+}
+.service-card h3 a:hover { opacity: 1; }
+
 /* ═══════════════════════════════════ BENEFITS ══ */
 .two-column {
   display: grid;
