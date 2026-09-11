@@ -1037,10 +1037,12 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
 /* ═══════════════════════════════════ FOOTER ══
    Footer de sitemap con 4 columnas — mismo patrón que usan los sitios de
    clientes que construimos (GASTREND, EME Comunicaciones, Dra. Fanny
-   Sañay): marca + navegación + recursos + contacto, sobre fondo oscuro
-   de marca. Idéntico en todas las páginas del sitio. */
+   Sañay): marca + navegación + recursos + contacto. Fondo con el mismo
+   degradado azul→turquesa que el banner del hero (var(--grad-hero-bg)),
+   para que el footer haga bookend visual con la parte de arriba de la
+   página. Idéntico en todas las páginas del sitio. */
 .site-footer {
-  background: var(--dark);
+  background: var(--grad-hero-bg);
   color: rgba(255, 255, 255, 0.78);
   padding: 56px 24px 0;
 }
