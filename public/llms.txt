@@ -105,6 +105,7 @@ Las correcciones técnicas se implementan en semanas. La visibilidad en buscador
 
 ## Blog — artículos publicados
 
+- [Inteligencia Artificial para médicos: guía práctica 2026 (Ecuador)](https://intellisalud.com/blog/inteligencia-artificial-para-medicos-ecuador-guia-2026) (11 sep 2026): usos prácticos de la IA en la consulta, beneficios, marco legal ecuatoriano (LOPDP, resolución ARCSA-DE-2026-003-DASP sobre software como dispositivo médico, estado del proyecto de ley de IA), reglas de uso seguro, cómo lograr visibilidad en buscadores y asistentes de IA, y cómo IntelliSalud ayuda a lograrla.
 - [La evolución de la Inteligencia Artificial (IA) se mide con espaguetis](https://intellisalud.com/blog/will-smith-espaguetis-ia-medicos) (22 ago 2026): de un video viral de IA mal hecho en 2023 a asistentes de IA que recomiendan médicos por nombre en 2026 — la misma curva de mejora, y qué significa para un consultorio.
 - [Cómo IntelliSalud ayuda a médicos y clínicas a llegar a nuevos pacientes y nuevos mercados](https://intellisalud.com/blog/como-intellisalud-ayuda-nuevos-pacientes-mercados) (12 ago 2026): el camino de diagnóstico gratuito → banda de madurez → plan de trabajo, y la expansión planificada a América Latina.
 - [SEO y GEO: cómo las marcas y los profesionales encuentran nuevos clientes en la era de la IA](https://intellisalud.com/blog/seo-geo-marcas-digitales-nuevos-clientes) (6 ago 2026): consistencia de identidad, datos estructurados y corroboración externa, aplicable a cualquier marca digital.

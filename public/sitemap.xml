@@ -57,9 +57,15 @@
        quedan fijos una vez publicados (monthly es suficiente). -->
   <url>
     <loc>https://intellisalud.com/blog/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://intellisalud.com/blog/inteligencia-artificial-para-medicos-ecuador-guia-2026</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://intellisalud.com/blog/will-smith-espaguetis-ia-medicos</loc>
