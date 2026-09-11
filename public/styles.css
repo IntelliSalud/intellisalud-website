@@ -926,6 +926,18 @@ h3 { font-size: 1.15rem; margin-bottom: 10px; }
   color: #92400e;
 }
 
+.svc-card-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 3px;
+}
+.svc-card-link:hover { opacity: 0.85; }
+
 /* ═══════════════════════════════════ BENEFITS ══ */
 .two-column {
   display: grid;
