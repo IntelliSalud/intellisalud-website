@@ -170,14 +170,29 @@
                        color: #fff; font-size: 0.72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
     .evidencia-ia .query { font-size: 0.78rem; font-style: italic; color: var(--muted); margin: 4px 0 0; text-align: center; line-height: 1.4; }
     .evidencia-ia figcaption strong { color: var(--dark); }
-    #ia-lightbox { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; overflow: visible; }
-    #ia-lightbox::backdrop { background: rgba(0,0,0,.85); }
-    #ia-lightbox .lb-inner { position: relative; }
-    #ia-lightbox img { display: block; max-width: 96vw; max-height: 86vh; width: auto; height: auto;
-                       border-radius: 10px; background: #fff; }
-    #ia-lightbox .lb-cap { color: #fff; text-align: center; font-size: 0.85rem; margin: 8px 0 0; }
-    #ia-lightbox .lb-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%;
-                             border: 0; background: #fff; color: #000; font-size: 1.2rem; cursor: pointer; }
+    /* El reset global "* { margin: 0 }" del sitio anula el centrado automático del
+       <dialog>, así que se centra explícitamente: el diálogo ocupa toda la pantalla
+       y su contenido se centra con flex. */
+    #ia-lightbox { border: 0; padding: 0; margin: 0; background: transparent; position: fixed; inset: 0;
+                   width: 100vw; height: 100vh; max-width: none; max-height: none; }
+    #ia-lightbox[open] { display: flex; align-items: center; justify-content: center; }
+    #ia-lightbox::backdrop { background: rgba(0,0,0,.88); }
+    #ia-lightbox .lb-inner { display: flex; flex-direction: column; align-items: center; gap: 10px;
+                             max-width: 96vw; max-height: 94vh; }
+    #ia-lightbox .lb-scroll { overflow: auto; max-width: 96vw; max-height: calc(94vh - 60px);
+                              border-radius: 10px; background: #fff; -webkit-overflow-scrolling: touch; }
+    #ia-lightbox img { display: block; width: auto; height: auto; max-width: 96vw; max-height: calc(94vh - 60px); }
+    #ia-lightbox .lb-cap { color: #fff; text-align: center; font-size: 0.85rem; margin: 0; }
+    #ia-lightbox .lb-hint { display: none; color: rgba(255,255,255,.7); font-size: 0.75rem; margin: 0; }
+    #ia-lightbox .lb-close { position: fixed; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%;
+                             border: 0; background: #fff; color: #000; font-size: 1.2rem; cursor: pointer; z-index: 2; }
+    /* En pantallas angostas la captura se muestra más ancha que la pantalla y se
+       desliza, para que el texto sea legible. */
+    @media (max-width: 700px) {
+      #ia-lightbox .lb-scroll { touch-action: pan-x pan-y; }
+      #ia-lightbox img { max-width: none; max-height: none; width: 210vw; }
+      #ia-lightbox .lb-hint { display: block; }
+    }
 
     .expectativa-box {
       border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
@@ -574,8 +589,9 @@
   <dialog id="ia-lightbox" aria-label="Captura ampliada">
     <div class="lb-inner">
       <button type="button" class="lb-close" aria-label="Cerrar">✕</button>
-      <img alt="" />
+      <div class="lb-scroll"><img alt="" /></div>
       <p class="lb-cap"></p>
+      <p class="lb-hint">Desliza para ver toda la captura</p>
     </div>
   </dialog>
   <script>
@@ -591,7 +607,9 @@
           dlg.showModal();
         });
       });
-      dlg.addEventListener("click", function (e) { if (e.target !== img) dlg.close(); });
+      dlg.addEventListener("click", function (e) {
+        if (e.target === dlg || e.target.closest(".lb-close")) dlg.close();
+      });
     })();
   </script>
   <script src="/script.js"></script>
