@@ -165,6 +165,20 @@
                         border-radius: 14px; box-shadow: var(--shadow); }
     .evidencia-ia figcaption { text-align: center; font-size: 0.82rem; color: var(--muted); margin-top: 8px; }
 
+    .zoom-btn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; position: relative; }
+    .zoom-btn::after { content: "Ampliar"; position: absolute; right: 8px; bottom: 8px; background: rgba(0,0,0,.7);
+                       color: #fff; font-size: 0.72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+    .evidencia-ia .query { font-size: 0.78rem; font-style: italic; color: var(--muted); margin: 4px 0 0; text-align: center; line-height: 1.4; }
+    .evidencia-ia figcaption strong { color: var(--dark); }
+    #ia-lightbox { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; overflow: visible; }
+    #ia-lightbox::backdrop { background: rgba(0,0,0,.85); }
+    #ia-lightbox .lb-inner { position: relative; }
+    #ia-lightbox img { display: block; max-width: 96vw; max-height: 86vh; width: auto; height: auto;
+                       border-radius: 10px; background: #fff; }
+    #ia-lightbox .lb-cap { color: #fff; text-align: center; font-size: 0.85rem; margin: 8px 0 0; }
+    #ia-lightbox .lb-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%;
+                             border: 0; background: #fff; color: #000; font-size: 1.2rem; cursor: pointer; }
+
     .expectativa-box {
       border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
       background: var(--light); margin: 22px 0;
@@ -374,24 +388,30 @@
 
         <h2>Evidencia: GASTREND en las búsquedas de IA</h2>
         <p>
-          Capturas del 23 de septiembre de 2026, con la misma pregunta en los tres asistentes:
-          "me puedes recomendar a un gastroenterólogo en Manta Ecuador".
+          Capturas del 23 de septiembre de 2026, con la misma pregunta en los tres asistentes. Toca o haz clic en cada imagen para
+          verla en grande.
         </p>
         <div class="evidencia-ia">
           <figure>
-            <img src="/assets/clientes/gastrend-ia-chatgpt.png"
-                 alt="ChatGPT recomienda a Gastrend - Dr. Gustavo Machuca entre las opciones de gastroenterólogos en Manta" loading="lazy" />
-            <figcaption>ChatGPT: entre las 3 opciones recomendadas</figcaption>
+            <button type="button" class="zoom-btn" data-cap="ChatGPT" aria-label="Ampliar captura de ChatGPT">
+              <img src="/assets/clientes/gastrend-ia-chatgpt.png" alt="ChatGPT recomienda a Gastrend - Dr. Gustavo Machuca entre las opciones de gastroenterólogos en Manta" loading="lazy" />
+            </button>
+            <figcaption><strong>ChatGPT: entre las 3 opciones recomendadas</strong></figcaption>
+            <p class="query">Consulta: "me puedes recomendar a un gastroenteorologo en Manta Ecuador"</p>
           </figure>
           <figure>
-            <img src="/assets/clientes/gastrend-ia-gemini.png"
-                 alt="Gemini recomienda a Gastrend - Dr. Gustavo Machuca como primera alternativa en Manta" loading="lazy" />
-            <figcaption>Gemini: primera alternativa recomendada</figcaption>
+            <button type="button" class="zoom-btn" data-cap="Gemini" aria-label="Ampliar captura de Gemini">
+              <img src="/assets/clientes/gastrend-ia-gemini.png" alt="Gemini recomienda a Gastrend - Dr. Gustavo Machuca como primera alternativa en Manta" loading="lazy" />
+            </button>
+            <figcaption><strong>Gemini: primera alternativa recomendada</strong></figcaption>
+            <p class="query">Consulta: "me puedes recomendar a un gastroenteorologo en Manta Ecuador"</p>
           </figure>
           <figure>
-            <img src="/assets/clientes/gastrend-ia-google-ai.png"
-                 alt="Google AI Overview lista al Dr. Gustavo Machuca (Gastrend) entre los gastroenterólogos recomendados en Manta" loading="lazy" />
-            <figcaption>Google AI Overview: entre las opciones recomendadas</figcaption>
+            <button type="button" class="zoom-btn" data-cap="Google AI Overview" aria-label="Ampliar captura de Google AI Overview">
+              <img src="/assets/clientes/gastrend-ia-google-ai.png" alt="Google AI Overview lista al Dr. Gustavo Machuca (Gastrend) entre los gastroenterólogos recomendados en Manta" loading="lazy" />
+            </button>
+            <figcaption><strong>Google AI Overview: entre las opciones recomendadas</strong></figcaption>
+            <p class="query">Consulta: "me puedes recomendar a un gastroenteorologo en Manta Ecuador"</p>
           </figure>
         </div>
 
@@ -551,6 +571,29 @@
     </div>
   </footer>
 
+  <dialog id="ia-lightbox" aria-label="Captura ampliada">
+    <div class="lb-inner">
+      <button type="button" class="lb-close" aria-label="Cerrar">✕</button>
+      <img alt="" />
+      <p class="lb-cap"></p>
+    </div>
+  </dialog>
+  <script>
+    (function () {
+      var dlg = document.getElementById("ia-lightbox");
+      if (!dlg || !dlg.showModal) return;
+      var img = dlg.querySelector("img"), cap = dlg.querySelector(".lb-cap");
+      document.querySelectorAll(".zoom-btn").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var i = b.querySelector("img");
+          img.src = i.src; img.alt = i.alt;
+          cap.textContent = b.getAttribute("data-cap") + " — 23 de septiembre de 2026";
+          dlg.showModal();
+        });
+      });
+      dlg.addEventListener("click", function (e) { if (e.target !== img) dlg.close(); });
+    })();
+  </script>
   <script src="/script.js"></script>
 </body>
 </html>
