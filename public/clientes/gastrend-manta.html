@@ -189,8 +189,12 @@
     /* En pantallas angostas la captura se muestra más ancha que la pantalla y se
        desliza, para que el texto sea legible. */
     @media (max-width: 700px) {
-      #ia-lightbox .lb-scroll { touch-action: pan-x pan-y; }
-      #ia-lightbox img { max-width: none; max-height: none; width: 210vw; }
+      #ia-lightbox .lb-inner { width: 100vw; max-width: 100vw; }
+      #ia-lightbox .lb-scroll { overflow: hidden; touch-action: none; width: 100vw; max-width: 100vw;
+                                height: calc(100vh - 110px); max-height: none; border-radius: 0;
+                                display: flex; align-items: center; justify-content: center; }
+      #ia-lightbox img { max-width: 100vw; max-height: 100%; width: auto; height: auto;
+                         transform-origin: center center; user-select: none; -webkit-user-drag: none; }
       #ia-lightbox .lb-hint { display: block; }
     }
 
@@ -591,7 +595,7 @@
       <button type="button" class="lb-close" aria-label="Cerrar">✕</button>
       <div class="lb-scroll"><img alt="" /></div>
       <p class="lb-cap"></p>
-      <p class="lb-hint">Desliza para ver toda la captura</p>
+      <p class="lb-hint">Pellizca para acercar · doble toque para ampliar</p>
     </div>
   </dialog>
   <script>
@@ -604,9 +608,58 @@
           var i = b.querySelector("img");
           img.src = i.src; img.alt = i.alt;
           cap.textContent = b.getAttribute("data-cap") + " — 23 de septiembre de 2026";
+          reset();
           dlg.showModal();
         });
       });
+      // Zoom con gestos (solo en pantallas angostas): pellizcar, arrastrar y doble toque.
+      var frame = dlg.querySelector(".lb-scroll");
+      var mq = window.matchMedia("(max-width: 700px)");
+      var sc = 1, tx = 0, ty = 0, pts = {}, d0 = 0, s0 = 1, lastTap = 0, moved = false;
+      function reset() { sc = 1; tx = 0; ty = 0; pts = {}; paint(); }
+      function limit(v, m) { return Math.max(-m, Math.min(m, v)); }
+      function paint() {
+        var mx = Math.max(0, (img.offsetWidth * sc - frame.clientWidth) / 2);
+        var my = Math.max(0, (img.offsetHeight * sc - frame.clientHeight) / 2);
+        tx = limit(tx, mx); ty = limit(ty, my);
+        img.style.transform = sc === 1 ? "" : "translate(" + tx + "px," + ty + "px) scale(" + sc + ")";
+      }
+      function dist() { var k = Object.keys(pts); return Math.hypot(pts[k[0]].x - pts[k[1]].x, pts[k[0]].y - pts[k[1]].y); }
+      frame.addEventListener("pointerdown", function (e) {
+        if (!mq.matches) return;
+        frame.setPointerCapture(e.pointerId);
+        pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+        moved = false;
+        if (Object.keys(pts).length === 2) { d0 = dist(); s0 = sc; }
+      });
+      frame.addEventListener("pointermove", function (e) {
+        var p = pts[e.pointerId];
+        if (!mq.matches || !p) return;
+        var n = Object.keys(pts).length;
+        if (n === 2) {
+          pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+          sc = Math.max(1, Math.min(5, s0 * dist() / d0));
+          moved = true;
+        } else if (n === 1 && sc > 1) {
+          tx += e.clientX - p.x; ty += e.clientY - p.y;
+          pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+          moved = true;
+        }
+        paint();
+      });
+      function up(e) {
+        if (!pts[e.pointerId]) return;
+        var wasSingle = Object.keys(pts).length === 1;
+        delete pts[e.pointerId];
+        if (wasSingle && !moved) {
+          var now = Date.now();
+          if (now - lastTap < 300) { sc = sc > 1 ? 1 : 2.5; tx = 0; ty = 0; paint(); lastTap = 0; }
+          else lastTap = now;
+        }
+        if (sc < 1.02) { sc = 1; tx = 0; ty = 0; paint(); }
+      }
+      frame.addEventListener("pointerup", up);
+      frame.addEventListener("pointercancel", up);
       dlg.addEventListener("click", function (e) {
         if (e.target === dlg || e.target.closest(".lb-close")) dlg.close();
       });
