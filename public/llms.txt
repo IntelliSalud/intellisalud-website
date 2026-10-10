@@ -45,8 +45,8 @@ El puntaje del diagnóstico de visibilidad (0–100) ubica a cada profesional en
 |---|---|---|---|
 | Fundamentos | 0–40 | Presencia digital propia y correcta: sitio, perfil de Google Business y datos consistentes, para empezar a aparecer. | Instalación desde $800 ($400 si ya tiene sitio web) + mensualidad desde $250/mes |
 | Autoridad | 40–60 | Reputación y respaldo activo: reseñas, directorios médicos, redes profesionales. | Mensualidad total desde $300/mes |
-| Contenido e IA | 60–80 | Que los asistentes de inteligencia artificial (ChatGPT, Claude, Gemini, Perplexity) nombren y describan bien al profesional. | Mensualidad total desde $400/mes |
-| Dominio | 80+ | Mantenimiento de una posición ya ganada: monitoreo de menciones en IA, velocidad de reseñas, frescura de contenido. | Mensualidad de mantenimiento desde $600/mes |
+| Contenido e IA | 60–75 | Que los asistentes de inteligencia artificial (ChatGPT, Claude, Gemini, Perplexity) nombren y describan bien al profesional. | Mensualidad total desde $400/mes |
+| Dominio | 75+ | Mantenimiento de una posición ya ganada: monitoreo de menciones en IA, velocidad de reseñas, frescura de contenido. | Mensualidad de mantenimiento desde $600/mes |
 
 Si un profesional empieza en la banda Fundamentos con IntelliSalud, la instalación de las bandas siguientes queda exonerada al subir de banda — solo se paga instalación una vez. Los precios son rangos de referencia; la cotización final depende del diagnóstico de cada caso. Ningún plan garantiza un puntaje de 100/100 ni una posición específica en Google.
 
