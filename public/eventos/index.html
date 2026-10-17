@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <title>Eventos — Talleres gratuitos de IA para médicos | IntelliSalud</title>
+
+  <meta
+    name="description"
+    content="Talleres gratuitos en línea para que los médicos en Ecuador entiendan cómo la inteligencia artificial decide a quién recomendar, y qué hacer al respecto. Próximo evento: 28 de octubre."
+  />
+  <link rel="canonical" href="https://intellisalud.com/eventos/" />
+
+  <meta property="og:title" content="Eventos — Talleres gratuitos de IA para médicos | IntelliSalud" />
+  <meta property="og:description" content="Talleres gratuitos en línea para que los médicos entiendan cómo la IA decide a quién recomendar, y qué hacer al respecto." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://intellisalud.com/eventos/" />
+  <meta property="og:locale" content="es_EC" />
+  <meta property="og:site_name" content="IntelliSalud" />
+
+  <!-- GEO — Schema.org: CollectionPage + ItemList, mismo patrón que /clientes
+       y /blog. El Event completo con fecha, horario y oferta vive en /taller-ia
+       — aquí solo referenciamos esa página por @id, para no duplicar la
+       entidad Event en dos URLs. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://intellisalud.com/eventos#collectionpage",
+        "url": "https://intellisalud.com/eventos/",
+        "name": "Eventos — Talleres gratuitos de IA para médicos",
+        "isPartOf": { "@id": "https://intellisalud.com/#website" },
+        "about": { "@id": "https://intellisalud.com/#organization" },
+        "inLanguage": "es"
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://intellisalud.com/eventos#lista",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "url": "https://intellisalud.com/taller-ia"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    .entity-hero { background: var(--grad-hero-bg); padding: 110px 24px 64px; text-align: center; }
+    .entity-hero .eyebrow { color: #7deaef; }
+    .entity-hero h1 { color: #fff; max-width: 780px; margin: 0 auto 16px; }
+    .entity-hero .entity-lede { color: rgba(255,255,255,.85); max-width: 640px; margin: 0 auto; opacity: 1; }
+
+    .entity-page    { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
+    .entity-page h2 { margin-top: 48px; margin-bottom: 16px; }
+    .entity-page h3 { margin-top: 28px; margin-bottom: 8px; font-size: 1.05rem; }
+    .entity-page p  { line-height: 1.75; margin-bottom: 18px; }
+    .entity-page ul { margin: 0 0 18px 20px; line-height: 1.8; }
+
+    /* ── Banner grande del evento (arriba y abajo) ── */
+    .event-banner {
+      display: block;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: -56px 0 40px;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 2;
+      text-decoration: none;
+    }
+    .event-banner img { display: block; width: 100%; height: auto; }
+    .event-banner .event-banner-footer {
+      background: var(--white); padding: 20px 26px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .event-banner .event-banner-info { font-size: .92rem; color: var(--muted); }
+    .event-banner .event-banner-info strong { color: var(--dark); display: block; font-size: 1.02rem; margin-bottom: 2px; }
+    .event-banner .btn { white-space: nowrap; }
+    .event-banner.event-banner-bottom { margin: 48px 0 0; }
+
+    /* ── Banner chico cruzado al diagnóstico ── */
+    .visibilidad-banner {
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      border: 1px solid var(--border); border-radius: 16px;
+      padding: 20px 24px; margin: 40px 0;
+      background: var(--light);
+    }
+    .visibilidad-banner .vb-icon {
+      width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.3rem;
+    }
+    .visibilidad-banner .vb-text { flex: 1; min-width: 220px; }
+    .visibilidad-banner .vb-text strong { display: block; color: var(--dark); margin-bottom: 2px; }
+    .visibilidad-banner .vb-text span { font-size: .88rem; color: var(--muted); }
+    .visibilidad-banner .btn { white-space: nowrap; }
+
+    .caso-card {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 30px;
+      margin-bottom: 20px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease;
+    }
+    a.caso-card:hover { transform: translateY(-2px); }
+    .caso-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .caso-card h3 { margin-bottom: 10px; margin-top: 0; }
+    .caso-card p  { margin-bottom: 0; color: var(--muted); }
+    .caso-card .read-more {
+      display: inline-block; margin-top: 14px; font-weight: 700;
+      color: var(--primary); font-size: 0.92rem;
+    }
+    .caso-soon {
+      border-style: dashed;
+      background: transparent;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .faq-item { border-bottom: 1px solid var(--border); padding: 16px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { margin-top: 0; margin-bottom: 6px; font-size: .98rem; }
+    .faq-item p { margin-bottom: 0; color: var(--muted); font-size: .95rem; }
+
+    .entity-cta {
+      margin-top: 40px; padding: 32px 26px; border-radius: 20px;
+      background: var(--light); border: 1px solid var(--border); text-align: center;
+    }
+    .entity-cta h2 { margin-top: 0; }
+    .entity-cta p { margin-bottom: 20px; }
+
+    @media (max-width: 560px) {
+      .event-banner .event-banner-footer { flex-direction: column; align-items: stretch; text-align: center; }
+      .visibilidad-banner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <img src="/assets/logo.jpg" alt="Logo de IntelliSalud" class="logo-image" />
+        <span>IntelliSalud</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+      <!-- Nav idéntico en todas las páginas del sitio — ver nota en planes.html.
+           TODO: propagar el enlace /eventos/ a la navegación del resto del
+           sitio (por ahora solo está aquí y en la portada). -->
+      <div class="nav-links" id="navLinks">
+        <a href="/#servicios">Servicios</a>
+        <a href="/planes">Planes</a>
+        <a href="/blog/">Blog</a>
+        <a href="/clientes/">Clientes</a>
+        <a href="/eventos/" style="font-weight:700;">Eventos</a>
+        <a href="/nosotros">Nosotros</a>
+        <a
+          href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s."
+          class="nav-wa"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+          WhatsApp
+        </a>
+        <a href="/visibilidad" class="nav-cta">Consultar visibilidad</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="entity-hero">
+      <p class="eyebrow">Eventos de IntelliSalud</p>
+      <h1>Talleres gratuitos para entender cómo la IA decide a quién recomendar</h1>
+      <p class="entity-lede">
+        Antes de proponerle un trabajo a nadie, enseñamos. Estos talleres en línea son
+        gratuitos, prácticos y sin jerga técnica — pensados para que cualquier médico,
+        tenga o no intención de trabajar con nosotros, entienda qué está pasando con su
+        visibilidad digital hoy.
+      </p>
+    </section>
+
+    <article class="entity-page">
+
+      <!-- ═══ BANNER GRANDE — ARRIBA ═══ -->
+      <a class="event-banner" href="https://events.teams.microsoft.com/event/8491fa91-09c1-46f9-9d71-91902f4b49d6@857f552d-f7ba-4bf9-92cb-07a77aa7da85" target="_blank" rel="noopener">
+        <img src="/assets/taller-ia-banner-v2.jpg" alt="Inteligencia Artificial para Médicos: taller gratuito de IntelliSalud" />
+        <div class="event-banner-footer">
+          <div class="event-banner-info">
+            <strong>Inteligencia Artificial para Médicos — Taller Gratuito</strong>
+            Miércoles 28 de octubre, 7:00–8:00 PM (Ecuador) · En línea · Cupo limitado
+          </div>
+          <span class="btn btn-primary">Reservar mi lugar gratis</span>
+        </div>
+      </a>
+
+      <h2>Por qué hacemos estos talleres</h2>
+      <p>
+        La mayoría de los médicos en Ecuador no tiene cómo saber que, ahora mismo, sus
+        pacientes le preguntan a ChatGPT y a Google quién es el mejor especialista en su
+        ciudad — ni que esos sistemas ya están respondiendo con nombres concretos. No es un
+        problema de preparación clínica; es un problema de infraestructura digital que casi
+        nadie les ha explicado en términos simples.
+      </p>
+      <p>
+        Creemos que todo médico debería entender esto, sea o no cliente de IntelliSalud.
+        Por eso estos talleres son gratuitos, abiertos y diseñados para quien nunca ha
+        tocado el tema de SEO, GEO ni inteligencia artificial — no hace falta saber de
+        tecnología para seguir la sesión completa.
+      </p>
+
+      <h2>Qué vamos a cubrir en el próximo taller</h2>
+
+      <h3>La primera consulta ya no ocurre en el consultorio</h3>
+      <p>
+        El 90% de los pacientes investiga a su especialista en internet antes de agendar
+        una cita (Doctoralia Awards 2026). Y cuando aparece un resumen de inteligencia
+        artificial en una búsqueda, la mayoría de las personas ya no hace clic en los
+        resultados tradicionales de abajo — se queda con lo que la IA le respondió
+        (Pew Research Center). El tráfico que los asistentes de IA refieren a sitios de
+        negocios y servicios creció 527% en un año (Semrush). La pregunta ya no es si sus
+        pacientes usan IA para buscar — es si esa IA lo conoce a usted.
+      </p>
+
+      <h3>Qué es GEO, explicado sin tecnicismos</h3>
+      <p>
+        GEO (optimización para motores generativos) es la disciplina de lograr que
+        ChatGPT, Gemini, Claude o el resumen de IA de Google puedan <em>encontrar,
+        entender y citar correctamente</em> a un profesional. No es lo mismo que el SEO
+        tradicional: estos sistemas no ordenan una lista de páginas web, recuperan
+        <em>entidades</em> — nombres que han visto corroborados en varias fuentes
+        independientes, con información consistente. Un médico excelente pero disperso en
+        internet, con datos distintos en cada directorio, simplemente no existe para esa IA.
+      </p>
+
+      <h3>Cómo "deciden" los asistentes de IA a quién recomendar</h3>
+      <p>
+        En el taller mostramos, en vivo, qué le responde hoy la inteligencia artificial
+        cuando alguien busca una especialidad en una ciudad concreta — con el teléfono de
+        algún asistente en la sala, si quiere probarlo usted mismo en ese momento. No es
+        una opinión nuestra: es reproducible en 10 segundos.
+      </p>
+
+      <h3>El caso real: GASTREND, de invisible a recomendado</h3>
+      <p>
+        GASTREND, una clínica de gastroenterología en Manta, tenía más de 500 reseñas de
+        5 estrellas en Google — pero no aparecía cuando alguien buscaba "mejor
+        gastroenterólogo en Manta", ni en Google ni en ningún asistente de IA.
+      </p>
+      <ul>
+        <li><strong>Junio 2026 — 34/100:</strong> reputación excelente, casi invisible en internet.</li>
+        <li><strong>Julio 2026 — 67/100:</strong> sitio propio en línea y Google Business unificado.</li>
+        <li><strong>Agosto–septiembre 2026 — 72/100:</strong> gastrend.ec publicado, indexado por Google y recomendado por los asistentes de IA.</li>
+      </ul>
+      <p>
+        Hoy GASTREND aparece entre las opciones recomendadas en ChatGPT (entre las tres
+        primeras), en Gemini (primera alternativa) y en el resumen de IA de Google — ya no
+        depende de que el paciente escriba el nombre de la clínica.
+        <a href="/clientes/gastrend-manta">Ver el caso completo →</a>
+      </p>
+
+      <h3>Qué se lleva cada asistente</h3>
+      <ul>
+        <li>La demostración en vivo con su propia especialidad y ciudad, si lo desea</li>
+        <li>Un diagnóstico gratuito y personalizado de su propia visibilidad</li>
+        <li>La posibilidad de ganar un mes completo de servicio gratis, entre quienes asistan en vivo</li>
+      </ul>
+
+      <!-- ═══ BANNER CHICO — CRUZADO AL DIAGNÓSTICO ═══ -->
+      <div class="visibilidad-banner">
+        <div class="vb-icon">📊</div>
+        <div class="vb-text">
+          <strong>¿Ya sabe en qué nivel está su propia visibilidad digital?</strong>
+          <span>Antes del taller, puede correr nuestro diagnóstico gratuito — toma menos de un minuto y no necesita tener sitio web.</span>
+        </div>
+        <a href="/visibilidad" class="btn btn-secondary">Hacer mi diagnóstico gratis →</a>
+      </div>
+
+      <h2>Para quién es esto</h2>
+      <p>
+        Para médicos y clínicas de cualquier especialidad, sin importar su nivel técnico.
+        No necesita tener sitio web, ni saber qué es un dominio, ni haber usado nunca
+        ChatGPT. Si atiende pacientes y quiere que lo encuentren, este taller es para usted.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq-item">
+        <h3>¿Necesito saber de tecnología para seguir el taller?</h3>
+        <p>No. Está diseñado específicamente para médicos sin experiencia técnica.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Esto es una venta disfrazada?</h3>
+        <p>
+          El taller completo es contenido real y útil, lo use usted con nosotros o por su
+          cuenta. Al final mostramos cómo podemos ayudar a quien quiera ir más rápido — sin
+          presión.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Qué pasa si no puedo asistir en vivo?</h3>
+        <p>
+          Quienes se registren reciben la grabación. El sorteo del mes de servicio gratuito
+          aplica solo a quienes estén presentes en vivo al finalizar la sesión.
+        </p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Tiene algún costo?</h3>
+        <p>Ninguno. El taller es completamente gratuito.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Cuánto dura?</h3>
+        <p>Una hora, de 7:00 a 8:00 PM (hora de Ecuador).</p>
+      </div>
+
+      <h2>Próximos eventos</h2>
+
+      <a class="caso-card" href="/taller-ia">
+        <span class="caso-tag">Próximo · 28 de octubre, 2026</span>
+        <h3>Inteligencia Artificial para Médicos: cómo lograr que ChatGPT y Google lo recomienden</h3>
+        <p>
+          Taller gratuito en línea, una hora, sin necesidad de conocimientos técnicos. Caso
+          real de GASTREND, demostración en vivo y diagnóstico gratuito personalizado.
+        </p>
+        <span class="read-more">Ver detalles y reservar →</span>
+      </a>
+
+      <div class="caso-card caso-soon">
+        <p>Próximamente se sumarán aquí los siguientes talleres.</p>
+      </div>
+
+      <!-- ═══ BANNER GRANDE — ABAJO ═══ -->
+      <a class="event-banner event-banner-bottom" href="https://events.teams.microsoft.com/event/8491fa91-09c1-46f9-9d71-91902f4b49d6@857f552d-f7ba-4bf9-92cb-07a77aa7da85" target="_blank" rel="noopener">
+        <img src="/assets/taller-ia-banner-v2.jpg" alt="Inteligencia Artificial para Médicos: taller gratuito de IntelliSalud" />
+        <div class="event-banner-footer">
+          <div class="event-banner-info">
+            <strong>Inteligencia Artificial para Médicos — Taller Gratuito</strong>
+            Miércoles 28 de octubre, 7:00–8:00 PM (Ecuador) · En línea · Cupo limitado
+          </div>
+          <span class="btn btn-primary">Reservar mi lugar gratis</span>
+        </div>
+      </a>
+
+    </article>
+  </main>
+
+  <!-- Footer con mapa del sitio — mismo patrón que el resto del sitio. -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a href="/" class="footer-logo">
+            <span class="footer-logo-badge">
+              <img src="/assets/logo.jpg" alt="Logo de IntelliSalud" />
+            </span>
+            <span>IntelliSalud</span>
+          </a>
+          <p class="footer-tagline">
+            Visibilidad digital para médicos, especialistas y clínicas en
+            Ecuador — en buscadores y en asistentes de inteligencia artificial.
+          </p>
+          <div class="footer-social">
+            <a href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s." target="_blank" rel="noopener" aria-label="WhatsApp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/intellisalud/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.266 2.37 4.266 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/intellisalud.ec/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <a href="/">Inicio</a>
+          <a href="/#servicios">Servicios</a>
+          <a href="/planes">Planes</a>
+          <a href="/blog/">Blog</a>
+          <a href="/clientes/">Clientes</a>
+          <a href="/eventos/">Eventos</a>
+          <a href="/nosotros">Nosotros</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Recursos</h4>
+          <a href="/visibilidad">Diagnóstico de visibilidad</a>
+          <a href="/miredmedica">MiRedMédica</a>
+          <a href="/privacidad">Política de Privacidad</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <span class="footer-contact-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Daule, Guayas, Ecuador
+          </span>
+          <a class="footer-contact-item" href="https://wa.me/593998286930?text=Hola%20IntelliSalud%2C%20quiero%20conocer%20m%C3%A1s." target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.555 4.122 1.528 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.9.917-3.635-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+            099 828 6930
+          </a>
+          <a class="footer-contact-item" href="mailto:jonathan@intellisalud.com">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            jonathan@intellisalud.com
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 IntelliSalud S.A.S. Todos los derechos reservados.</p>
+        <p>Inteligencia Artificial para consultorios médicos en Ecuador.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
