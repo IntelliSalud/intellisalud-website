@@ -184,6 +184,33 @@
   </script>
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Promo del taller del 28-oct-2026 en el home — bloque temporal, retirar
+       o archivar despues del evento. Fondo claro a propósito: rompe el
+       navy-teal oscuro de las secciones de arriba y abajo para que llame
+       la atención en vez de mezclarse. -->
+  <style>
+    .home-event-promo { background: var(--light); padding: 64px 24px; }
+    .home-event-promo-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+    .hep-badge {
+      display: inline-block; background: #fff3d6; color: #a9700d;
+      font-weight: 800; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase;
+      padding: 8px 20px; border-radius: 999px; margin-bottom: 24px; border: 1px solid #ffd166;
+    }
+    .hep-card {
+      background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+      display: flex; flex-wrap: wrap; text-align: left;
+    }
+    .hep-card img { width: 46%; min-width: 300px; object-fit: cover; display: block; }
+    .hep-card-body { flex: 1; min-width: 280px; padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+    .hep-card-body h2 { font-size: 1.5rem; margin: 0; line-height: 1.35; }
+    .hep-card-body p { color: var(--muted); margin: 0; line-height: 1.6; }
+    .hep-card-body .btn { align-self: flex-start; margin-top: 8px; }
+    @media (max-width: 700px) {
+      .hep-card { flex-direction: column; }
+      .hep-card img { width: 100%; }
+    }
+  </style>
 </head>
 
 <body>
@@ -286,6 +313,26 @@
           concluyó que las características de las reseñas negativas — y la forma en que el médico
           responde a ellas — influyen de manera significativa en la elección del paciente.
         </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ PROMO DEL TALLER (temporal) ══ -->
+    <!-- Retirar o archivar despues del 28-oct-2026 — no es parte permanente
+         del home. -->
+    <section class="home-event-promo">
+      <div class="home-event-promo-inner">
+        <span class="hep-badge">🎉 Próximo evento gratuito</span>
+        <a class="hep-card" href="/eventos/">
+          <img src="/assets/taller-ia-banner-v2.jpg" alt="Inteligencia Artificial para Médicos: taller gratuito de IntelliSalud" />
+          <div class="hep-card-body">
+            <h2>¿Sus pacientes ya le preguntan a ChatGPT quién es el mejor especialista?</h2>
+            <p>
+              Taller gratuito en línea, miércoles 28 de octubre, 7:00 PM — demostración en
+              vivo, el caso real de GASTREND y un diagnóstico gratuito personalizado.
+            </p>
+            <span class="btn btn-primary">Ver detalles y reservar →</span>
+          </div>
+        </a>
       </div>
     </section>
 
