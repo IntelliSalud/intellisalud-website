@@ -364,7 +364,7 @@
       + '<p class="dim-ev">' + esc(d.evidencia) + '</p>'
       + '<p class="dim-rec">' + esc(d.recomendacion) + '</p>'
       + (d.confianza === 'baja'
-          ? '<span class="dim-conf">⚠ Confianza baja — conviene verificar manualmente</span>' : '')
+          ? '<span class="dim-conf">Confianza baja — conviene verificar manualmente</span>' : '')
       + '</div>';
   }
   // Sin título: el nombre de la dimensión ya revela qué se evalúa (p.ej.
@@ -374,7 +374,7 @@
     return '<div class="dim bloqueada"><div class="dim-cab">'
       + '<span class="dim-num">' + n + '</span>'
       + '<span class="dim-tit">Área bloqueada</span>'
-      + '<span class="dim-lock">🔒 En el informe completo</span></div></div>';
+      + '<span class="dim-lock">En el informe completo</span></div></div>';
   }
 
   $('buscador').addEventListener('submit', async (e) => {
