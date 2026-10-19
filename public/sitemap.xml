@@ -25,12 +25,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <!-- /taller-ia: evento puntual (28-oct-2026). changefreq weekly mientras
+  <!-- /taller-ia: evento puntual (5-nov-2026). changefreq weekly mientras
        está activo para que se re-rastree seguido mientras se llena el cupo;
        bajar priority/changefreq o retirar del sitemap después del evento. -->
   <url>
     <loc>https://intellisalud.com/taller-ia</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -38,7 +38,7 @@
        página evergreen a medida que se agreguen más eventos. -->
   <url>
     <loc>https://intellisalud.com/eventos/</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
